@@ -8,7 +8,7 @@ const mapDispatchToProps = dispatch => {
         addEvent: event => dispatch(addEvent(event))
     };
 };
-class EventForm extends Component {
+class EventContainer extends Component {
     constructor() {
         super();
         this.state = {
@@ -19,18 +19,17 @@ class EventForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(event) {
-        //console.log(event.target.id +"-"+ event.target.value)
-        this.setState({ [event.target.id]: event.target.value });
+    handleChange(e) {
+        //console.log(e.target.id +"-"+ e.target.value)
+        this.setState({ [e.target.id]: e.target.value });
     }
-    handleSubmit(event) {
-        event.preventDefault();
+    handleSubmit(e) {
+        e.preventDefault();
         const { title } = this.state;
         const { start_date } = this.state;
         const { end_date } = this.state;
         const id = uuidv1();
 
-        console.log(title +"-"+ start_date +"-"+ end_date +"-"+ id)
         this.props.addEvent({ title, start_date, end_date, id }); // Relevant Redux part!!
 
         this.setState({ title: "" });
@@ -73,5 +72,7 @@ class EventForm extends Component {
         );
     }
 }
-const EventContainer = connect(null, mapDispatchToProps)(EventForm);
-export default EventContainer;
+//const EventContainer = connect(null, mapDispatchToProps)(EventForm);
+//export default EventContainer;
+
+export default connect(null, mapDispatchToProps)(EventContainer);
