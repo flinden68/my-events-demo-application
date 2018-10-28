@@ -1,15 +1,15 @@
 import React from "react";
-import EventListContainer from "./container/EventListContainer";
-import EventContainer from "./container/EventContainer";
+import EventList from "./container/EventList";
+import AddEvent from "./container/AddEvent";
 const App = () => (
     <div className="row">
         <div className="col-md-12">
             <h2>Events</h2>
-            <EventListContainer />
+            <EventList />
         </div>
         <div className="col-md-12">
             <h2>Add a new event</h2>
-            <EventContainer />
+            <AddEvent />
         </div>
     </div>
 );

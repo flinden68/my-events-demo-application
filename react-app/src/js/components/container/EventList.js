@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {addEvent, deleteEvent} from "../../actions";
+import {deleteEvent} from "../../actions";
 const mapStateToProps = state => {
     return { events: state.events };
 };
@@ -10,7 +10,7 @@ const mapDispatchToProps = dispatch => {
         deleteEvent: event => dispatch(deleteEvent(event))
     };
 };
-class EventListContainer extends Component {
+class EventList extends Component {
 
     constructor(props){
         super(props);
@@ -57,4 +57,4 @@ class EventListContainer extends Component {
         )
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(EventListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(EventList);
