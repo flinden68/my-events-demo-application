@@ -1,0 +1,79 @@
+server:
+  port: 3031
+  ssl:
+    enabled: false
+  servlet:
+    context-path: /api
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: "/v2/api-docs"
+
+logging:
+  level:
+    root: INFO
+  nl:
+    elstarit:
+      reactive: DEBUG
+
+info:
+  app:
+    name: Event Service API
+    version: 1.0.0-SNAPSHOT
+    description: Event Service API
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: Event Service API
+    stub: false
+  profiles:
+    active: local #@activeProfile@
+
+---
+spring:
+  profiles: local
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/events-store
+
+service:
+  cors:
+    origins: http://localhost:8080 #list of domains seperated by a comma
+    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
+swagger:
+  enabled: true
+
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/events-store
+service:
+  cors:
+    origins: http://localhost:8080, http://localhost:8000, http://localhost:4200 #list of domains seperated by a comma
+    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
+swagger:
+  enabled: true
+
+---
+spring:
+  profiles: prod
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/events-store
+service:
+  cors:
+    origins: http://localhost:8080, http://localhost:8000, http://localhost:4200 #list of domains seperated by a comma
+    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
+
+swagger:
+  enabled: false
+---
