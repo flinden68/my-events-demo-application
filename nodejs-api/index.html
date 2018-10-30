@@ -11,7 +11,17 @@
     <div class="row">
         <div class="col-md-10">
             <h2>Add a new event</h2>
-            <form action="/api/event/create" method="POST">
+            <form action="/api/event/test/create" method="POST">
+                <div class="form-group">
+                    <label>User ID</label>
+                    <input
+                            class="form-control"
+                            type="text"
+                            id="userId"
+                            name="userId"
+                            placeholder="User ID"
+                    />
+                </div>
                 <div class="form-group">
                     <label>Title</label>
                     <input
@@ -36,7 +46,7 @@
                     <label>Start date</label>
                     <input
                             class="form-control"
-                            type="number"
+                            type="date"
                             id="start_date"
                             name="start_date"
                             placeholder="Start date"
@@ -46,7 +56,7 @@
                     <label>End date</label>
                     <input
                             class="form-control"
-                            type="number"
+                            type="date"
                             id="end_date"
                             name="end_date"
                             placeholder="End date"
@@ -59,7 +69,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
