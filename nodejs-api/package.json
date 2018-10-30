@@ -1,0 +1,20 @@
+{
+  "name": "event-service-api",
+  "version": "1.0.0",
+  "description": "Event Service API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Frank van der Linden, elstar IT",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5"
+  }
+}
