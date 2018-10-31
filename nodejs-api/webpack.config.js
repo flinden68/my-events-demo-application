@@ -40,6 +40,10 @@ module.exports = {
                 use: {
                     loader: 'ts-loader',
                 }
+            },
+            {
+                test: /\.html?$/,
+                loader: "file-loader?name=[name].[ext]"
             }]
     },
     target: 'node',
