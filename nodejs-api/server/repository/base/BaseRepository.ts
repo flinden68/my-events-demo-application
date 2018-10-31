@@ -2,7 +2,14 @@ import { IWrite } from '../interface/IWriteInterface';
 import { IRead } from '../interface/IReadInterface';
 
 // we imported all types from mongodb driver, to use in code
-import {MongoClient, Db, Collection, InsertOneWriteOpResult, FindAndModifyWriteOpResultObject, Db} from 'mongodb';
+import {
+    MongoClient,
+    Db,
+    Collection,
+    InsertOneWriteOpResult,
+    ObjectID,
+    UpdateWriteOpResult, FindAndModifyWriteOpResultObject, DeleteWriteOpResultObject, Cursor
+} from 'mongodb';
 
 // that class only can be extended
 export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
@@ -17,26 +24,27 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
 
     // we add to method, the async keyword to manipulate the insert result
     // of method.
-    async create(item: T): Promise<boolean> {
+    async create(item: T): Promise<T> {
         const result: InsertOneWriteOpResult = await this._collection.insertOne(item);
-        // after the insert operations, we returns only ok property (that haves a 1 or 0 results)
-        // and we convert to boolean result (0 false, 1 true)
-        return !!result.ops[0];
+        return result.ops[0];
     }
 
 
-    update(id: string, item: T): Promise<boolean> {
-        //.findOneAndUpdate
-        const result: FindAndModifyWriteOpResultObject = await this._collection.findOneAndUpdate(item);
-        throw new Error('Method not implemented.');
+    async update(id: string, item: T): Promise<T> {
+        const result: FindAndModifyWriteOpResultObject = await this._collection.findOneAndUpdate({ "_id": new ObjectID(id)}, item, {returnOriginal: false});
+        return result.value;
     }
-    delete(id: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
+
+    async delete(id: string): Promise<boolean> {
+        const result: DeleteWriteOpResultObject = await this._collection.deleteOne({ "_id": new ObjectID(id)});
+        return !!result.result.ok;
     }
-    find(item: T): Promise<T[]> {
-        throw new Error('Method not implemented.');
+
+    async find(): Promise<T[]> {
+        return await this._collection.find().toArray();
     }
-    findOne(id: string): Promise<T> {
-        throw new Error('Method not implemented.');
+
+    async findOne(id: string): Promise<T> {
+        return await this._collection.findOne({ "_id": new ObjectID(id)});
     }
 }
