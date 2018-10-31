@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as bodyParser from 'body-parser';
-
+import * as homeController from './controller/home.controller';
 import {ApiRoutes} from "./routes/api-routes";
 
 dotenv.config();
@@ -11,9 +11,7 @@ const app = express();
 app.set('port', process.env.PORT || 3030);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/', (req, res) => {
-    res.sendFile('/index.html', { root: __dirname });
-});
+app.get('/', homeController.index);
 
 app.use('/api', ApiRoutes);
 

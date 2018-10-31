@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+var path = require('path');
 var fs = require('fs');
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -46,6 +48,21 @@ module.exports = {
                 loader: "file-loader?name=[name].[ext]"
             }]
     },
+    plugins: [
+        new CopyWebpackPlugin([
+                {
+                    from: './server/index.html',
+                    to: __dirname + '/dist'
+                }]
+        )
+    ],
     target: 'node',
     externals: nodeModules,
+    devServer: {
+        publicPath: "/",
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 3030,
+        hot: true
+    }
 };
