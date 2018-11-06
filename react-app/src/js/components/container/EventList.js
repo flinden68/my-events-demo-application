@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {deleteEvent} from "../../actions";
+import {deleteEvent, fetchAllEvents} from "../../actions";
 const mapStateToProps = state => {
     return { events: state.events };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteEvent: event => dispatch(deleteEvent(event))
+        deleteEvent: event => dispatch(deleteEvent(event)),
+        fetchAllEvents: () => dispatch(fetchAllEvents())
     };
 };
 class EventList extends Component {
@@ -15,6 +16,11 @@ class EventList extends Component {
     constructor(props){
         super(props);
         this.deleteEvent = this.deleteEvent.bind(this);
+        //this.props.fetchAllEvents();
+    }
+
+    componentWillMount(){
+        this.props.fetchAllEvents();
     }
 
     deleteEvent(e, event){
@@ -38,17 +44,20 @@ class EventList extends Component {
                 </thead>
                 <tbody>
                 {this.props.events.map(event => (
-                    <tr scope="row" key={event.id}>
+                    <tr scope="row" key={event._id}>
                         <td>{event.title}</td>
-                        <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.start_date))}</td>
-                        <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.end_date))}</td>
+                        {/*<td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.start_date))}</td>*/}
+                        <td>{event.start}</td>
+                        <td>{event.end}</td>
                         <td>
-                            <button type="submit" className="btn btn-warning" onClick={(e) => this.deleteEvent(e, event)}>
+                            <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteEvent(e, event)}>
                                 delete
                             </button>
                         </td>
                         <td>
-                            {event.id}
+                            {event._id}
+                            <br />
+                            {event.userId}
                         </td>
                     </tr>
                 ))}

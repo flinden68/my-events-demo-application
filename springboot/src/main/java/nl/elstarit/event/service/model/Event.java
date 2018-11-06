@@ -20,10 +20,10 @@ public class Event {
   private String title;
   private String description;
 
-  @JsonProperty("start_date")
+  @JsonProperty("start")
   private long startDate;
 
-  @JsonProperty("end_date")
+  @JsonProperty("end")
   private long endDate;
 
   @CreatedDate

@@ -24,14 +24,14 @@ export class EventController {
     }
 
     async create(req: Request, res: Response):Promise<Event> {
-        const event = new Event(null, req.body.title, req.body.description, req.body.start_data, req.body.end_date, req.body.userId);
+        const event = new Event(null, req.body.title, req.body.description, req.body.start, req.body.end, req.body.userId);
         event.setCreated(new Date);
         event.updateModified();
         return this.repository.create(event);
     }
 
     async update(req: Request, res: Response):Promise<Event> {
-        const event = new Event(req.body._id, req.body.title, req.body.description, req.body.start_data, req.body.end_date, req.body.userId);
+        const event = new Event(req.body._id, req.body.title, req.body.description, req.body.start, req.body.end, req.body.userId);
         event.setCreated(req.body.created);
         event.updateModified();
         return this.repository.create(event);

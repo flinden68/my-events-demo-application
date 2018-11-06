@@ -1,9 +1,5 @@
 package nl.elstarit.event.service.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import nl.elstarit.event.service.model.Event;
 import nl.elstarit.event.service.repository.EventRepository;
