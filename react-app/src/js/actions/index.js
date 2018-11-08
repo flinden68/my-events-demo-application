@@ -7,6 +7,7 @@ import {
     UPDATE_EVENT
 } from "../constants/action-types";
 import axios from 'axios';
+import history from '../history';
 
 const apiUrl = 'http://localhost:3030/api';
 
@@ -20,6 +21,7 @@ export const createEvent = (event) => {
         return axios.post(`${apiUrl}/event/create`, event)
             .then(response => {
                 dispatch(createEventSuccess(response.data))
+                    history.push('/events')
             })
             .catch(error => {
                 throw(error);
@@ -34,11 +36,12 @@ export const createEventSuccess =  (data) => {
     }
 };
 
-export const updateEvent = (event) => {
+export const updateEvent = (id, event) => {
     return (dispatch) => {
-        return axios.post(`${apiUrl}/event/update`, event)
+        return axios.put(`${apiUrl}/event/update/${id}`, event)
             .then(response => {
                 dispatch(updateEventSuccess(response.data))
+                    history.push('/events')
             })
             .catch(error => {
                 throw(error);

@@ -31,7 +31,7 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
 
 
     async update(id: string, item: T): Promise<T> {
-        const result: FindAndModifyWriteOpResultObject = await this._collection.findOneAndUpdate({ "_id": new ObjectID(id)}, item, {returnOriginal: false});
+        const result: FindAndModifyWriteOpResultObject = await this._collection.findOneAndUpdate({ "_id": new ObjectID(id)}, {"$set": item}, {returnOriginal: false, upsert: true});
         return result.value;
     }
 

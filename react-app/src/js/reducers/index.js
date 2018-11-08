@@ -14,7 +14,7 @@ const rootReducer = (state = initialState, action) => {
         case ADD_EVENT:
             return { state, events: [...state.events, action.payload] };
         case UPDATE_EVENT:
-            return {events: state.events.map(event => event._id !== action.payload._id ? action.payload : event)};
+            return {events: state.events.map(event => event._id === action.payload._id ? action.payload : event)};
         case DELETE_EVENT:
             return {events: state.events.filter(event => event !== action.payload)};
         case GET_EVENTS:

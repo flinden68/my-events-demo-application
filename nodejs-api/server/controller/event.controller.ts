@@ -30,11 +30,11 @@ export class EventController {
         return this.repository.create(event);
     }
 
-    async update(req: Request, res: Response):Promise<Event> {
+    async update(req: Request, res: Response, eventId: string):Promise<Event> {
         const event = new Event(req.body._id, req.body.title, req.body.description, req.body.start, req.body.end, req.body.userId);
         event.setCreated(req.body.created);
         event.updateModified();
-        return this.repository.create(event);
+        return this.repository.update(eventId, event);
     }
 
     async delete(eventId: string):Promise<boolean> {

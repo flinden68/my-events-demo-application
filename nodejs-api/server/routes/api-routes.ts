@@ -21,8 +21,9 @@ router.post('/event/create', (req: Request, res: Response) => {
     });
 });
 
-router.put('/event/update', (req: Request, res: Response) => {
-    eventController.update(req,res).then(function(result) {
+router.put('/event/update/:eventId', (req: Request, res: Response) => {
+    const eventId = req.params.eventId;
+    eventController.update(req,res,eventId).then(function(result) {
         res.send(result);
     });
 });
