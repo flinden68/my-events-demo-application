@@ -3,7 +3,10 @@ import connect from "react-redux/es/connect/connect";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import '../presentation/form.css';
+import {InputError} from "../presentation/InputError";
+import {FormErrors} from "../presentation/FormErrors";
 
 const labelStyle = {
     marginRight: '10px'
@@ -21,7 +24,10 @@ class EventForm extends React.Component {
             created: props.event ? props.event.created : new Date(),
             modified: props.event ? props.event.modified : new Date(),
 
-            error: ''
+            formErrors: {title: '', description: ''},
+            titleValid: true,
+            descriptionValid: true,
+            formValid: true
 
         };
 
@@ -34,7 +40,9 @@ class EventForm extends React.Component {
     }
 
     handleChangeTitle(e) {
-        this.setState({ title: e.target.value });
+        const value = e.target.value;
+        //console.log('title-' + value);
+        this.setState({ title: value });
     }
 
     handleChangeUserId(e) {
@@ -42,7 +50,9 @@ class EventForm extends React.Component {
     }
 
     handleChangeDescription(e) {
-        this.setState({ description: e.target.value });
+        const value = e.target.value;
+        //console.log('description-' + value);
+        this.setState({ description: value });
     }
 
     handleChangeStartDate(date) {
@@ -53,14 +63,47 @@ class EventForm extends React.Component {
         this.setState({ endInput: date });
     }
 
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let titleValid = this.state.titleValid;
+        let descriptionValid = this.state.descriptionValid;
+
+        switch(fieldName) {
+            case 'title':
+                titleValid = value.length > 0;
+                fieldValidationErrors.title = titleValid ? '': ' is required';
+                break;
+            case 'description':
+                descriptionValid = value.length > 0;
+                fieldValidationErrors.description = descriptionValid ? '': ' is required';
+                break;
+            default:
+                break;
+        }
+        this.setState({formErrors: fieldValidationErrors,
+            titleValid: titleValid,
+            descriptionValid: descriptionValid
+        }, this.validateForm);
+    }
+
+    validateForm() {
+        console.log('this.state.titleValid: ' + this.state.titleValid);
+        console.log('this.state.descriptionValid: ' + this.state.descriptionValid)
+        this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
+        console.log('validForm: ' + this.state.formValid)
+    }
+
+    errorClass(error) {
+        return(error.length === 0 ? '' : 'has-error');
+    }
+
     onSubmit(e){
 
         e.preventDefault();
 
-        if (!this.state.title) {
-            this.setState(() => ({ error: 'Please set title!' }));
-        } else {
-            this.setState(() => ({ error: '' }));
+        this.validateField('title', this.state.title);
+        this.validateField('description', this.state.description);
+        if(this.state.formValid){
 
             let event = {
                 title: this.state.title,
@@ -73,7 +116,7 @@ class EventForm extends React.Component {
                 _class: "nl.elstarit.event.service.model.Event"
             }
 
-            this.props.onSubmitEvent(event);
+            //this.props.onSubmitEvent(event);
         }
 
     }
@@ -81,9 +124,9 @@ class EventForm extends React.Component {
     render() {
         return (
             <div>
-            {this.state.error && <p className='error'>{this.state.error}</p>}
             <form onSubmit={this.onSubmit}>
                 <h2>Add a new event</h2>
+                { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
                 <div className="form-group">
                     <label>User ID</label>
                     <input
@@ -94,7 +137,7 @@ class EventForm extends React.Component {
                         onChange={this.handleChangeUserId}
                     />
                 </div>
-                <div className="form-group">
+                <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
                     <label htmlFor="title">Title</label>
                     <input
                         className="form-control"
@@ -104,7 +147,7 @@ class EventForm extends React.Component {
                         onChange={this.handleChangeTitle}
                     />
                 </div>
-                <div className="form-group">
+                <div className={`form-group ${this.errorClass(this.state.formErrors.description)}`}>
                     <label htmlFor="description">Description</label>
                     <input
                         className="form-control"

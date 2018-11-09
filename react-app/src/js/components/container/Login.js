@@ -19,91 +19,61 @@ class Login extends Component {
         super(props);
         this.state = {
             email: "",
-            password: "",
-            formErrors: {email: '', password: ''},
-            emailValid: false,
-            passwordValid: false,
-            formValid: false
+            formErrors: {email: ''},
+            emailValid: true,
+            formValid: true
         }
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleUserInput = this.handleUserInput.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
-        this.handlePasswordInput = this.handlePasswordInput.bind(this);
-    }
-
-    handleUserInput(e){
-        const name = e.target.name;
-        const value = e.target.value;
-        console.log(name + '-' + value);
-        this.setState({[name]: value},
-            () => { this.validateField(name, value) });
     }
 
     handleEmailInput(e){
         const value = e.target.value;
-        console.log('email-' + value);
-        this.setState({email: value},
-            () => { this.validateField('email', value) });
-    }
 
-    handlePasswordInput(e){
-        const value = e.target.value;
-        console.log('password-' + value);
-        this.setState({password: value},
-            () => { this.validateField('password', value) });
+        this.setState({email: value});
     }
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
-        let passwordValid = this.state.passwordValid;
 
         switch(fieldName) {
             case 'email':
                 emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : ' is invalid';
                 break;
-            case 'password':
-                passwordValid = value.length >= 6;
-                fieldValidationErrors.password = passwordValid ? '': ' is too short';
-                break;
             default:
                 break;
         }
         this.setState({formErrors: fieldValidationErrors,
             emailValid: emailValid,
-            passwordValid: passwordValid
         }, this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+        console.log('this.state.emailValid: ' + this.state.emailValid)
+        this.setState({formValid: this.state.emailValid });
+        console.log('validForm: ' + this.state.formValid)
     }
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
     }
 
-
     onSubmit(e){
-
         e.preventDefault();
 
-        if (!this.state.email) {
-            this.setState(() => ({error: 'Please set email!'}));
-        }else if (!this.state.password) {
-                this.setState(() => ({ error: 'Please set password!' }));
-        } else {
+        this.validateField('email', this.state.email);
+        if(this.state.formValid){
             this.setState(() => ({ error: '' }));
 
-            let login = {
+            let account = {
                 email: this.state.email,
-                password: this.state.password,
-                _class: "nl.elstarit.event.service.model.Login"
+                _class: "nl.elstarit.event.service.model.Account"
             }
 
-            console.log('Login: ' + login);
+            console.log('Login: ' + JSON.stringify(account));
 
             //this.props.onSubmitEvent(event);
         }
@@ -117,7 +87,7 @@ class Login extends Component {
                     <h2>Login</h2>
                     { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
                     <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
-                        <label>Email</label>
+                        <label>Email address</label>
                         <input
                             className="form-control"
                             type="text"
@@ -127,18 +97,7 @@ class Login extends Component {
                             onChange={this.handleEmailInput}
                         />
                     </div>
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
-                        <label>Password</label>
-                        <input
-                            className="form-control"
-                            type="password"
-                            id="password"
-                            placeholder="Password"
-                            value={this.state.password}
-                            onChange={this.handlePasswordInput}
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-success float-right" disabled={!this.state.formValid}>
+                    <button type="submit" className="btn btn-success float-right">
                         Login
                     </button>
                 </form>

@@ -3,7 +3,7 @@ import {
     DELETE_EVENT,
     GET_EVENT,
     GET_EVENTS,
-    GET_EVENTS_BY_USERUID,
+    GET_EVENTS_BY_USER_ID,
     UPDATE_EVENT
 } from "../constants/action-types";
 import axios from 'axios';
@@ -96,7 +96,7 @@ export const fetchAllEvents = () => {
 
 export const fetchEventsByUserId = (events) => {
     return {
-        type: GET_EVENTS_BY_USERUID,
+        type: GET_EVENTS_BY_USER_ID,
         payload: events
     }
 };

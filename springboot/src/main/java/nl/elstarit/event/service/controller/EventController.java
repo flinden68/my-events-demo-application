@@ -47,15 +47,15 @@ public class EventController {
     }
   }
 
-  @PatchMapping(value = "/update", produces = "application/json", consumes = "application/json")
-  public ResponseEntity<Event> updateEvent(@Valid @RequestBody Event event, Errors errors) {
+  @PatchMapping(value = "/update/{eventId}", produces = "application/json", consumes = "application/json")
+  public ResponseEntity<Event> updateEvent(@PathVariable("eventId") String eventId, @Valid @RequestBody Event event, Errors errors) {
 
     if(errors.hasErrors()){
       log.error(errors.getAllErrors().toString());
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    Optional<Event> storedEvent = eventRepository.findById(event.getId());
+    Optional<Event> storedEvent = eventRepository.findById(eventId);
     if(storedEvent.isPresent()){
       storedEvent.get().setDescription(event.getDescription());
       storedEvent.get().setTitle(event.getTitle());

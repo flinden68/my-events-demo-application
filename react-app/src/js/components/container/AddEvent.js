@@ -1,6 +1,6 @@
 import React from 'react';
 import connect from "react-redux/es/connect/connect";
-import {createEvent} from "../../actions";
+import {createEvent} from "../../actions/events";
 import "react-datepicker/dist/react-datepicker.css";
 import EventForm from "./EventForm";
 

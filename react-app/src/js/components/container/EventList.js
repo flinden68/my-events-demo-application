@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {deleteEvent, fetchAllEvents} from "../../actions";
+import {deleteEvent, fetchAllEvents} from "../../actions/events";
 import { Link } from 'react-router-dom'
 
 const mapStateToProps = state => {

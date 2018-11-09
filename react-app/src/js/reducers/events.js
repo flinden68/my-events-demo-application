@@ -3,13 +3,13 @@ import {
     DELETE_EVENT,
     GET_EVENT,
     GET_EVENTS,
-    GET_EVENTS_BY_USERUID,
+    GET_EVENTS_BY_USER_ID,
     UPDATE_EVENT
 } from "../constants/action-types";
 const initialState = {
     events: []
 };
-const rootReducer = (state = initialState, action) => {
+const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_EVENT:
             return { state, events: [...state.events, action.payload] };
@@ -19,7 +19,7 @@ const rootReducer = (state = initialState, action) => {
             return {events: state.events.filter(event => event !== action.payload)};
         case GET_EVENTS:
             return { state, events: action.payload };
-        case GET_EVENTS_BY_USERUID:
+        case GET_EVENTS_BY_USER_ID:
             return { state, events: action.payload };
         case GET_EVENT:
             return { state, event: action.payload };
@@ -27,4 +27,4 @@ const rootReducer = (state = initialState, action) => {
             return state;
     }
 };
-export default rootReducer;
+export default eventsReducer;
