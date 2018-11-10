@@ -1,9 +1,6 @@
 import {ADD_ACCOUNT, DELETE_ACCOUNT, GET_ACCOUNT, UPDATE_ACCOUNT} from "../constants/action-types";
 
-const initialState = {
-    account: null
-};
-const accountsReducer = (state = initialState, action) => {
+const account = (state = [], action) => {
     switch (action.type) {
         case ADD_ACCOUNT:
             return { state, event: action.payload };
@@ -17,4 +14,4 @@ const accountsReducer = (state = initialState, action) => {
             return state;
     }
 };
-export default accountsReducer;
+export default account;

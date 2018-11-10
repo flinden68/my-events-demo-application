@@ -17,8 +17,7 @@ class Account extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username: "",
-            password: ""
+            email: ""
         }
 
         this.onSubmit = this.onSubmit.bind(this);

@@ -50,6 +50,8 @@ class EventList extends Component {
                         <tr scope="row" key={event._id}>
                             <td>{event.title}</td>
                             <td>{event.description}</td>
+                            {/*<td>{event.start}</td>*/}
+                            {/*<td>{event.end}</td>*/}
                             <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.start))}</td>
                             <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.end))}</td>
                             <td>

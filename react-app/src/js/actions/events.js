@@ -11,11 +11,6 @@ import history from '../history';
 
 const apiUrl = 'http://localhost:3030/api';
 
-//export const addEvent = event => ({ type: ADD_EVENT, payload: event });
-//export const deleteEvent = event => ({ type: DELETE_EVENT, payload: event });
-
-//export const getEvents = events => ({ type: GET_EVENTS, payload: events });
-
 export const createEvent = (event) => {
     return (dispatch) => {
         return axios.post(`${apiUrl}/event/create`, event)

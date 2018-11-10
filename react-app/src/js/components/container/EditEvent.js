@@ -29,6 +29,7 @@ class EditEvent extends React.Component {
             <EventForm
                 event = {this.props.event}
                 onSubmitEvent={(event) => {
+                    console.log("edit submit: " + event)
                     this.props.updateEvent(this.id, event);
                 }}
             />

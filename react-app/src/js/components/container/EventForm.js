@@ -87,10 +87,10 @@ class EventForm extends React.Component {
     }
 
     validateForm() {
-        console.log('this.state.titleValid: ' + this.state.titleValid);
-        console.log('this.state.descriptionValid: ' + this.state.descriptionValid)
+        //console.log('this.state.titleValid: ' + this.state.titleValid);
+        //console.log('this.state.descriptionValid: ' + this.state.descriptionValid)
         this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
-        console.log('validForm: ' + this.state.formValid)
+        //console.log('validForm: ' + this.state.formValid)
     }
 
     errorClass(error) {
@@ -116,7 +116,7 @@ class EventForm extends React.Component {
                 _class: "nl.elstarit.event.service.model.Event"
             }
 
-            //this.props.onSubmitEvent(event);
+            this.props.onSubmitEvent(event);
         }
 
     }
