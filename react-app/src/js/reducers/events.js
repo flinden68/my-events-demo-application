@@ -6,25 +6,32 @@ import {
     GET_EVENTS_BY_USER_ID,
     UPDATE_EVENT
 } from "../constants/action-types";
-const initialState = {
-    events: []
-};
-const eventsReducer = (state = initialState, action) => {
+
+const events = (state = [], action) => {
     switch (action.type) {
         case ADD_EVENT:
-            return { state, events: [...state.events, action.payload] };
+            return [ ...state, action.payload ];
         case UPDATE_EVENT:
-            return {events: state.events.map(event => event._id === action.payload._id ? action.payload : event)};
+            return state.map(event => {
+                if (event._id === action.payload._id) {
+                    return {
+                        ...event,
+                        ...action.event
+                    };
+                } else {
+                    return event;
+                }
+            });
         case DELETE_EVENT:
-            return {events: state.events.filter(event => event !== action.payload)};
+            return state.filter(event => event._id !== action.payload._id);
         case GET_EVENTS:
-            return { state, events: action.payload };
+            return action.payload;
         case GET_EVENTS_BY_USER_ID:
-            return { state, events: action.payload };
+            return action.payload;
         case GET_EVENT:
             return { state, event: action.payload };
         default:
             return state;
     }
 };
-export default eventsReducer;
+export default events;
