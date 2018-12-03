@@ -88,22 +88,30 @@ router.delete('/account/delete/:id', (req: Request, res: Response) => {
     }
 });
 
-router.get('/account/:email', (req: Request, res: Response) => {
+router.get('/account/email/:email', (req: Request, res: Response) => {
     const email = req.params.email;
     if (email.trim()) {
         accountController.findByEMail(email).then(function(result) {
-            res.send(result);
+            if(result == null){
+                res.status(204).send(result);
+            }else {
+                res.status(200).send(result);
+            }
         });
     } else {
         res.send('Email could not be found');
     }
 });
 
-router.get('/account/:id', (req: Request, res: Response) => {
-    const id = req.params.eventId;
+router.get('/account/id/:id', (req: Request, res: Response) => {
+    const id = req.params.id;
     if (id.trim()) {
         accountController.findOne(id).then(function(result) {
-            res.send(result);
+            if(result == null){
+                res.status(204).send(result);
+            }else {
+                res.status(200).send(result);
+            }
         });
     } else {
         res.send('account id could not be found');

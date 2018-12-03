@@ -7,6 +7,7 @@ import EditEvent from "./container/EditEvent";
 import Login from "./container/Login";
 import Register from "./container/Register";
 import Account from "./container/Account";
+import Logout from './container/Logout';
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -17,12 +18,13 @@ const Routes = () => (
     <main>
         <Switch>
             <Route exact path='/' component={Home}/>
-            <Route path='/events' component={EventList}/>
-            <Route path='/event/add' component={AddEvent}/>
-            <Route path='/event/:id' component={EditEvent}/>
-            <Route path='/login' component={Login}/>
-            <Route path='/register' component={Register}/>
-            <Route path='/account' component={Account}/>
+            <Route exact path='/events' component={EventList}/>
+            <Route exact path='/event/add' component={AddEvent}/>
+            <Route exact path='/event/:id' component={EditEvent}/>
+            <Route exact path='/login' component={Login}/>
+            <Route exact path='/logout' component={Logout}/>
+            <Route exact path='/register' component={Register}/>
+            <Route exact path='/account' component={Account}/>
         </Switch>
     </main>
 )

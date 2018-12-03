@@ -1,28 +1,39 @@
 import React, {Component} from 'react'
 import NavItem from "./presentation/NavItem";
 import {connect} from "react-redux";
-
+import account from "../reducers/account";
+import store from '../store/store'
 // The Header creates links that can be used to navigate
 // between routes.
-
-const mapStateToProps = state => {
-    return { account: state.account };
-};
 
 class Header extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            account: props.account ? props.account : null
+            account: props.account ? props.account : null,
+            isAuthenticated: props.account ? true : false
         }
 
-        console.log(this.state.account);
+        this.accountListener = this.accountListener.bind(this);
+        store.subscribe(this.accountListener);
+    }
 
-        //this.setState({ account: {email:'test@test.nl'} });
-        this.state.account = {email:'test@test.nl'}
+    accountListener() {
+        let account = store.getState().account;
+        if(account){
+            this.setState({ account: account });
+            this.setState({ isAuthenticated: true });
+        }else{
+            this.setState({ account: null });
+            this.setState({ isAuthenticated: false });
+        }
 
-        console.log(this.state.account);
+        //console.log('listner: ' + this.state.isAuthenticated);
+    }
+
+    componentWillMount(){
+        //this.props.fetchEventsById(this.props.account._id);
     }
 
     render() {
@@ -37,23 +48,19 @@ class Header extends React.Component {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <ul className="navbar-nav mr-auto">
                         <NavItem to="/" label="Home"/>
-                        <NavItem to="/events" label="All events"/>
-                        <NavItem to="/event/add" label="Add event"/>
+                        {this.state.isAuthenticated && <NavItem to="/events" label="All events" />}
+                        {this.state.isAuthenticated && <NavItem to="/event/add" label="Add event" />}
                     </ul>
                     <ul className="navbar-nav ml-auto">
-                        {/*<li className="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                    </div>
-                </li>*/}
-                        <NavItem to="/account" label="Account"/>
-                        <NavItem to="/login" label="Login"/>
-                        <NavItem to="/register" label="Register"/>
+                        <li className="nav-item">
+                            <span className="nav-link">
+                                {this.state.account ? this.state.account.email: 'Anonymous'}
+                            </span>
+                        </li>
+                        {this.state.isAuthenticated && <NavItem to="/account" label="Account" />}
+                        {this.state.isAuthenticated && <NavItem to="/logout" label="Logout" />}
+                        {!this.state.isAuthenticated && <NavItem to="/login" label="Login" />}
+                        {!this.state.isAuthenticated && <NavItem to="/register" label="Register" />}
                     </ul>
                 </div>
             </nav>
@@ -62,4 +69,4 @@ class Header extends React.Component {
 
 }
 
-export default connect(mapStateToProps)(Header)
+export default (Header)

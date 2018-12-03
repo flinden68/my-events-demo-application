@@ -5,6 +5,7 @@ import {Event} from "../model/event";
 let pkg = require(__dirname + '/../../package.json');
 
 const mongoUrl = 'mongodb://localhost:27017/';
+const mongoUrlAtlas = 'mongodb://fa_events:ThHch9gn4RTXdZf@events-store-shard-00-00-e0aps.mongodb.net:27017,events-store-shard-00-01-e0aps.mongodb.net:27017,events-store-shard-00-02-e0aps.mongodb.net:27017/test?ssl=true&replicaSet=events-store-shard-0&authSource=admin&retryWrites=true'
 const dbName = 'events-store';
 
 export class EventController {

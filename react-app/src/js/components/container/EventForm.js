@@ -5,7 +5,6 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from 'react-router-dom';
 import '../presentation/form.css';
-import {InputError} from "../presentation/InputError";
 import {FormErrors} from "../presentation/FormErrors";
 
 const labelStyle = {
@@ -20,7 +19,7 @@ class EventForm extends React.Component {
             description: props.event ? props.event.description : "",
             startInput: props.event ? moment(props.event.start) : moment(),
             endInput: props.event ? moment(props.event.end) : moment(),
-            userId: props.event ? props.event.userId : "",
+            userId: props.event ? props.event.userId : props.account._id,
             created: props.event ? props.event.created : new Date(),
             modified: props.event ? props.event.modified : new Date(),
 

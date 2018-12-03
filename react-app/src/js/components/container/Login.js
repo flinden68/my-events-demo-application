@@ -1,60 +1,72 @@
 import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import '../presentation/form.css';
+import {fetchAccount} from "../../actions/account";
 import {FormErrors} from "../presentation/FormErrors";
+import {Link} from "react-router-dom";
 
 const mapStateToProps = state => {
     return { account: state.account };
 };
 
-/*const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-        performLogin: login => dispatch(deleteEvent(event)),
-        fetchAllEvents: () => dispatch(fetchAllEvents())
+        fetchAccount: (account) => dispatch(fetchAccount(account))
     };
-};*/
+};
 
 class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            email: "",
-            formErrors: {email: ''},
+            accessCode: "",//props.account ? props.account.accessCode : "",
+            email: "",//props.account ? props.account.email : "",
+            formErrors: {accessCode: '', email: ''},
+            accessCodeValid: true,
             emailValid: true,
-            formValid: true
+            formValid: true,
         }
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleAccessCodeInput = this.handleAccessCodeInput.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
+    }
+
+    handleAccessCodeInput(e){
+        const value = e.target.value;
+        this.setState({accessCode: value});
     }
 
     handleEmailInput(e){
         const value = e.target.value;
-
         this.setState({email: value});
     }
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
+        let accessCodeValid = this.state.accessCodeValid;
 
         switch(fieldName) {
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                break;
+            case 'accessCode':
+                accessCodeValid = value.length > 0;
+                fieldValidationErrors.title = accessCodeValid ? '': ' is required';
                 break;
             default:
                 break;
         }
         this.setState({formErrors: fieldValidationErrors,
-            emailValid: emailValid,
+            accessCodeValid: accessCodeValid,
+            emailValid: emailValid
         }, this.validateForm);
     }
 
     validateForm() {
-        console.log('this.state.emailValid: ' + this.state.emailValid)
-        this.setState({formValid: this.state.emailValid });
-        console.log('validForm: ' + this.state.formValid)
+        this.setState({formValid: this.state.accessCodeValid });
     }
 
     errorClass(error) {
@@ -65,17 +77,15 @@ class Login extends Component {
         e.preventDefault();
 
         this.validateField('email', this.state.email);
+        this.validateField('accessCode', this.state.accessCode);
         if(this.state.formValid){
-            this.setState(() => ({ error: '' }));
-
             let account = {
-                email: this.state.email,
+                _id: this.state.accessCode,
+                email : this.state.email,
                 _class: "nl.elstarit.event.service.model.Account"
             }
 
-            console.log('Login: ' + JSON.stringify(account));
-
-            //this.props.onSubmitEvent(event);
+            this.props.fetchAccount(account);
         }
 
     }
@@ -86,6 +96,12 @@ class Login extends Component {
                 <form onSubmit={this.onSubmit}>
                     <h2>Login</h2>
                     { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
+                    <div id="no_account" className=''>
+                        <p>
+                            <span className="no-account-text">If you don't have an account, register for a new account.</span>
+                            <Link to='/events' className='btn btn-primary'>Register</Link>
+                        </p>
+                    </div>
                     <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
                         <label>Email address</label>
                         <input
@@ -97,13 +113,25 @@ class Login extends Component {
                             onChange={this.handleEmailInput}
                         />
                     </div>
+                    <div className={`form-group ${this.errorClass(this.state.formErrors.accessCode)}`}>
+                        <label>Access code</label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            id="accessCode"
+                            placeholder="Access code"
+                            value={this.state.accessCode}
+                            onChange={this.handleAccessCodeInput}
+                        />
+                    </div>
                     <button type="submit" className="btn btn-success float-right">
                         Login
                     </button>
                 </form>
+
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

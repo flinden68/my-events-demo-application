@@ -1,21 +1,19 @@
 import {createStore, applyMiddleware} from 'redux';
 import reducer from "../reducers/index";
 import thunk from 'redux-thunk';
-import {GET_EVENTS} from "../constants/action-types";
-const store = createStore(reducer, applyMiddleware(thunk));
+import { composeWithDevTools } from 'redux-devtools-extension';
+import {createAccountSuccess} from "../actions/account";
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
+let account = {
+    "_id": "5be564d50f085f2cc19e3fef",
+    "email": "flinden68@elstarit.nl",
+    "_class": "nl.elstarit.event.service.model.Account",
+    "created": "2018-11-09T10:43:33.649Z",
+    "modified": "2018-11-09T10:43:33.649Z"
+}
 
-/*store.dispatch({
-    type: GET_EVENTS,
-    payload: {
-        "title":"boe211v",
-        "description":"boe211",
-        "start_date":1538438400000,
-        "end_date":1539648000000,
-        "userId":"5545454",
-        "created":"2018-10-30T10:01:41.762Z",
-        "modified":"2018-10-30T10:01:41.762Z"
-    }
-})*/
+
+store.dispatch(createAccountSuccess(account));
 

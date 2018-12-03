@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {deleteEvent, fetchAllEvents} from "../../actions/events";
+import {deleteEvent, fetchaAllEventsByUserId, fetchAllEvents} from "../../actions/events";
 import { Link } from 'react-router-dom'
 
 const mapStateToProps = state => {
-    return { events: state.events };
+    return {
+        events: state.events,
+        account: state.account
+    };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         deleteEvent: event => dispatch(deleteEvent(event)),
-        fetchAllEvents: () => dispatch(fetchAllEvents())
+        fetchAllEvents: () => dispatch(fetchAllEvents()),
+        fetchEventsById: (id) => dispatch(fetchaAllEventsByUserId(id))
     };
 };
 class EventList extends Component {
@@ -22,7 +26,8 @@ class EventList extends Component {
     }
 
     componentWillMount(){
-        this.props.fetchAllEvents();
+        //console.log('account:' + JSON.stringify(this.props.account))
+        this.props.fetchEventsById(this.props.account._id);
     }
 
     deleteEvent(e, event){

@@ -1,58 +1,78 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
 import connect from "react-redux/es/connect/connect";
+import { updateAccount } from '../../actions/account';
+import {FormErrors} from "../presentation/FormErrors";
 
 const mapStateToProps = state => {
     return { account: state.account };
 };
 
-/*const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-        performLogin: login => dispatch(deleteEvent(event)),
-        fetchAllEvents: () => dispatch(fetchAllEvents())
+        updateAccount: (id, account) => dispatch(updateAccount(id, account))
     };
-};*/
+};
 
 class Account extends Component {
     constructor(props){
         super(props);
         this.state = {
-            email: ""
+            accessCode: props.account ? props.account.accessCode : "",
+            email: props.account ? props.account.email : "",
+            formErrors: {email: ''},
+            emailValid: true,
+            formValid: true
         }
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleChangePassword = this.handleChangePassword.bind(this);
-        this.handleChangeUsername= this.handleChangeUsername.bind(this);
+        this.handleEmailInput = this.handleEmailInput.bind(this);
+
+        console.log('Current state = '+ JSON.stringify(this.props.account));
     }
 
-    handleChangePassword(e) {
-        this.setState({ password: e.target.value });
+    handleEmailInput(e){
+        const value = e.target.value;
+        this.setState({email: value});
     }
 
-    handleChangeUsername(e) {
-        this.setState({ username: e.target.value });
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+
+        switch(fieldName) {
+            case 'email':
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3,})$/i);
+                fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                break;
+            default:
+                break;
+        }
+        this.setState({formErrors: fieldValidationErrors,
+            emailValid: emailValid
+        }, this.validateForm);
+    }
+
+    validateForm() {
+        this.setState({formValid: this.state.emailValid });
+    }
+
+    errorClass(error) {
+        return(error.length === 0 ? '' : 'has-error');
     }
 
     onSubmit(e){
-
         e.preventDefault();
 
-        if (!this.state.username) {
-            this.setState(() => ({error: 'Please set username!'}));
-        }else if (!this.state.password) {
-                this.setState(() => ({ error: 'Please set password!' }));
-        } else {
-            this.setState(() => ({ error: '' }));
+        this.validateField('email', this.state.email);
 
-            let login = {
-                username: this.state.username,
-                password: this.state.password,
-                _class: "nl.elstarit.event.service.model.Login"
+        if(this.state.formValid){
+            let accountUpdate = {
+                _id: this.props.account._id,
+                email : this.state.email,
+                _class: "nl.elstarit.event.service.model.Account"
             }
-
-            console.log('Login: ' + login);
-
-            //this.props.onSubmitEvent(event);
+            
+            this.props.updateAccount(this.accountUpdate.id, accountUpdate);
         }
 
     }
@@ -60,30 +80,22 @@ class Account extends Component {
     render(){
         return (
             <div>
-                <h2>Account</h2>
                 <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Username</label>
+                    <h2>Account</h2>
+                    { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
+                    <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                        <label>Email address</label>
                         <input
                             className="form-control"
                             type="text"
-                            id="username"
-                            value={this.state.username}
-                            onChange={this.handleChangeUsername}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input
-                            className="form-control"
-                            type="password"
-                            id="password"
-                            value={this.state.password}
-                            onChange={this.handleChangePassword}
+                            id="email"
+                            placeholder="Email address"
+                            value={this.state.email}
+                            onChange={this.handleEmailInput}
                         />
                     </div>
                     <button type="submit" className="btn btn-success float-right">
-                        Login
+                        Update
                     </button>
                 </form>
             </div>
@@ -91,4 +103,4 @@ class Account extends Component {
     }
 }
 
-export default connect(mapStateToProps)(Account)
+export default connect(mapStateToProps, mapDispatchToProps)(Account)

@@ -1,6 +1,6 @@
 import React from 'react';
 import connect from "react-redux/es/connect/connect";
-import {createEvent, updateEvent} from "../../actions/events";
+import {updateEvent} from "../../actions/events";
 import "react-datepicker/dist/react-datepicker.css";
 import EventForm from "./EventForm";
 
@@ -12,6 +12,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = (state, props) => {
     return {
+        account: state.account,
         event: state.events.find((event) =>
             event._id === props.match.params.id)
     };
@@ -29,7 +30,6 @@ class EditEvent extends React.Component {
             <EventForm
                 event = {this.props.event}
                 onSubmitEvent={(event) => {
-                    console.log("edit submit: " + event)
                     this.props.updateEvent(this.id, event);
                 }}
             />

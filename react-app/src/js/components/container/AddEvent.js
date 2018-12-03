@@ -4,6 +4,11 @@ import {createEvent} from "../../actions/events";
 import "react-datepicker/dist/react-datepicker.css";
 import EventForm from "./EventForm";
 
+const mapStateToProps = state => {
+    return {
+        account: state.account
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -27,4 +32,4 @@ class AddEvent extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(AddEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEvent);

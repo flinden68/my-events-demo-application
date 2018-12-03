@@ -1,14 +1,12 @@
 import {
     ADD_ACCOUNT,
-    ADD_EVENT, DELETE_ACCOUNT,
-    DELETE_EVENT, GET_ACCOUNT,
-    GET_EVENT,
-    GET_EVENTS,
-    GET_EVENTS_BY_USERUID, UPDATE_ACCOUNT,
-    UPDATE_EVENT
+    DELETE_ACCOUNT,
+    GET_ACCOUNT,
+    UPDATE_ACCOUNT,
+    LOGOUT
 } from "../constants/action-types";
 import axios from 'axios';
-import history from '../history';
+import history from "../history";
 
 const apiUrl = 'http://localhost:3030/api';
 
@@ -16,6 +14,20 @@ const apiUrl = 'http://localhost:3030/api';
 //export const deleteEvent = event => ({ type: DELETE_EVENT, payload: event });
 
 //export const getEvents = events => ({ type: GET_EVENTS, payload: events });
+
+export const logout = () =>{
+    return (dispatch) => {
+        dispatch(logoutSuccess(null))
+        history.push('/login')
+    }
+}
+
+export const logoutSuccess = (data) =>{
+    return {
+        type: LOGOUT,
+        payload: data
+    }
+}
 
 export const createAccount = (account) => {
     return (dispatch) => {
@@ -83,7 +95,7 @@ export const fetchAccountSuccess = (account) => {
 
 export const fetchAccountByEmail = email => {
     return (dispatch) => {
-        return axios.get(`${apiUrl}/account/${email}`)
+        return axios.get(`${apiUrl}/account/email/${email}`)
             .then(response => {
                 dispatch(fetchAccountSuccess(response.data))
             })
@@ -96,9 +108,38 @@ export const fetchAccountByEmail = email => {
 
 export const fetchAccountById = id => {
     return (dispatch) => {
-        return axios.get(`${apiUrl}/account/${id}`)
+        return axios.get(`${apiUrl}/account/id/${id}`)
             .then(response => {
-                dispatch(fetchAccountSuccess(response.data))
+                if(response.status == 204){
+                    dispatch(fetchAccountSuccess(null))
+                    history.push('/login')
+                }else{
+                    dispatch(fetchAccountSuccess(response.data))
+                    history.push('/events')
+                }
+            })
+            .catch(error => {
+                throw(error);
+            });
+    };
+};
+
+export const fetchAccount = account => {
+    return (dispatch) => {
+        return axios.get(`${apiUrl}/account/id/${account._id}`)
+            .then(response => {
+                if(response.status == 204){
+                    dispatch(fetchAccountSuccess(null))
+                    history.push('/login')
+                }else{
+                    if(response.data.email != account.email){
+                        dispatch(fetchAccountSuccess(account))
+                        history.push('/login')
+                    }else {
+                        dispatch(fetchAccountSuccess(response.data))
+                        history.push('/events')
+                    }
+                }
             })
             .catch(error => {
                 throw(error);
