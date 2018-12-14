@@ -27,14 +27,14 @@ export class AccountController {
     }
 
     async create(req: Request, res: Response):Promise<Account> {
-        const account = new Account(req.body._id, req.body.email);
+        const account = new Account(req.body._id, req.body.email, req.body.language);
         account.setCreated(new Date());
         account.updateModified();
         return this.repository.create(account);
     }
 
     async update(req: Request, res: Response, id: string):Promise<Account> {
-        const account = new Account(req.body._id, req.body.email);
+        const account = new Account(req.body._id, req.body.email, req.body.language);
         account.setCreated(req.body.created);
         account.updateModified();
         return this.repository.update(id, account);

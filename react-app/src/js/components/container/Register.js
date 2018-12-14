@@ -7,7 +7,6 @@ import { Translate, getActiveLanguage } from "react-localize-redux";
 const mapStateToProps = state => {
     return { 
         account: state.account,
-        translate: state.localize,
         currentLanguage: getActiveLanguage(state.localize).code
     };
 };

@@ -25,8 +25,7 @@ class Login extends Component {
             formErrors: {accessCode: '', email: ''},
             accessCodeValid: true,
             emailValid: true,
-            formValid: true,
-            noAccount: false
+            formValid: trues
         }
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -34,10 +33,6 @@ class Login extends Component {
         this.handleEmailInput = this.handleEmailInput.bind(this);
     }
 
-    componentDidMount(){
-        console.log("componentDidMount")
-        this.showNoAccountMessage();
-    }
     handleAccessCodeInput(e){
         const value = e.target.value;
         this.setState({accessCode: value});
@@ -100,10 +95,6 @@ class Login extends Component {
             this.props.fetchAccount(account);
         }
 
-    }
-
-    showNoAccountMessage(){
-        this.setState( {noAccount : this.props.account ? true : false});
     }
 
     render(){
