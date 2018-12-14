@@ -1,0 +1,42 @@
+{
+    "emailaddress": [
+      "Email address",
+      "Email adres"
+    ],
+    "accesscode": [
+      "Access code",
+      "Toegangscode"
+    ],
+    "title-login": [
+      "Login",
+      "Inloggen"
+    ],
+    "title-my-events": [
+      "My events",
+      "Mijn evenementen"
+    ],
+    "title-add-event": [
+      "New event",
+      "Nieuw Evenenment"
+    ],
+    "title-edit-event": [
+      "Event",
+      "Evenenment"
+    ],
+    "column-title": [
+      "My events",
+      "Mijn evenementen"
+    ],
+    "column-description": [
+      "New event",
+      "Nieuw Evenenment"
+    ],
+    "column-start-date": [
+      "New event",
+      "Nieuw Evenenment"
+    ],
+    "column-end-date": [
+      "New event",
+      "Nieuw Evenenment"
+    ]
+}

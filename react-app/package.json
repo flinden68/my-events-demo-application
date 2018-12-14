@@ -46,8 +46,10 @@
     "react-axios": "^2.0.1",
     "react-bootstrap": "^0.32.4",
     "react-datepicker": "^1.8.0",
+    "react-localize-redux": "^3.5.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-toggle-button": "^2.2.0",
     "redux-thunk": "^2.3.0"
   }
 }

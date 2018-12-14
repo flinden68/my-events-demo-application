@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {deleteEvent, fetchaAllEventsByUserId, fetchAllEvents} from "../../actions/events";
 import { Link } from 'react-router-dom'
+import { Translate } from "react-localize-redux";
 
 const mapStateToProps = state => {
     return {
@@ -38,14 +39,14 @@ class EventList extends Component {
     render() {
         return (
             <div>
-                <h2>My events</h2>
+                <h2><Translate id="title-my-events"></Translate></h2>
                 <table className="table">
                     <thead>
                     <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Start date</th>
-                        <th scope="col">End date</th>
+                        <th scope="col"><Translate id="column-title"></Translate></th>
+                        <th scope="col"><Translate id="column-description"></Translate></th>
+                        <th scope="col"><Translate id="column-start-date"></Translate></th>
+                        <th scope="col"><Translate id="column-end-date"></Translate></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
@@ -61,12 +62,12 @@ class EventList extends Component {
                             <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.end))}</td>
                             <td>
                                 <Link className="btn btn-warning" to={`/event/${event._id}`}>
-                                    Edit
+                                    <Translate id="button-edit"></Translate>
                                 </Link>
                             </td>
                             <td>
                                 <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteEvent(e, event)}>
-                                    Delete
+                                    <Translate id="button-delete"></Translate>
                                 </button>
 
                             </td>

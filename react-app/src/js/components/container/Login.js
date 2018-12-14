@@ -4,6 +4,7 @@ import '../presentation/form.css';
 import {fetchAccount} from "../../actions/account";
 import {FormErrors} from "../presentation/FormErrors";
 import {Link} from "react-router-dom";
+import { Translate } from "react-localize-redux";
 
 const mapStateToProps = state => {
     return { account: state.account };
@@ -25,6 +26,7 @@ class Login extends Component {
             accessCodeValid: true,
             emailValid: true,
             formValid: true,
+            noAccount: false
         }
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -32,6 +34,10 @@ class Login extends Component {
         this.handleEmailInput = this.handleEmailInput.bind(this);
     }
 
+    componentDidMount(){
+        console.log("componentDidMount")
+        this.showNoAccountMessage();
+    }
     handleAccessCodeInput(e){
         const value = e.target.value;
         this.setState({accessCode: value});
@@ -49,12 +55,12 @@ class Login extends Component {
 
         switch(fieldName) {
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3,})$/i);
-                fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                fieldValidationErrors.email = emailValid ? '' : 'error-required';
                 break;
             case 'accessCode':
                 accessCodeValid = value.length > 0;
-                fieldValidationErrors.title = accessCodeValid ? '': ' is required';
+                fieldValidationErrors.accessCode = accessCodeValid ? '': 'error-required';
                 break;
             default:
                 break;
@@ -66,11 +72,15 @@ class Login extends Component {
     }
 
     validateForm() {
-        this.setState({formValid: this.state.accessCodeValid });
+        this.setState({formValid: this.state.accessCodeValid && this.state.emailValid });
     }
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
+    } 
+
+    isFormValid(){
+        return JSON.stringify(this.state.formErrors).indexOf('error-required') < 0
     }
 
     onSubmit(e){
@@ -78,54 +88,61 @@ class Login extends Component {
 
         this.validateField('email', this.state.email);
         this.validateField('accessCode', this.state.accessCode);
-        if(this.state.formValid){
+
+        console.log('formErrors: ' + JSON.stringify(this.state.formErrors));
+        console.log('isFormValid: ' + this.isFormValid())
+        if(this.isFormValid()){
             let account = {
                 _id: this.state.accessCode,
                 email : this.state.email,
                 _class: "nl.elstarit.event.service.model.Account"
             }
-
             this.props.fetchAccount(account);
         }
 
     }
 
+    showNoAccountMessage(){
+        this.setState( {noAccount : this.props.account ? true : false});
+    }
+
     render(){
+        
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <h2>Login</h2>
+                    <h2><Translate id="title-login"></Translate></h2>
                     { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                    <div id="no_account" className=''>
+                    <div id="no_account" style={{display: (this.props.account != null) ? 'block' : 'none' }}>
                         <p>
-                            <span className="no-account-text">If you don't have an account, register for a new account.</span>
-                            <Link to='/events' className='btn btn-primary'>Register</Link>
+                            <span className="no-account-text"><Translate id="message-info-register"></Translate></span>
+                            <Link to='/events' className='btn btn-primary'><Translate id="button-register"></Translate></Link>
                         </p>
                     </div>
                     <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
-                        <label>Email address</label>
+                        <label><Translate id="field-email"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="email"
-                            placeholder="Email address"
+                            placeholder=""
                             value={this.state.email}
                             onChange={this.handleEmailInput}
                         />
                     </div>
                     <div className={`form-group ${this.errorClass(this.state.formErrors.accessCode)}`}>
-                        <label>Access code</label>
+                        <label><Translate id="field-accessCode"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="accessCode"
-                            placeholder="Access code"
+                            placeholder=""
                             value={this.state.accessCode}
                             onChange={this.handleAccessCodeInput}
                         />
                     </div>
                     <button type="submit" className="btn btn-success float-right">
-                        Login
+                        <Translate id="button-login"></Translate>
                     </button>
                 </form>
 

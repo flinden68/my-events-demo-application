@@ -9,3 +9,11 @@
 .no-account-text{
     margin-right: 10px;
 }
+
+.no-border{
+    border:0px !important;
+}
+
+.form-group > label, .col-6 > label{
+    font-weight: 600;
+}

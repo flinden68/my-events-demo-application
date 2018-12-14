@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
+import { Translate } from "react-localize-redux";
 
 const NavItem = ({ isActive, to, label }) => {
     let classes = ["nav-item"];
@@ -8,7 +9,7 @@ const NavItem = ({ isActive, to, label }) => {
     return (
         <li className={classes.join(" ")}>
             <Link className="nav-link" to={to}>
-                {label}
+                <Translate id={label}></Translate>
             </Link>
         </li>
     );

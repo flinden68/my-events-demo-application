@@ -3,6 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import {createEvent} from "../../actions/events";
 import "react-datepicker/dist/react-datepicker.css";
 import EventForm from "./EventForm";
+import { Translate } from "react-localize-redux";
 
 const mapStateToProps = state => {
     return {
@@ -23,11 +24,14 @@ class AddEvent extends React.Component {
 
     render() {
         return (
-            <EventForm
-                onSubmitEvent={(event) => {
-                    this.props.addEvent(event);
-                }}
-            />
+            <div>
+                <h2><Translate id="title-add-event"></Translate></h2>
+                <EventForm
+                    onSubmitEvent={(event) => {
+                        this.props.addEvent(event);
+                    }}
+                />
+            </div>
         );
     }
 }

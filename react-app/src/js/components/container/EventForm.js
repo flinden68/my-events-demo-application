@@ -6,9 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from 'react-router-dom';
 import '../presentation/form.css';
 import {FormErrors} from "../presentation/FormErrors";
+import { Translate } from "react-localize-redux";
 
 const labelStyle = {
     marginRight: '10px'
+};
+
+const mapStateToProps = state => {
+    return {
+        account: state.account
+    };
 };
 
 class EventForm extends React.Component {
@@ -35,17 +42,12 @@ class EventForm extends React.Component {
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
-        this.handleChangeUserId = this.handleChangeUserId.bind(this);
     }
 
     handleChangeTitle(e) {
         const value = e.target.value;
         //console.log('title-' + value);
         this.setState({ title: value });
-    }
-
-    handleChangeUserId(e) {
-        this.setState({ userId: e.target.value });
     }
 
     handleChangeDescription(e) {
@@ -70,11 +72,11 @@ class EventForm extends React.Component {
         switch(fieldName) {
             case 'title':
                 titleValid = value.length > 0;
-                fieldValidationErrors.title = titleValid ? '': ' is required';
+                fieldValidationErrors.title = titleValid ? '': 'error-required';
                 break;
             case 'description':
                 descriptionValid = value.length > 0;
-                fieldValidationErrors.description = descriptionValid ? '': ' is required';
+                fieldValidationErrors.description = descriptionValid ? '': 'error-required';
                 break;
             default:
                 break;
@@ -86,14 +88,15 @@ class EventForm extends React.Component {
     }
 
     validateForm() {
-        //console.log('this.state.titleValid: ' + this.state.titleValid);
-        //console.log('this.state.descriptionValid: ' + this.state.descriptionValid)
         this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
-        //console.log('validForm: ' + this.state.formValid)
     }
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
+    }
+
+    isFormValid(){
+        return JSON.stringify(this.state.formErrors ).indexOf('error-required') < 0
     }
 
     onSubmit(e){
@@ -102,7 +105,7 @@ class EventForm extends React.Component {
 
         this.validateField('title', this.state.title);
         this.validateField('description', this.state.description);
-        if(this.state.formValid){
+        if(this.isFormValid()){
 
             let event = {
                 title: this.state.title,
@@ -124,20 +127,9 @@ class EventForm extends React.Component {
         return (
             <div>
             <form onSubmit={this.onSubmit}>
-                <h2>Add a new event</h2>
                 { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                <div className="form-group">
-                    <label>User ID</label>
-                    <input
-                        className="form-control"
-                        type="text"
-                        id="userId"
-                        value={this.state.userId}
-                        onChange={this.handleChangeUserId}
-                    />
-                </div>
                 <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="title"><Translate id="field-title"></Translate></label>
                     <input
                         className="form-control"
                         type="text"
@@ -147,7 +139,7 @@ class EventForm extends React.Component {
                     />
                 </div>
                 <div className={`form-group ${this.errorClass(this.state.formErrors.description)}`}>
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description"><Translate id="field-description"></Translate></label>
                     <input
                         className="form-control"
                         type="textarea"
@@ -160,7 +152,7 @@ class EventForm extends React.Component {
                     <div className="row">
                         <div className="col-6">
                             <label style={labelStyle}>
-                                Start date
+                            <Translate id="field-start-date"></Translate>
                             </label>
                             <DatePicker
                                 id="start_date"
@@ -172,7 +164,7 @@ class EventForm extends React.Component {
                         </div>
                         <div className="col-6">
                             <label style={labelStyle}>
-                                End date
+                                <Translate id="field-end-date"></Translate>
                             </label>
                             <DatePicker
                                 id="end_date"
@@ -184,9 +176,11 @@ class EventForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <Link to='/events' className='btn btn-primary'>Back</Link>
+                <Link to='/events' className='btn btn-primary'>
+                    <Translate id="button-back"></Translate>
+                </Link>
                 <button type="submit" className="btn btn-success float-right">
-                    Save
+                    <Translate id="button-save"></Translate>
                 </button>
             </form>
             </div>
@@ -194,4 +188,4 @@ class EventForm extends React.Component {
     }
 }
 
-export default connect()(EventForm);
+export default connect(mapStateToProps)(EventForm);

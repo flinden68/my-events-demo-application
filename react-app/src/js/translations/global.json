@@ -1,0 +1,142 @@
+{
+    "website-title": [
+      "My Events",
+      "Mijn evenementen"
+    ],
+    "nav-login": [
+        "Login",
+        "Inloggen"
+    ],
+    "nav-home": [
+        "Home",
+        "Start"
+    ],
+    "nav-all-events": [
+        "All events",
+        "Alle evenementen"
+    ],
+    "nav-add-event": [
+        "Add event",
+        "Evenement toevoegen"
+    ],
+    "nav-account": [
+        "Account",
+        "Profiel"
+    ],
+    "nav-logout": [
+        "Logout",
+        "Uitloggen"
+    ],
+    "nav-register": [
+        "Register",
+        "Registreren"
+    ],
+    "field-email": [
+        "Email address",
+        "Email adres"
+      ],
+      "field-accessCode": [
+        "Access code",
+        "Toegangscode"
+      ],
+      "field-title": [
+        "Title",
+        "Onderwerp"
+      ],
+      "field-description": [
+        "Description",
+        "Omschrijving"
+      ],
+      "field-start-date": [
+        "Start date",
+        "Start datum"
+      ],
+      "field-end-date": [
+        "End date",
+        "Eind datum"
+      ],
+      "field-language": [
+        "Language",
+        "Taal"
+      ],
+      "error-required": [
+        " is required",
+        " is verplicht"
+      ],
+      "title-home": [
+        "Welcome to the my events!",
+        "Welkom bij uw evenementen"
+      ],
+      "title-login": [
+        "Login",
+        "Inloggen"
+      ],
+      "title-my-events": [
+        "My events",
+        "Mijn evenementen"
+      ],
+      "title-add-event": [
+        "New event",
+        "Nieuw Evenenment"
+      ],
+      "title-edit-event": [
+        "Event",
+        "Evenenment"
+      ],
+      "column-title": [
+        "Title",
+        "Titel"
+      ],
+      "column-description": [
+        "Description",
+        "Omschrijving"
+      ],
+      "column-start-date": [
+        "Start date",
+        "Start datum"
+      ],
+      "column-end-date": [
+        "End date",
+        "Eind datum"
+      ],
+      "button-save": [
+        "Save",
+        "Opslaan"
+      ],
+      "button-edit": [
+        "Edit",
+        "Bewerken"
+      ],
+      "button-delete": [
+        "Delete",
+        "Verwijderen"
+      ],
+      "button-register": [
+        "Register",
+        "Registreren"
+      ],
+      "button-login": [
+        "Login",
+        "Inloggen"
+      ],
+      "button-update": [
+        "Update",
+        "Bijwerken"
+      ],
+      "button-back": [
+        "Back",
+        "Terug"
+      ],
+      "message-info-register": [
+        "If you don't have an account, register for a new account.",
+        "Als je nog geen profiel hebt, kan je je hier registreren"
+      ],
+      "language-en": [
+        "English",
+        "Engels"
+      ],
+      "language-nl": [
+        "Dutch",
+        "Nederlands"
+      ]
+  }

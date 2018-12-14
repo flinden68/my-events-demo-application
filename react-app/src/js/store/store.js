@@ -15,5 +15,5 @@ let account = {
 }
 
 
-store.dispatch(createAccountSuccess(account));
+//store.dispatch(createAccountSuccess(account));
 
