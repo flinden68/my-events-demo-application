@@ -10,15 +10,15 @@ const LanguageToggle = ({languages, activeLanguage, setActiveLanguage}) => {
 
   return (
     <div id="language-bar" className="language-bar">
-    <ul className="language-list">
-      {languages.map(lang => 
-        <li key={ lang.code }>
-          <a className={getClass(lang.code)} onClick={() => setActiveLanguage(lang.code)}>
-                <Translate id={'language-'+lang.code}></Translate>
-            </a>       
-        </li>
-      )}
-    </ul>
+      {/*<ul className="language-list">
+        {languages.map(lang => 
+          <li key={ lang.code }>
+            <a className={getClass(lang.code)} onClick={() => setActiveLanguage(lang.code)}>
+                  <Translate id={'language-'+lang.code}></Translate>
+              </a>       
+          </li>
+        )}
+        </ul>*/}
     </div>
   );
 };
