@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
 import connect from "react-redux/es/connect/connect";
 import {createAccount} from "../../actions/account";
+import {FormErrors} from "../presentation/FormErrors";
 import { Translate, getActiveLanguage } from "react-localize-redux";
 
 const mapStateToProps = state => {
@@ -49,7 +49,7 @@ class Register extends Component {
 
         switch(fieldName) {
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3,})$/i);
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : 'error-required';
                 break;
             default:
@@ -75,21 +75,22 @@ class Register extends Component {
     onSubmit(e){
 
         e.preventDefault();
-
         this.validateField('email', this.state.email);
+        
         if(this.isFormValid()){
             let account = {
                 email : this.state.email,
                 language : this.state.language,
                 _class: "nl.elstarit.event.service.model.Account"
             }
+
+            console.log("account: " + JSON.stringify(account))
             //this.props.createAccount(account);
         }
 
     }
 
     render(){
-        console.log("Active language: " + this.state.language);
         return (
             <div>
                 <form onSubmit={this.onSubmit}>

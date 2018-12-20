@@ -7,6 +7,7 @@ import {
 } from "../constants/action-types";
 import axios from 'axios';
 import history from "../history";
+import { setActiveLanguage } from "react-localize-redux";
 
 const apiUrl = 'http://localhost:3030/api';
 
@@ -22,10 +23,10 @@ export const logout = () =>{
     }
 }
 
-export const logoutSuccess = (data) =>{
+export const logoutSuccess = (languageCode) =>{
     return {
         type: LOGOUT,
-        payload: data
+        payload: {languageCode}
     }
 }
 
@@ -34,6 +35,7 @@ export const createAccount = (account) => {
         return axios.post(`${apiUrl}/account/create`, event)
             .then(response => {
                 dispatch(createAccountSuccess(response.data))
+                dispatch(setActiveLanguage(response.data.language))
             })
             .catch(error => {
                 throw(error);
@@ -53,6 +55,7 @@ export const updateAccount = (id, account) => {
         return axios.put(`${apiUrl}/account/update/${id}`, account)
             .then(response => {
                 dispatch(updateAccountSuccess(response.data))
+                dispatch(setActiveLanguage(response.data.language))
             })
             .catch(error => {
                 throw(error);
@@ -137,6 +140,7 @@ export const fetchAccount = account => {
                         history.push('/login')
                     }else {
                         dispatch(fetchAccountSuccess(response.data))
+                        dispatch(setActiveLanguage(response.data.language))
                         history.push('/events')
                     }
                 }

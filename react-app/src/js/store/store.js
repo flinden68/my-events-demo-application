@@ -14,6 +14,5 @@ let account = {
     "modified": "2018-11-09T10:43:33.649Z"
 }
 
-
 //store.dispatch(createAccountSuccess(account));
 

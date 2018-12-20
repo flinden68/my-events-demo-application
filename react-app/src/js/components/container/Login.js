@@ -25,7 +25,7 @@ class Login extends Component {
             formErrors: {accessCode: '', email: ''},
             accessCodeValid: true,
             emailValid: true,
-            formValid: trues
+            formValid: true
         }
 
         this.onSubmit = this.onSubmit.bind(this);

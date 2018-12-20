@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
 import NavItem from "./presentation/NavItem";
-import {connect} from "react-redux";
-import account from "../reducers/account";
 import store from '../store/store'
 import LanguageToggle from './presentation/LanguageToggle';
-import { Translate } from "react-localize-redux";
+import { Translate, getActiveLanguage } from "react-localize-redux";
 // The Header creates links that can be used to navigate
 // between routes.
 
@@ -23,7 +21,7 @@ class Header extends React.Component {
 
     accountListener() {
         let account = store.getState().account;
-        //console.log('listner account: ' + JSON.stringify(store.getState().account));
+        let language = getActiveLanguage(store.getState().localize).code
         if(account){
             this.setState({ account: account });
             this.setState({ isAuthenticated: true });
@@ -32,11 +30,7 @@ class Header extends React.Component {
             this.setState({ isAuthenticated: false });
         }
 
-        //console.log('listner: ' + this.state.isAuthenticated);
-    }
-
-    componentWillMount(){
-        //this.props.fetchEventsById(this.props.account._id);
+        //console.log('listner: ' + getActiveLanguage(store.getState().localize).code);
     }
 
     render() {

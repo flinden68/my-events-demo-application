@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, bindActionCreators} from 'react'
 import connect from "react-redux/es/connect/connect";
 import { updateAccount } from '../../actions/account';
 import {FormErrors} from "../presentation/FormErrors";
-import { Translate, getActiveLanguage } from "react-localize-redux";
+import { Translate, getActiveLanguage, setActiveLanguage } from "react-localize-redux";
 import '../presentation/form.css';
 
 const mapStateToProps = state => {
@@ -14,7 +14,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateAccount: (id, account) => dispatch(updateAccount(id, account))
+        updateAccount: (id, account) => dispatch(updateAccount(id, account)),
+        setActiveLanguage: (code) => dispatch(setActiveLanguage(code))
     };
 };
 
@@ -24,7 +25,7 @@ class Account extends Component {
         this.state = {
             accessCode: props.account ? props.account._id : "",
             email: props.account ? props.account.email : "",
-            language: props.account ? props.account.langauge : props.currentLanguage,
+            language: props.account ? props.account.language : props.currentLanguage,
             formErrors: {email: ''},
             emailValid: true,
             formValid: true
@@ -33,8 +34,6 @@ class Account extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
         this.handleLanguageInput = this.handleLanguageInput.bind(this);
-
-        console.log('Current state = '+ JSON.stringify(this.props.account));
     }
 
     handleEmailInput(e){
@@ -44,7 +43,12 @@ class Account extends Component {
 
     handleLanguageInput(e){
         const value = e.target.value;
-        this.setState({language: value});
+        this.setState({language: value},
+            this.changeLanguage(value));
+    }
+
+    changeLanguage(languageCode){
+        this.props.setActiveLanguage(languageCode);
     }
 
     validateField(fieldName, value) {
@@ -53,7 +57,7 @@ class Account extends Component {
 
         switch(fieldName) {
             case 'email':
-                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3,})$/i);
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 fieldValidationErrors.email = emailValid ? '' : ' is invalid';
                 break;
             default:
