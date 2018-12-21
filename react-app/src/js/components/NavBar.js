@@ -3,8 +3,6 @@ import NavItem from "./presentation/NavItem";
 import store from '../store/store'
 import LanguageToggle from './presentation/LanguageToggle';
 import { Translate, getActiveLanguage } from "react-localize-redux";
-// The Header creates links that can be used to navigate
-// between routes.
 
 class Header extends React.Component {
 
@@ -30,7 +28,6 @@ class Header extends React.Component {
             this.setState({ isAuthenticated: false });
         }
 
-        //console.log('listner: ' + getActiveLanguage(store.getState().localize).code);
     }
 
     render() {
@@ -38,7 +35,7 @@ class Header extends React.Component {
             <div>
                 <LanguageToggle />
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a className="navbar-brand" href="#"><Translate id="website-title"></Translate></a>
+                    <a className="navbar-brand" href="/"><Translate id="website-title"></Translate></a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarNavAltMarkup"
                             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +43,7 @@ class Header extends React.Component {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <ul className="navbar-nav mr-auto">
-                            <NavItem to="/" label="nav-home"/>
+                            {/*<NavItem to="/" label="nav-home"/>*/}
                             {this.state.isAuthenticated && <NavItem to="/events" label="nav-all-events" />}
                             {this.state.isAuthenticated && <NavItem to="/event/add" label="nav-add-event" />}
                         </ul>

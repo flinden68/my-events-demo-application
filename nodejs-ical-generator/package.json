@@ -1,0 +1,41 @@
+{
+  "name": "ical-generator-api",
+  "version": "1.0.0",
+  "description": "ICal Generator API",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "npm run build && node ./dist/server.js",
+    "dev": "webpack-dev-server"
+  },
+  "author": "Frank van der Linden, elstar IT",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.1.2",
+    "@types/body-parser": "^1.17.0",
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.16.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "ical-generator": "^1.4.2",
+    "ts-loader": "^5.2.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.4",
+    "webpack": "^4.23.1",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-preset-env": "^1.7.0",
+    "copy-webpack-plugin": "^4.5.4",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
+    "nodemon": "^1.18.5",
+    "style-loader": "^0.23.1",
+    "webpack-cli": "^3.1.2"
+  }
+}
