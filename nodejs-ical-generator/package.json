@@ -20,6 +20,7 @@
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "ical-generator": "^1.4.2",
+    "moment": "^2.23.0",
     "ts-loader": "^5.2.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

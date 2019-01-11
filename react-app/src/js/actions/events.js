@@ -6,10 +6,12 @@ import {
     GET_EVENTS_BY_USER_ID,
     UPDATE_EVENT
 } from "../constants/action-types";
+
+import {apiUrl} from "../constants/application"
 import axios from 'axios';
 import history from '../history';
 
-const apiUrl = 'http://localhost:3030/api';
+//const apiUrl = 'http://localhost:3535/api';
 
 export const createEvent = (event) => {
     return (dispatch) => {

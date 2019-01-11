@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import {Event} from "../model/event";
 import {Payload} from "../model/payload";
-let pkg = require(__dirname + '/../../package.json');
+import {Event} from "../model/event"
+import moment = require("moment");
+const ical = require('ical-generator');
 
 
 export class GeneratorController {
@@ -14,9 +15,28 @@ export class GeneratorController {
 
     }
 
-    async generateIcal(req: Request, res: Response){
-        const payload = new Payload( req.body.email, req.body.events);
+    generateIcal(req: Request, res: Response): any{
+        const payload = new Payload( req.body.organizer);
 
+        for (var i = 0; i < req.body.events.length; i++) {
+            payload.addEvent(new Event(null, req.body.events[i].title, req.body.events[i].description, req.body.events[i].start, req.body.events[i].end, req.body.events[i].userId));
+        }
+
+        const cal = ical();
+
+        for (var event of payload.getEvents()) {
+            cal.createEvent({
+                start: event.getStart(),
+                end: event.getEnd(),
+                timestamp: moment(),
+                summary: event.getTitle(),
+                description: event.getDescription(),
+                organizer: payload.getOrganizer()
+            })
+            //cal.createEvent(event.toIcalEvent());
+        }
+
+        return cal;
     }
 }
 

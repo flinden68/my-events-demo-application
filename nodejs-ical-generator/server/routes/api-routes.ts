@@ -10,10 +10,10 @@ router.use(function timeLog (req, res, next) {
     next()
 })
 
-router.post('/generate-ical', (req: Request, res: Response) => {
-    generatorController.generateIcal(req,res).then(function(result) {
-        res.send(result);
-    });
+router.post('/generate', (req: Request, res: Response) => {
+    const cal = generatorController.generateIcal(req,res);
+
+    cal.serve(res);
 });
 
 export const ApiRoutes: Router = router;

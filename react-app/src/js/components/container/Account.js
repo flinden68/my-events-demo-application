@@ -24,21 +24,29 @@ class Account extends Component {
         super(props);
         this.state = {
             accessCode: props.account ? props.account._id : "",
+            name: props.account ? props.account.name : "",
             email: props.account ? props.account.email : "",
             language: props.account ? props.account.language : props.currentLanguage,
-            formErrors: {email: ''},
+            formErrors: {email: '',name: ''},
             emailValid: true,
+            nameValid: true,
             formValid: true
         }
 
         this.onSubmit = this.onSubmit.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
+        this.handleNameInput = this.handleNameInput.bind(this);
         this.handleLanguageInput = this.handleLanguageInput.bind(this);
     }
 
     handleEmailInput(e){
         const value = e.target.value;
         this.setState({email: value});
+    }
+
+    handleNameInput(e){
+        const value = e.target.value;
+        this.setState({name: value});
     }
 
     handleLanguageInput(e){
@@ -54,42 +62,54 @@ class Account extends Component {
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
+        let nameValid = this.state.nameValid;
 
         switch(fieldName) {
             case 'email':
                 emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-                fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                fieldValidationErrors.email = emailValid ? '' : 'error-required';
+                break;
+            case 'name':
+                nameValid = value.length > 0;
+                fieldValidationErrors.name = nameValid ? '' : 'error-required';
                 break;
             default:
                 break;
         }
         this.setState({formErrors: fieldValidationErrors,
-            emailValid: emailValid
+            emailValid: emailValid,
+            nameValid: nameValid
         }, this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.emailValid });
+        this.setState({formValid: this.state.emailValid && this.state.nameValid });
     }
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
     }
 
+    isFormValid(){
+        return JSON.stringify(this.state.formErrors).indexOf('error-required') < 0
+    }
+
     onSubmit(e){
         e.preventDefault();
 
         this.validateField('email', this.state.email);
+        this.validateField('name', this.state.name);
 
-        if(this.state.formValid){
+        if(this.isFormValid()){
             let accountUpdate = {
                 _id: this.props.account._id,
                 email : this.state.email,
+                name : this.state.name,
                 language : this.state.language,
                 _class: "nl.elstarit.event.service.model.Account"
             }
 
-            this.props.updateAccount(this.accountUpdate.id, accountUpdate);
+            this.props.updateAccount(accountUpdate.id, accountUpdate);
         }
 
     }
@@ -100,8 +120,19 @@ class Account extends Component {
                 <form onSubmit={this.onSubmit}>
                     <h2>Account</h2>
                     { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
+                    <div className={`form-group ${this.errorClass(this.state.formErrors.name)}`}>
+                        <label><Translate id="field-name"></Translate></label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            id="name"
+                            placeholder="Name"
+                            value={this.state.name}
+                            onChange={this.handleNameInput}
+                        />
+                    </div>
                     <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
-                        <label>Email address</label>
+                        <label><Translate id="field-email"></Translate></label>
                         <input
                             className="form-control"
                             type="text"

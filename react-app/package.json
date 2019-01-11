@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "file-saver": "^2.0.0",
     "history": "^4.7.2",
     "moment": "^2.22.2",
     "react-axios": "^2.0.1",

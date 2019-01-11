@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.set('port', process.env.PORT || 3030);
+app.set('port', process.env.PORT || 3535);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);

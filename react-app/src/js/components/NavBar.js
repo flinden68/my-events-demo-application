@@ -50,7 +50,7 @@ class Header extends React.Component {
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <span className="nav-link">
-                                    {this.state.account ? this.state.account.email: 'Anonymous'}
+                                    {this.state.account ? this.state.account.name: 'Anonymous'}
                                 </span>
                             </li>
                             {this.state.isAuthenticated && <NavItem to="/account" label="nav-account" />}

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import {deleteEvent, fetchaAllEventsByUserId, fetchAllEvents} from "../../actions/events";
 import { Link } from 'react-router-dom'
 import { Translate } from "react-localize-redux";
+import {createIcal} from "../../service/calendar";
+import saveAs from 'file-saver';
 
 const mapStateToProps = state => {
     return {
@@ -15,14 +17,19 @@ const mapDispatchToProps = dispatch => {
     return {
         deleteEvent: event => dispatch(deleteEvent(event)),
         fetchAllEvents: () => dispatch(fetchAllEvents()),
-        fetchEventsById: (id) => dispatch(fetchaAllEventsByUserId(id))
+        fetchEventsById: (id) => dispatch(fetchaAllEventsByUserId(id)),
     };
 };
 class EventList extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            name: props.account ? props.account.name : "",
+            email: props.account ? props.account.email : "",
+        }
         this.deleteEvent = this.deleteEvent.bind(this);
+        this.exportEvents = this.exportEvents.bind(this);
         //this.props.fetchAllEvents();
     }
 
@@ -36,10 +43,38 @@ class EventList extends Component {
         this.props.deleteEvent(event);
     }
 
+    exportEvents(e){
+        e.preventDefault();
+
+        let payload = {
+            organizer: this.state.name + " <" + this.state.email + ">",
+            events: this.props.events
+        }
+
+        //console.log("Export payload = " + JSON.stringify(payload));
+        createIcal(payload).then(response => {
+            let blob = new Blob([response.data], {type: "text/calendar;charset=utf-8"});
+            saveAs(blob, "calendar.ics");
+            })
+            .catch(error => {
+                throw(error);
+            });
+
+    }
+
     render() {
         return (
             <div>
                 <h2><Translate id="title-my-events"></Translate></h2>
+                <div id="no-events" style={{display: (this.props.events.length > 0) ? 'none' : 'block' }}  className='alert alert-info'>
+                    <Translate id="message-no-eventsr"></Translate>
+                </div>
+                <div id="export-events" className="button-row1" style={{display: (this.props.events.length > 0) ? 'block' : 'none' }}>
+                    <button type="submit" className="btn btn-success float-right" onClick={(e) => this.exportEvents(e)}>
+                        <Translate id="button-export"></Translate>
+                    </button>
+                </div>
+
                 <table className="table">
                     <thead>
                     <tr>

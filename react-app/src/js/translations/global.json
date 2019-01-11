@@ -39,6 +39,10 @@
         "Access code",
         "Toegangscode"
       ],
+      "field-name": [
+        "Name",
+        "Naam"
+      ],
       "field-title": [
         "Title",
         "Onderwerp"
@@ -131,9 +135,17 @@
         "Back",
         "Terug"
       ],
+      "button-export": [
+        "Add to calendar",
+        "Aan agenda toevoegen"
+      ],
       "message-info-register": [
         "If you don't have an account, register for a new account.",
-        "Als je nog geen profiel hebt, kan je je hier registreren"
+        "Als je nog geen profiel hebt, kans je je hier registreren"
+      ],
+      "message-no-eventsr": [
+        "No events yet",
+        "Nog geen evenementen"
       ],
       "language-en": [
         "English",

@@ -129,7 +129,7 @@ class EventForm extends React.Component {
             <form onSubmit={this.onSubmit}>
                 { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
                 <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
-                    <label htmlFor="title"><Translate id="field-titles"></Translate></label>
+                    <label htmlFor="title"><Translate id="field-title"></Translate></label>
                     <input
                         className="form-control"
                         type="text"

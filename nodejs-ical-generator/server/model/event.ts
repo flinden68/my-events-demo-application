@@ -5,8 +5,6 @@ export class Event {
     private description: string;
     private start: number;
     private end: number;
-    private created: Date;
-    private modified: Date;
     private userId: string;
     private _class: string;
 
@@ -23,11 +21,20 @@ export class Event {
         this._class = "nl.elstarit.event.service.model.Event";
     }
 
-    public setCreated(date: Date){
-        this.created = date;
+    public getStart(){
+        return new Date(this.start);
     }
 
-    public updateModified(){
-        this.modified = new Date();
+    public getEnd(){
+        return new Date(this.end);
     }
+
+    public getTitle(){
+        return this.title;
+    }
+
+    public getDescription(){
+        return this.description;
+    }
+
 }

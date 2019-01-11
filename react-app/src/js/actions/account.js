@@ -5,11 +5,12 @@ import {
     UPDATE_ACCOUNT,
     LOGOUT
 } from "../constants/action-types";
+import {apiUrl} from "../constants/application";
 import axios from 'axios';
 import history from "../history";
 import { setActiveLanguage } from "react-localize-redux";
 
-const apiUrl = 'http://localhost:3030/api';
+//const apiUrl = 'http://localhost:3535/api';
 
 //export const addEvent = event => ({ type: ADD_EVENT, payload: event });
 //export const deleteEvent = event => ({ type: DELETE_EVENT, payload: event });

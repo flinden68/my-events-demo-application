@@ -1,11 +1,22 @@
 import {Event} from "./event";
 
 export class Payload {
-    private email: string;
-    private events: Event[];
+    private organizer: string;
+    private events: Event[] = [];
 
-    constructor(email: string, events: Event[]) {
-        this.email = email;
-        this.events = events;
+    constructor(organizer: string) {
+        this.organizer = organizer;
+    }
+
+    addEvent(event : Event){
+        this.events.push(event);
+    }
+
+    getEvents(): Event[]{
+        return this.events;
+    }
+
+    getOrganizer(){
+        return this.organizer;
     }
 }
