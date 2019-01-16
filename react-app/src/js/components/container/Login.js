@@ -84,8 +84,6 @@ class Login extends Component {
         this.validateField('email', this.state.email);
         this.validateField('accessCode', this.state.accessCode);
 
-        console.log('formErrors: ' + JSON.stringify(this.state.formErrors));
-        console.log('isFormValid: ' + this.isFormValid())
         if(this.isFormValid()){
             let account = {
                 _id: this.state.accessCode,

@@ -27,12 +27,14 @@ class EventForm extends React.Component {
             startInput: props.event ? moment(props.event.start) : moment(),
             endInput: props.event ? moment(props.event.end) : moment(),
             userId: props.event ? props.event.userId : props.account._id,
+            location: props.event ? props.event.location : "",
             created: props.event ? props.event.created : new Date(),
             modified: props.event ? props.event.modified : new Date(),
 
-            formErrors: {title: '', description: ''},
+            formErrors: {title: '', description: '', location: ''},
             titleValid: true,
             descriptionValid: true,
+            locationValid:true,
             formValid: true
 
         };
@@ -42,6 +44,7 @@ class EventForm extends React.Component {
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
+        this.handleChangeLocation = this.handleChangeLocation.bind(this);
     }
 
     handleChangeTitle(e) {
@@ -64,10 +67,16 @@ class EventForm extends React.Component {
         this.setState({ endInput: date });
     }
 
+    handleChangeLocation(e) {
+        const value = e.target.value;
+        this.setState({ location: value });
+    }
+
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let titleValid = this.state.titleValid;
         let descriptionValid = this.state.descriptionValid;
+        let locationValid = this.state.locationValid;
 
         switch(fieldName) {
             case 'title':
@@ -78,17 +87,22 @@ class EventForm extends React.Component {
                 descriptionValid = value.length > 0;
                 fieldValidationErrors.description = descriptionValid ? '': 'error-required';
                 break;
+            case 'location':
+                descriptionValid = value.length > 0;
+                fieldValidationErrors.location = locationValid ? '': 'error-required';
+                break;
             default:
                 break;
         }
         this.setState({formErrors: fieldValidationErrors,
             titleValid: titleValid,
-            descriptionValid: descriptionValid
+            descriptionValid: descriptionValid,
+            locationValid: locationValid
         }, this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.titleValid && this.state.descriptionValid});
+        this.setState({formValid: this.state.titleValid && this.state.descriptionValid && this.state.locationValid});
     }
 
     errorClass(error) {
@@ -105,6 +119,7 @@ class EventForm extends React.Component {
 
         this.validateField('title', this.state.title);
         this.validateField('description', this.state.description);
+        this.validateField('location', this.state.location);
         if(this.isFormValid()){
 
             let event = {
@@ -112,6 +127,7 @@ class EventForm extends React.Component {
                 description: this.state.description,
                 start: new Date(this.state.startInput).getTime(),
                 end: new Date(this.state.endInput).getTime(),
+                location: this.state.location,
                 userId: this.state.userId,
                 created: this.state.created,
                 modified: this.state.modified,
@@ -146,6 +162,16 @@ class EventForm extends React.Component {
                         id="description"
                         value={this.state.description}
                         onChange={this.handleChangeDescription}
+                    />
+                </div>
+                <div className={`form-group ${this.errorClass(this.state.formErrors.location)}`}>
+                    <label htmlFor="location"><Translate id="field-location"></Translate></label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        id="location"
+                        value={this.state.location}
+                        onChange={this.handleChangeLocation}
                     />
                 </div>
                 <div className="form-group">

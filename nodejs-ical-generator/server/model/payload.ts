@@ -2,10 +2,14 @@ import {Event} from "./event";
 
 export class Payload {
     private organizer: string;
+    private domain : string;
+    private timezone: string;
     private events: Event[] = [];
 
-    constructor(organizer: string) {
+    constructor(organizer: string, domain: string, timezone: string) {
         this.organizer = organizer;
+        this.domain = domain;
+        this.timezone = timezone;
     }
 
     addEvent(event : Event){
@@ -18,5 +22,13 @@ export class Payload {
 
     getOrganizer(){
         return this.organizer;
+    }
+
+    getDomain(){
+        return this.domain;
+    }
+
+    getTimezone(){
+        return this.timezone;
     }
 }

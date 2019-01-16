@@ -8,9 +8,10 @@ export class Event {
     private created: Date;
     private modified: Date;
     private userId: string;
+    private location: string;
     private _class: string;
 
-    constructor(id: string, title: string, description: string, start: number, end: number, userId: string) {
+    constructor(id: string, title: string, description: string, start: number, end: number, userId: string, location: string) {
         if(id  != null) {
             this._id = id;
             this.id = id;
@@ -20,6 +21,7 @@ export class Event {
         this.start = start;
         this.end = end;
         this.userId = userId;
+        this.location = location;
         this._class = "nl.elstarit.event.service.model.Event";
     }
 

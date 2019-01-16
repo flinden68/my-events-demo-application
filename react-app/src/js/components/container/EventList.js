@@ -43,11 +43,23 @@ class EventList extends Component {
         this.props.deleteEvent(event);
     }
 
+    getDomain(){
+        let domain = this.state.email.substring(this.state.email.indexOf("@") + 1, this.state.email.length);
+        return domain;
+    }
+
+    getTimezone(){
+        let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return timezone;
+    }
+
     exportEvents(e){
         e.preventDefault();
 
         let payload = {
             organizer: this.state.name + " <" + this.state.email + ">",
+            domain : this.getDomain(),
+            timezone : this.getTimezone(),
             events: this.props.events
         }
 
@@ -80,6 +92,7 @@ class EventList extends Component {
                     <tr>
                         <th scope="col"><Translate id="column-title"></Translate></th>
                         <th scope="col"><Translate id="column-description"></Translate></th>
+                        <th scope="col"><Translate id="column-location"></Translate></th>
                         <th scope="col"><Translate id="column-start-date"></Translate></th>
                         <th scope="col"><Translate id="column-end-date"></Translate></th>
                         <th scope="col"></th>
@@ -91,8 +104,7 @@ class EventList extends Component {
                         <tr scope="row" key={event._id}>
                             <td>{event.title}</td>
                             <td>{event.description}</td>
-                            {/*<td>{event.start}</td>*/}
-                            {/*<td>{event.end}</td>*/}
+                            <td>{event.location}</td>
                             <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.start))}</td>
                             <td>{new Intl.DateTimeFormat('nl-NL').format(new Date(event.end))}</td>
                             <td>
