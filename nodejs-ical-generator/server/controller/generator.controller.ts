@@ -22,8 +22,6 @@ export class GeneratorController {
             payload.addEvent(new Event(null, req.body.events[i].title, req.body.events[i].description, req.body.events[i].start, req.body.events[i].end, req.body.events[i].userId, req.body.events[i].location));
         }
 
-        //const cal = ical();
-
         const cal = ical({
             domain: payload.getDomain(),
             prodId: {company: payload.getDomain(), product: 'ical-generator'},
