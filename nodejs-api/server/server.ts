@@ -10,6 +10,10 @@ const app = express();
 
 app.use(function (req, res, next) {
 
+    const allowedOrigins = ['http://localhost:8080','http://localhost:8081'];
+    //let origin = req.headers.origin;
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081');
 
