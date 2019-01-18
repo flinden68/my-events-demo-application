@@ -1,15 +1,15 @@
 export class Event {
-    private _id: string;
-    private id: string;
-    private title: string;
-    private description: string;
-    private start: number;
-    private end: number;
-    private created: Date;
-    private modified: Date;
-    private userId: string;
-    private location: string;
-    private _class: string;
+    _id: string;
+    id: string;
+    title: string;
+    description: string;
+    start: number;
+    end: number;
+    created: Date;
+    modified: Date;
+    userId: string;
+    location: string;
+    _class: string;
 
     constructor(id: string, title: string, description: string, start: number, end: number, userId: string, location: string) {
         if(id  != null) {
@@ -31,9 +31,5 @@ export class Event {
 
     public updateModified(){
         this.modified = new Date();
-    }
-
-    public getId(){
-      return this._id;
     }
 }

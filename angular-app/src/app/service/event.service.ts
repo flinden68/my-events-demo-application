@@ -3,8 +3,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {Event} from '../model/event';
-import {Account} from "../model/account";
-
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,9 +11,9 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class EventsService {
+export class EventService {
 
-  private serviceUrl = 'http://localhost:3535/api';  // URL to web api
+  private serviceUrl = 'http://localhost:3536/api';  // URL to web api
 
   constructor(private http: HttpClient) {
 
@@ -24,7 +22,7 @@ export class EventsService {
   public create(event: Event): Observable<Event>{
     return this.http.post(this.serviceUrl + '/event/create', event, httpOptions)
       .pipe(
-        tap((event:Event) => this.log(`added event w/ id=${event.getId()}`)),
+        tap((event:Event) => this.log(`added event w/ id=${event._id}`)),
         catchError(this.handleError<Event>('create Event'))
       );
   }
@@ -32,13 +30,13 @@ export class EventsService {
   public update(id: string, event: Event): Observable<Event>{
     return this.http.put(this.serviceUrl + '/event/update/' + id, event, httpOptions)
       .pipe(
-        tap((event: Event) => this.log(`updated event w/ id=${event.getId()}`)),
+        tap((event: Event) => this.log(`updated event w/ id=${event._id}`)),
         catchError(this.handleError<Event>('update Event'))
       );
   }
 
   public delete(event: Event){
-    return this.http.delete(this.serviceUrl + '/event/delete/' + event.getId(), httpOptions)
+    return this.http.delete(this.serviceUrl + '/event/delete/' + event._id, httpOptions)
       .pipe(
         catchError(this.handleError('delete Event', []))
       );
