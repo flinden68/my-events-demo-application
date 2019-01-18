@@ -78,8 +78,7 @@ export class AccountService {
     };
   }
 
-  /** Log a HeroService message with the MessageService */
   private log(message: string) {
-    console.log(`TopicService: ${message}`);
+    console.log(`AccountService: ${message}`);
   }
 }
