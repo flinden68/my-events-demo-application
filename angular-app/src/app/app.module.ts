@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventlistComponent } from './component/eventlist/eventlist.component';
@@ -11,6 +11,8 @@ import { AccountComponent } from './component/account/account.component';
 import { RegisterComponent } from './component/register/register.component';
 import { HomeComponent } from './component/home/home.component';
 import { HttpClientModule} from '@angular/common/http';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { LogoutComponent } from './component/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +23,15 @@ import { HttpClientModule} from '@angular/common/http';
     AddEventComponent,
     AccountComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

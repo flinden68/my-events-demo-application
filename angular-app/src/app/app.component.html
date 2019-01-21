@@ -9,13 +9,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <ul class="navbar-nav mr-auto">
-      <li [routerLinkActive]="['active']"><a [routerLink]="['events']" class="nav-link">All events</a></li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['event/add']" class="nav-link">Add event</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['events']" class="nav-link" *ngIf="accountService.isAuthenticated()">All events</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['event/add']" class="nav-link" *ngIf="accountService.isAuthenticated()">Add event</a></li>
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item" class="nav-link">Account name</li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['account']" class="nav-link">Account</a></li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['login']" class="nav-link">Login</a></li>
+
+      <li class="nav-item" class="nav-link" *ngIf="!accountService.isAuthenticated()">Anonymous</li>
+      <li class="nav-item" class="nav-link" *ngIf="accountService.isAuthenticated()">{{accountService.getAccount().name}}</li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['account']" class="nav-link" *ngIf="accountService.getAccount()">Account</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['login']" class="nav-link" *ngIf="!accountService.isAuthenticated()">Login</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['logout']" class="nav-link" *ngIf="accountService.isAuthenticated()">Logout</a></li>
     </ul>
   </div>
 </nav>

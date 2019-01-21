@@ -14,16 +14,31 @@ const httpOptions = {
 })
 export class AccountService {
 
+  private account: Account;
   private serviceUrl = 'http://localhost:3536/api';  // URL to web api
 
   constructor(private http: HttpClient) {
 
   }
 
+  public getAccount():Account{
+    return this.account;
+  }
+
+  public isAuthenticated():boolean{
+    return this.account ? true : false;
+  }
+
+  public logout(){
+    this.account = null;
+  }
+
   public create(account: Account): Observable<Account>{
     return this.http.post(this.serviceUrl + '/account/create', account, httpOptions)
       .pipe(
-        tap((account:Account) => this.log(`added account w/ id=${account._id}`)),
+        tap((account:Account) => {
+          this.account = account;
+        }),
         catchError(this.handleError<Account>('create Account'))
       );
   }
@@ -31,7 +46,9 @@ export class AccountService {
   public update(id: string, account: Account): Observable<Account>{
     return this.http.put(this.serviceUrl + '/account/update/' + id, account, httpOptions)
       .pipe(
-        tap((account:Account) => this.log(`updated account w/ id=${account._id}`)),
+        tap((account:Account) => {
+          this.account = account;
+        }),
         catchError(this.handleError<Account>('update Account'))
       );
   }
@@ -46,21 +63,30 @@ export class AccountService {
   public fetchByEmail(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/email/' + account.email, httpOptions)
       .pipe(
-        catchError(this.handleError('fetch Account by Email', []))
+        tap((account:Account) => {
+          this.account = account;
+        }),
+        catchError(this.handleError<Account>('fetchByEmail Account'))
       );
   }
 
   public fetchById(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/id/' + account._id, httpOptions)
       .pipe(
-        catchError(this.handleError('fetch Account by ID', []))
+        tap((account:Account) => {
+          this.account = account;
+        }),
+        catchError(this.handleError<Account>('fetchById Account'))
       );
   }
 
   public fetch(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/id/' + account._id, httpOptions)
       .pipe(
-        catchError(this.handleError('fetch Account', []))
+        tap((account:Account) => {
+          this.account = account;
+        }),
+        catchError(this.handleError<Account>('fetch Account'))
       );
   }
 

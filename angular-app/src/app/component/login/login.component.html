@@ -1,3 +1,47 @@
+
+<h2>{{pageTitle}}</h2>
+<div id="no_account" *ngIf="showRegister">
 <p>
-  login works!
+  <span class="no-account-text">There is no account, please register</span>
+  <a [routerLink]="['/register']" class="btn btn-primary">Back</a>
 </p>
+</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Email address</label>
+    <input
+      class="form-control"
+      type="text"
+      id="email"
+      name="email"
+      formControlName="email"
+      [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
+    />
+    <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+      <div *ngIf="form.email.errors.required">Email addresss is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="accessCode">Access code</label>
+    <input
+      class="form-control"
+      type="text"
+      id="accessCode"
+      name="accessCode"
+      formControlName="accessCode"
+      [ngClass]="{ 'is-invalid': submitted && form.accessCode.errors }"
+    />
+    <div *ngIf="submitted && form.accessCode.errors" class="invalid-feedback">
+      <div *ngIf="form.accessCode.errors.required">Access code is required</div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success float-right">
+    Login
+  </button>
+</form>
+
+<p>Form value: {{ loginForm.value | json }}</p>
+<p>Form status: {{ loginForm.status | json }}</p>
+
+

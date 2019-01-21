@@ -16,8 +16,8 @@
       <td>{{event.title}}</td>
       <td>{{event.description}}</td>
       <td>{{event.location}}</td>
-      <td>{{event.start}}</td>
-      <td>{{event.end}}</td>
+      <td>{{event.start | date: 'dd-MM-yyyy'}}</td>
+      <td>{{event.end | date: 'dd-MM-yyyy'}}</td>
       <td>
         <a [routerLink]="['/event', event._id]" class="btn btn-warning">Edit</a>
       </td>

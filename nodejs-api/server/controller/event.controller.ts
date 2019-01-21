@@ -32,7 +32,7 @@ export class EventController {
     }
 
     async update(req: Request, res: Response, eventId: string):Promise<Event> {
-        const event = new Event(req.body._id, req.body.title, req.body.description, req.body.start, req.body.end, req.body.userId, req.body.location);
+        const event = new Event(null, req.body.title, req.body.description, req.body.start, req.body.end, req.body.userId, req.body.location);
         event.setCreated(req.body.created);
         event.updateModified();
         return this.repository.update(eventId, event);

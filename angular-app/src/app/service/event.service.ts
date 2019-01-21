@@ -22,7 +22,7 @@ export class EventService {
   public create(event: Event): Observable<Event>{
     return this.http.post(this.serviceUrl + '/event/create', event, httpOptions)
       .pipe(
-        tap((event:Event) => this.log(`added event w/ id=${event._id}`)),
+        tap((event:Event) => this.log(`added event id=${event._id}`)),
         catchError(this.handleError<Event>('create Event'))
       );
   }
@@ -30,7 +30,7 @@ export class EventService {
   public update(id: string, event: Event): Observable<Event>{
     return this.http.put(this.serviceUrl + '/event/update/' + id, event, httpOptions)
       .pipe(
-        tap((event: Event) => this.log(`updated event w/ id=${event._id}`)),
+        tap((event: Event) => this.log(`updated event id=${event._id}`)),
         catchError(this.handleError<Event>('update Event'))
       );
   }
@@ -49,6 +49,13 @@ export class EventService {
       );
   }
 
+  public fetchById(id : string){
+    return this.http.get<Event>(this.serviceUrl + '/event/' + id, httpOptions)
+      .pipe(
+        catchError(this.handleError('fetchById', new Event()))
+      );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -64,6 +71,6 @@ export class EventService {
   }
 
   private log(message: string) {
-    console.log(`EventsService: ${message}`);
+    console.log(`EventService: ${message}`);
   }
 }

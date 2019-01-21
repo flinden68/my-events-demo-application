@@ -1,4 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
+import {AccountService} from "./service/account.service";
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,6 @@ import {Component, ViewEncapsulation} from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-app';
+
+  constructor(private accountService: AccountService) { }
 }

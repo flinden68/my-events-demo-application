@@ -9,9 +9,9 @@ export class Event {
     modified: Date;
     userId: string;
     location: string;
-    _class: string;
+    _class: string = "nl.elstarit.event.service.model.Event";
 
-    constructor(id: string, title: string, description: string, start: number, end: number, userId: string, location: string) {
+    /*constructor(id: string, title: string, description: string, start: number, end: number, userId: string, location: string) {
         if(id  != null) {
             this._id = id;
             this.id = id;
@@ -23,7 +23,7 @@ export class Event {
         this.userId = userId;
         this.location = location;
         this._class = "nl.elstarit.event.service.model.Event";
-    }
+    }*/
 
     public setCreated(date: Date){
         this.created = date;
@@ -31,5 +31,21 @@ export class Event {
 
     public updateModified(){
         this.modified = new Date();
+    }
+
+    public getStartDate(){
+      return new Date(this.start);
+    }
+
+    public setStartDate(date : Date){
+        this.start = date.getTime()
+    }
+
+    public getEndDate(){
+      return new Date(this.end);
+    }
+
+    public setEndDate(date : Date){
+      this.end = date.getTime()
     }
 }

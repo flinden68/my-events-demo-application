@@ -1,3 +1,92 @@
-<p>
-  add-event works!
-</p>
+
+  <h2>{{pageTitle}}</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Title</label>
+      <input
+        class="form-control"
+        type="text"
+        id="title"
+        name="title"
+        formControlName="title"
+        [ngClass]="{ 'is-invalid': submitted && form.title.errors }"
+      />
+      <div *ngIf="submitted && form.title.errors" class="invalid-feedback">
+        <div *ngIf="form.title.errors.required">Title is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input
+        class="form-control"
+        type="text"
+        id="description"
+        name="description"
+        formControlName="description"
+        [ngClass]="{ 'is-invalid': submitted && form.description.errors }"
+      />
+      <div *ngIf="submitted && form.description.errors" class="invalid-feedback">
+        <div *ngIf="form.description.errors.required">Description is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input
+        class="form-control"
+        type="text"
+        id="location"
+        name="location"
+        formControlName="location"
+        [ngClass]="{ 'is-invalid': submitted && form.location.errors }"
+      />
+      <div *ngIf="submitted && form.location.errors" class="invalid-feedback">
+        <div *ngIf="form.location.errors.required">Location is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-6">
+          <label style="margin-right: 10px">
+            Start date
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            id="start_date"
+            name="start_date"
+            bsDatepicker
+            formControlName="startDate"
+            [ngClass]="{ 'is-invalid': submitted && form.startDate.errors }"
+          />
+          <div *ngIf="submitted && form.startDate.errors" class="invalid-feedback">
+            <div *ngIf="form.startDate.errors.required">Start date is required</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label  style="margin-right: 10px">
+            End date
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            id="end_date"
+            name="end_date"
+            bsDatepicker
+            formControlName="endDate"
+            [ngClass]="{ 'is-invalid': submitted && form.endDate.errors }"
+          />
+          <div *ngIf="submitted && form.endDate.errors" class="invalid-feedback">
+            <div *ngIf="form.endDate.errors.required">End date is required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a [routerLink]="['/events']" class="btn btn-primary">Back</a>
+    <button type="submit" class="btn btn-success float-right">
+      Save
+    </button>
+  </form>
+
+  <p>Form value: {{ eventForm.value | json }}</p>
+  <p>Form status: {{ eventForm.status | json }}</p>
+
