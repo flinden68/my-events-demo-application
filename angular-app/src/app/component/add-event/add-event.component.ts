@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {EventService} from "../../service/event.service";
 import {Event} from "../../model/event";
 import {BsDatepickerConfig} from "ngx-bootstrap";
@@ -9,7 +9,8 @@ import {AccountService} from "../../service/account.service";
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.css']
+  styleUrls: ['./add-event.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddEventComponent implements OnInit {
 
@@ -33,6 +34,9 @@ export class AddEventComponent implements OnInit {
     }else{
       this.notAuthenticated();
     }
+
+    this._bsDatepickerConfig.dateInputFormat = 'DD-MM-YYYY';
+    this._bsDatepickerConfig.containerClass = 'theme-blue';
 
   }
 
