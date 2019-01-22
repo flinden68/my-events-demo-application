@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AccountService} from "../../service/account.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -7,16 +7,17 @@ import {Account} from '../../model/account';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
 
   pageTitle: string = "Login"
-  private sub: any;
   submitted = false;
   loginForm: FormGroup;
   account : Account;
   showRegister : boolean = false;
+  debug: boolean = false;
 
   constructor(private accountService: AccountService,
               private router: Router,
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       accessCode: ['', Validators.required]
     });
 

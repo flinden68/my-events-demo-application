@@ -1,0 +1,7 @@
+.form-group > label, .col-6 > label{
+  font-weight: 600;
+}
+
+.no-border{
+  border:0px !important;
+}

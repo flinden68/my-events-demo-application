@@ -1,6 +1,7 @@
 export class Account {
     _id: string;
     email: string;
+    name:string;
     language: string;
     created: Date;
     modified: Date;
