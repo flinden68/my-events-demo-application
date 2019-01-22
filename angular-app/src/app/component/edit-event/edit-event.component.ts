@@ -5,6 +5,7 @@ import {Event} from "../../model/event";
 import {BsDatepickerConfig} from "ngx-bootstrap";
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AccountService} from "../../service/account.service";
 
 @Component({
   selector: 'app-edit-event',
@@ -24,13 +25,18 @@ export class EditEventComponent implements OnInit {
               private eventService : EventService,
               private _bsDatepickerConfig: BsDatepickerConfig,
               private router: Router,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private accountService : AccountService) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this._id = params['id'];
-      this.loadEvent();
-    });
+    if(this.accountService.isAuthenticated()) {
+      this.sub = this.route.params.subscribe(params => {
+        this._id = params['id'];
+        this.loadEvent();
+      });
+    }else{
+      this.notAuthenticated();
+    }
 
     this._bsDatepickerConfig.dateInputFormat = 'DD-MM-YYYY';
     this._bsDatepickerConfig.containerClass = 'theme-blue';
@@ -71,6 +77,10 @@ export class EditEventComponent implements OnInit {
         this.event = event;
         this.router.navigate(['/events']);
         })
+  }
+
+  notAuthenticated(){
+    this.router.navigate(['/']);
   }
 
 }
