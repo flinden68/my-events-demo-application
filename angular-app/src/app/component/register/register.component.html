@@ -2,7 +2,7 @@
 
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label>Name</label>
+    <label>{{ 'field-name' | translate }}</label>
     <input
       class="form-control"
       type="text"
@@ -12,11 +12,11 @@
       [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
     />
     <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
-      <div *ngIf="form.name.errors.required">Name is required</div>
+      <div *ngIf="form.name.errors.required">{{ 'field-name' | translate }}{{ 'error-required' | translate }}</div>
     </div>
   </div>
   <div class="form-group">
-    <label>Email address</label>
+    <label>{{ 'field-email' | translate }}</label>
     <input
       class="form-control"
       type="text"
@@ -26,12 +26,12 @@
       [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
     />
     <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
-      Email addresss is required
+      {{ 'field-email' | translate }}{{ 'error-required' | translate }}
     </div>
   </div>
 
   <div class="form-group">
-    <label>Language</label>
+    <label>{{ 'field-language' | translate }}</label>
     <br />
     <div class="form-check-inline">
       <label class="form-check-label">
@@ -43,7 +43,7 @@
           formControlName="language"
           value="en"
         />
-        English
+        {{ 'language-en' | translate }}
       </label>
     </div>
     <div class="form-check-inline">
@@ -56,16 +56,16 @@
           formControlName="language"
           value="nl"
         />
-        Dutch
+        {{ 'language-nl' | translate }}
       </label>
     </div>
     <div *ngIf="submitted && form.language.errors" class="invalid-feedback">
-      <div *ngIf="form.language.errors.required">Language is required</div>
+      <div *ngIf="form.language.errors.required">{{ 'field-language' | translate }}{{ 'error-required' | translate }}</div>
     </div>
   </div>
 
   <button type="submit" class="btn btn-success float-right">
-    Register
+    {{ 'button-register' | translate }}
   </button>
 </form>
 

@@ -3,6 +3,7 @@ import {AccountService} from "../../service/account.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Account} from '../../model/account';
+import {TranslateService} from "@ngstack/translate";
 
 @Component({
   selector: 'app-account',
@@ -12,7 +13,7 @@ import {Account} from '../../model/account';
 })
 export class AccountComponent implements OnInit {
 
-  pageTitle: string = "My account"
+  pageTitle: string;
   submitted = false;
   accountForm: FormGroup;
   accessCode: string;
@@ -20,9 +21,11 @@ export class AccountComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private router: Router,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private translate: TranslateService) { }
 
   ngOnInit() {
+    this.pageTitle = this.translate.get("title-account");
     if(this.accountService.isAuthenticated()){
       this.accountForm = this.formBuilder.group({
         email: [this.accountService.getAccount().email, [Validators.required, Validators.email]],
@@ -56,6 +59,7 @@ export class AccountComponent implements OnInit {
     this.accountService.update(account._id, account)
       .subscribe(account => {
           if(account){
+            this.accountService.activeAccount = account;
             this.router.navigate(['/events']);
           }
       })

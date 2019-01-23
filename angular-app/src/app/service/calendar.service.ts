@@ -3,26 +3,31 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {Payload} from '../model/payload';
+import {Account} from "../model/account";
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+
+const reqHeader = new HttpHeaders({
+    'Accept': 'text/html, application/xhtml+xml, */*',
+    'Content-Type': 'application/json'
+  })
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
 
-  private serviceUrl = 'http://localhost:4040/api';  // URL to web api
+  private serviceUrl = 'http://localhost:4041/api';  // URL to web api
+
+
 
   constructor(private http: HttpClient) {
-
   }
 
   public createIcal(payload: Payload){
-    return this.http.post(this.serviceUrl + '/generate', payload, httpOptions)
+    return this.http.post(this.serviceUrl + '/generate', payload, {headers:reqHeader, responseType: 'text'})
       .pipe(
-        catchError(this.handleError<Payload>('createIcal'))
+        catchError(this.handleError('create Ical', []))
       );
   }
 

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {Account} from '../model/account';
-
+import {TranslateService} from "@ngstack/translate";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,8 +17,28 @@ export class AccountService {
   private account: Account;
   private serviceUrl = 'http://localhost:3536/api';  // URL to web api
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private translate: TranslateService) {
 
+  }
+
+  accountChanged = new EventEmitter<{
+    previousAccount: Account;
+    currentAccount: Account;
+  }>();
+
+  set activeAccount(value: Account) {
+    const previousAccount = this.account;
+    const newAccount = value || null;
+    const changed = newAccount !== previousAccount;
+
+    if (changed) {
+      this.account = newAccount;
+      this.translate.activeLang = this.account.language;
+      this.accountChanged.next({
+          previousAccount: previousAccount,
+          currentAccount: newAccount
+      });
+    }
   }
 
   public getAccount():Account{
@@ -33,22 +53,16 @@ export class AccountService {
     this.account = null;
   }
 
-  public create(account: Account): Observable<Account>{
-    return this.http.post(this.serviceUrl + '/account/create', account, httpOptions)
+  public create(account: Account){
+    return this.http.post<Account>(this.serviceUrl + '/account/create', account, httpOptions)
       .pipe(
-        tap((account:Account) => {
-          this.account = account;
-        }),
         catchError(this.handleError<Account>('create Account'))
       );
   }
 
-  public update(id: string, account: Account): Observable<Account>{
-    return this.http.put(this.serviceUrl + '/account/update/' + id, account, httpOptions)
+  public update(id: string, account: Account){
+    return this.http.put<Account>(this.serviceUrl + '/account/update/' + id, account, httpOptions)
       .pipe(
-        tap((account:Account) => {
-          this.account = account;
-        }),
         catchError(this.handleError<Account>('update Account'))
       );
   }
@@ -56,16 +70,13 @@ export class AccountService {
   public delete(account: Account){
     return this.http.delete(this.serviceUrl + '/account/delete/' + account._id, httpOptions)
       .pipe(
-        catchError(this.handleError('delete Account', []))
+        catchError(this.handleError<Account>('delete Account'))
       );
   }
 
   public fetchByEmail(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/email/' + account.email, httpOptions)
       .pipe(
-        tap((account:Account) => {
-          this.account = account;
-        }),
         catchError(this.handleError<Account>('fetchByEmail Account'))
       );
   }
@@ -73,9 +84,6 @@ export class AccountService {
   public fetchById(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/id/' + account._id, httpOptions)
       .pipe(
-        tap((account:Account) => {
-          this.account = account;
-        }),
         catchError(this.handleError<Account>('fetchById Account'))
       );
   }
@@ -83,9 +91,6 @@ export class AccountService {
   public fetch(account: Account){
     return this.http.get<Account>(this.serviceUrl + '/account/id/' + account._id, httpOptions)
       .pipe(
-        tap((account:Account) => {
-          this.account = account;
-        }),
         catchError(this.handleError<Account>('fetch Account'))
       );
   }

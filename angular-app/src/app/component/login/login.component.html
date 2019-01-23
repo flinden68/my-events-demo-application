@@ -2,13 +2,13 @@
 <h2>{{pageTitle}}</h2>
 <div id="no_account" *ngIf="showRegister">
 <p>
-  <span class="no-account-text">There is no account, please register</span>
-  <a [routerLink]="['/register']" class="btn btn-primary">Back</a>
+  <span class="no-account-text">{{ 'message-info-register' | translate }}</span>
+  <a [routerLink]="['/register']" class="btn btn-primary">{{ 'button-register' | translate }}</a>
 </p>
 </div>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label>Email address</label>
+    <label>{{ 'field-email' | translate }}</label>
     <input
       class="form-control"
       type="text"
@@ -18,11 +18,11 @@
       [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
     />
     <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
-      <div *ngIf="form.email.errors.required">Email addresss is required</div>
+      <div *ngIf="form.email.errors.required">{{ 'field-email' | translate }}{{ 'error-required' | translate }}</div>
     </div>
   </div>
   <div class="form-group">
-    <label for="accessCode">Access code</label>
+    <label for="accessCode">{{ 'field-accessCode' | translate }}</label>
     <input
       class="form-control"
       type="text"
@@ -32,12 +32,12 @@
       [ngClass]="{ 'is-invalid': submitted && form.accessCode.errors }"
     />
     <div *ngIf="submitted && form.accessCode.errors" class="invalid-feedback">
-      <div *ngIf="form.accessCode.errors.required">Access code is required</div>
+      <div *ngIf="form.accessCode.errors.required">{{ 'field-accessCode' | translate }}{{ 'error-required' | translate }}</div>
     </div>
   </div>
 
   <button type="submit" class="btn btn-success float-right">
-    Login
+    {{ 'button-login' | translate }}
   </button>
 </form>
 

@@ -1,12 +1,25 @@
-<h2>My events</h2>
+
+<h2>{{ 'title-my-events' | translate }}</h2>
+<div *ngIf="!events?.length > 0">
+  <p>
+    <span class="no-account-text">{{ 'message-no-events' | translate }}</span>
+    <a [routerLink]="['/event/add']" class="btn btn-primary">{{ 'button-add-event' | translate }}</a>
+  </p>
+</div>
+<div *ngIf="events?.length > 0">
+<div id="export-events" class="button-row1">
+  <button type="submit" class="btn btn-success float-right" (click)="exportEvents()">
+    {{ 'button-export' | translate }}
+  </button>
+</div>
 <table class="table">
   <thead>
   <tr>
-    <th scope="col">Title</th>
-    <th scope="col">Description</th>
-    <th scope="col">Location</th>
-    <th scope="col">Start date</th>
-    <th scope="col">End date</th>
+    <th scope="col">{{ 'column-title' | translate }}</th>
+    <th scope="col">{{ 'column-description' | translate }}</th>
+    <th scope="col">{{ 'column-location' | translate }}</th>
+    <th scope="col">{{ 'column-start-date' | translate }}</th>
+    <th scope="col">{{ 'column-end-date' | translate }}</th>
     <th scope="col"></th>
     <th scope="col"></th>
   </tr>
@@ -19,11 +32,12 @@
       <td>{{event.start | date: 'dd-MM-yyyy'}}</td>
       <td>{{event.end | date: 'dd-MM-yyyy'}}</td>
       <td>
-        <a [routerLink]="['/event', event._id]" class="btn btn-warning">Edit</a>
+        <a [routerLink]="['/event', event._id]" class="btn btn-warning">{{ 'button-edit' | translate }}</a>
       </td>
       <td>
-        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-danger">{{ 'button-delete' | translate }}</button>
       </td>
     </tr>
   </tbody>
 </table>
+</div>

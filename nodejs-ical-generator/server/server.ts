@@ -12,7 +12,7 @@ app.use(function (req, res, next) {
 
     const allowedOrigins = ['http://localhost:8080','http://localhost:8081'];
     //let origin = req.headers.origin;
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.set('port', process.env.PORT || 4040);
+app.set('port', process.env.PORT || 4041);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);

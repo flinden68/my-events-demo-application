@@ -6,6 +6,7 @@ import {BsDatepickerConfig} from "ngx-bootstrap";
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AccountService} from "../../service/account.service";
+import {TranslateService} from "@ngstack/translate";
 
 @Component({
   selector: 'app-edit-event',
@@ -14,7 +15,7 @@ import {AccountService} from "../../service/account.service";
   encapsulation: ViewEncapsulation.None
 })
 export class EditEventComponent implements OnInit {
-  pageTitle: string = "Edit event"
+  pageTitle: string;
   _id: string;
   private sub: any;
   event : Event;
@@ -26,9 +27,11 @@ export class EditEventComponent implements OnInit {
               private _bsDatepickerConfig: BsDatepickerConfig,
               private router: Router,
               private formBuilder: FormBuilder,
-              private accountService : AccountService) { }
+              private accountService : AccountService,
+              private translate: TranslateService) { }
 
   ngOnInit() {
+    this.pageTitle = this.translate.get("title-edit-event");
     if(this.accountService.isAuthenticated()) {
       this.sub = this.route.params.subscribe(params => {
         this._id = params['id'];

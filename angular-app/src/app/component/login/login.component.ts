@@ -3,6 +3,7 @@ import {AccountService} from "../../service/account.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Account} from '../../model/account';
+import {TranslateService} from "@ngstack/translate";
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,8 @@ import {Account} from '../../model/account';
 })
 export class LoginComponent implements OnInit {
 
-  pageTitle: string = "Login"
-  submitted = false;
+  pageTitle: string;
+  submitted:boolean = false;
   loginForm: FormGroup;
   account : Account;
   showRegister : boolean = false;
@@ -21,9 +22,11 @@ export class LoginComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private router: Router,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private translate: TranslateService) { }
 
   ngOnInit() {
+    this.pageTitle = this.translate.get("title-login");
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       accessCode: ['', Validators.required]
@@ -54,10 +57,15 @@ export class LoginComponent implements OnInit {
           this.showRegister = true;
         }else{
           this.showRegister = false;
+          this.accountService.activeAccount = account;
           this.router.navigate(['/events']);
         }
         //
       })
+  }
+
+  public setLanguage(language : string){
+    this.translate.activeLang = language;
   }
 
 }

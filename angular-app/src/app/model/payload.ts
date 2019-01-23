@@ -20,6 +20,10 @@ export class Payload {
         return this.events;
     }
 
+    setEvents(events: Event[]){
+      this.events = events;
+    }
+
     getOrganizer(){
         return this.organizer;
     }

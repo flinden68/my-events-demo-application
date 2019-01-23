@@ -2,7 +2,7 @@
   <h2>{{pageTitle}}</h2>
   <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label>Title</label>
+      <label>{{ 'field-title' | translate }}</label>
       <input
         class="form-control"
         type="text"
@@ -12,11 +12,11 @@
         [ngClass]="{ 'is-invalid': submitted && form.title.errors }"
       />
       <div *ngIf="submitted && form.title.errors" class="invalid-feedback">
-        <div *ngIf="form.title.errors.required">Title is required</div>
+        <div *ngIf="form.title.errors.required">{{ 'field-title' | translate }}{{ 'error-required' | translate }}</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
+      <label for="description">{{ 'field-description' | translate }}</label>
       <input
         class="form-control"
         type="text"
@@ -26,11 +26,11 @@
         [ngClass]="{ 'is-invalid': submitted && form.description.errors }"
       />
       <div *ngIf="submitted && form.description.errors" class="invalid-feedback">
-        <div *ngIf="form.description.errors.required">Description is required</div>
+        <div *ngIf="form.description.errors.required">{{ 'field-description' | translate }}{{ 'error-required' | translate }}</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="location">Location</label>
+      <label for="location">{{ 'field-location' | translate }}</label>
       <input
         class="form-control"
         type="text"
@@ -40,14 +40,14 @@
         [ngClass]="{ 'is-invalid': submitted && form.location.errors }"
       />
       <div *ngIf="submitted && form.location.errors" class="invalid-feedback">
-        <div *ngIf="form.location.errors.required">Location is required</div>
+        <div *ngIf="form.location.errors.required">{{ 'field-location' | translate }}{{ 'error-required' | translate }}</div>
       </div>
     </div>
     <div class="form-group">
       <div class="row">
         <div class="col-6">
           <label style="margin-right: 10px">
-            Start date
+            {{ 'field-start-date' | translate }}
           </label>
           <input
             class="form-control"
@@ -59,12 +59,12 @@
             [ngClass]="{ 'is-invalid': submitted && form.startDate.errors }"
           />
           <div *ngIf="submitted && form.startDate.errors" class="invalid-feedback">
-            <div *ngIf="form.startDate.errors.required">Start date is required</div>
+            <div *ngIf="form.startDate.errors.required">{{ 'field-start-date' | translate }}{{ 'error-required' | translate }}</div>
           </div>
         </div>
         <div class="col-6">
           <label  style="margin-right: 10px">
-            End date
+            {{ 'field-end-date' | translate }}
           </label>
           <input
             class="form-control"
@@ -76,17 +76,15 @@
             [ngClass]="{ 'is-invalid': submitted && form.endDate.errors }"
           />
           <div *ngIf="submitted && form.endDate.errors" class="invalid-feedback">
-            <div *ngIf="form.endDate.errors.required">End date is required</div>
+            <div *ngIf="form.endDate.errors.required">{{ 'field-end-date' | translate }}{{ 'error-required' | translate }}</div>
           </div>
         </div>
       </div>
     </div>
-    <a [routerLink]="['/events']" class="btn btn-primary">Back</a>
+    <a [routerLink]="['/events']" class="btn btn-primary">{{ 'button-back' | translate }}</a>
     <button type="submit" class="btn btn-success float-right">
-      Save
+      {{ 'button-save' | translate }}
     </button>
   </form>
 
-  <p>Form value: {{ eventForm.value | json }}</p>
-  <p>Form status: {{ eventForm.status | json }}</p>
 

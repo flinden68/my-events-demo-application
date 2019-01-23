@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,13 @@ import { HomeComponent } from './component/home/home.component';
 import { HttpClientModule} from '@angular/common/http';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LogoutComponent } from './component/logout/logout.component';
+import { FileSaverModule } from 'ngx-filesaver';
+import { TranslateModule, TranslateService } from '@ngstack/translate';
+
+// needed to load translation before application starts
+export function setupTranslateService(service: TranslateService) {
+  return () => service.load();
+}
 
 @NgModule({
   declarations: [
@@ -31,9 +38,19 @@ import { LogoutComponent } from './component/logout/logout.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    FileSaverModule,
+    TranslateModule.forRoot({
+      disableCache: true,
+      debugMode: false
+    })
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule, {
+    provide: APP_INITIALIZER,
+    useFactory: setupTranslateService,
+    deps: [TranslateService],
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

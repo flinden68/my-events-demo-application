@@ -1,7 +1,7 @@
 <div id="language-bar" class="language-bar">
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a routerLink="/" routerLinkActive="active" class="navbar-brand">My events</a>
+  <a routerLink="/" routerLinkActive="active" class="navbar-brand">{{ 'nav-home' | translate }}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse"
           data-target="#navbarNavAltMarkup"
           aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,16 +9,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <ul class="navbar-nav mr-auto">
-      <li [routerLinkActive]="['active']"><a [routerLink]="['events']" class="nav-link" *ngIf="accountService.isAuthenticated()">All events</a></li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['event/add']" class="nav-link" *ngIf="accountService.isAuthenticated()">Add event</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['events']" class="nav-link" *ngIf="accountService.isAuthenticated()">{{ 'nav-all-events' | translate }}</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['event/add']" class="nav-link" *ngIf="accountService.isAuthenticated()">{{ 'nav-add-event' | translate }}</a></li>
     </ul>
     <ul class="navbar-nav ml-auto">
 
-      <li class="nav-item" class="nav-link" *ngIf="!accountService.isAuthenticated()">Anonymous</li>
+      <li class="nav-item" class="nav-link" *ngIf="!accountService.isAuthenticated()">{{ 'nav-anonymous' | translate }}</li>
       <li class="nav-item" class="nav-link" *ngIf="accountService.isAuthenticated()">{{accountService.getAccount().name}}</li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['account']" class="nav-link" *ngIf="accountService.getAccount()">Account</a></li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['login']" class="nav-link" *ngIf="!accountService.isAuthenticated()">Login</a></li>
-      <li [routerLinkActive]="['active']"><a [routerLink]="['logout']" class="nav-link" *ngIf="accountService.isAuthenticated()">Logout</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['account']" class="nav-link" *ngIf="accountService.getAccount()">{{ 'nav-account' | translate }}</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['login']" class="nav-link" *ngIf="!accountService.isAuthenticated()">{{ 'nav-login' | translate }}</a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['logout']" class="nav-link" *ngIf="accountService.isAuthenticated()">{{ 'nav-logout' | translate }}</a></li>
     </ul>
   </div>
 </nav>

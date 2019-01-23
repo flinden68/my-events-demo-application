@@ -3,6 +3,7 @@ import {AccountService} from "../../service/account.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Account} from '../../model/account';
+import {TranslateService} from "@ngstack/translate";
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ import {Account} from '../../model/account';
 })
 export class RegisterComponent implements OnInit {
 
-  pageTitle: string = "Register"
+  pageTitle: string;
   submitted = false;
   registerForm: FormGroup;
   account : Account;
@@ -20,9 +21,11 @@ export class RegisterComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private router: Router,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private translate: TranslateService) { }
 
   ngOnInit() {
+    this.pageTitle = this.translate.get("title-register");
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       language: ['en', Validators.required],
@@ -55,6 +58,7 @@ export class RegisterComponent implements OnInit {
     this.accountService.create(this.account)
       .subscribe(account => {
         if(account){
+          this.accountService.activeAccount = account;
           this.router.navigate(['/account']);
         }
         //

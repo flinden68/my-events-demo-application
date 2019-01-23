@@ -1,3 +1,13 @@
-<p>
-  home works!
-</p>
+<div class="row">
+  <div class="col-2">
+
+  </div>
+  <div class="col-8 text-center"  style="text-align: center">
+    <h1>{{ 'title-home' | translate }}</h1>
+    <a [routerLink]="['/register']" class="btn btn-primary">{{ 'button-register' | translate }}</a>
+    <br />
+    <br />
+    <a [routerLink]="['/login']" class="btn btn-primary">{{ 'button-login' | translate }}</a>
+  </div>
+  <div class="col-2"></div>
+</div>
