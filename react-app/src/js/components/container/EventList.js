@@ -16,7 +16,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         deleteEvent: event => dispatch(deleteEvent(event)),
-        fetchAllEvents: () => dispatch(fetchAllEvents()),
         fetchEventsById: (id) => dispatch(fetchaAllEventsByUserId(id)),
     };
 };
