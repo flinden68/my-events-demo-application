@@ -11,8 +11,8 @@ const getters = {
         return state.all
     },
 
-    getEventById: (state, id) => {
-        return state.all.find(event => event._id = id);
+    getEventById:  (state) => (id) => {
+        return state.all.find(event => event._id === id)
     }
 }
 
@@ -20,7 +20,7 @@ const getters = {
 const actions = {
     addEvent({commit}, event) {
         eventsApi.createEvent(event)
-            .subscribe(response => {
+            .then(response => {
                     commit('addEvent', response.data)
                 }
             )
@@ -28,15 +28,16 @@ const actions = {
 
     updateEvent({commit}, event) {
         eventsApi.updateEvent(event._id, event)
-            .subscribe(response => {
+            .then(response => {
                     commit('updateEvent', response.data)
                 }
             )
     },
 
     deleteEvent({commit}, event) {
+        //commit('deleteEvent', event)
         eventsApi.deleteEvent(event)
-            .subscribe(response => {
+            .then(response => {
                     commit('deleteEvent', response.data)
                 }
             )
@@ -45,7 +46,6 @@ const actions = {
     getAllEventsByUserId({commit}, userId) {
         eventsApi.fetchaAllEventsByUserId(userId)
             .then(response => {
-                //console.log("RESPONSE: " + JSON.stringify(events))
                     commit('getAllEventsByUserId', response.data)
                 }
             )
@@ -54,16 +54,17 @@ const actions = {
 
 // mutations
 const mutations = {
-    addEvent({state}, action){
-        [...state.all, action]
+    addEvent(state, action){
+        state.all.push(action)
     },
 
-    updateEvent(state, action){
+    updateEvent: (state, action) => {
         [...state.all.filter(event => event._id !== action._id, action)];
     },
 
-    deleteEvent({state}, action) {
-        state.all.filter(event => event._id !== action._id);
+    deleteEvent: (state, action) => {
+        let index = state.all.findIndex(event => event._id === action._id);
+        state.all.splice(index, 1);
     },
 
     getAllEventsByUserId(state, events) {

@@ -19,14 +19,15 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <ul class="navbar-nav mr-auto">
-          <li v-link="{path : '/events', activeClass: 'active', exact: true}"><router-link to="/events" class="nav-link">{{ $t('nav-all-events') }}</router-link></li>
-          <li v-link="{path : '/event/add', activeClass: 'active', exact: true}"><router-link to="/event/add" class="nav-link">{{ $t('nav-add-event') }}</router-link></li>
+          <li v-bind:active-class="$route.path!== '/events' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/events" class="nav-link">{{ $t('nav-all-events') }}</router-link></li>
+          <li v-bind:active-class="$route.path!== '/event/add' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/event/add" class="nav-link">{{ $t('nav-add-event') }}</router-link></li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-link nav-item">Anonymous</li>
-          <li v-link="{path : '/account', activeClass: 'active', exact: true}"><router-link to="/account" class="nav-link">{{ $t('nav-account') }}</router-link></li>
-          <li v-link="{path : '/login', activeClass: 'active', exact: true}"><router-link to="/login" class="nav-link">{{ $t('nav-logout') }}</router-link></li>
-          <li v-link="{path : '/logout', activeClass: 'active', exact: true}"><router-link to="/logout" class="nav-link">{{ $t('nav-logout') }}</router-link></li>
+          <li class="nav-link nav-item" v-if="!isAuthenticated">Anonymous</li>
+          <li class="nav-link nav-item" v-if="isAuthenticated">{{account.name}}</li>
+          <li v-bind:active-class="$route.path!== '/account' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/account" class="nav-link">{{ $t('nav-account') }}</router-link></li>
+          <li v-bind:active-class="$route.path!== '/login' ? 'active' : ''" v-if="!isAuthenticated"><router-link to="/login" class="nav-link">{{ $t('nav-login') }}</router-link></li>
+          <li v-bind:active-class="$route.path!== '/logout' ? 'active' : ''" v-if="isAuthenticated"><a href="#" class="nav-link" v-on:click="logout">{{ $t('nav-logout') }}</a></li>
         </ul>
       </div>
     </nav>
@@ -41,17 +42,30 @@ export default {
   name: 'app',
     methods: {
         switchLanguage: function(locale){
-            //console.log('locale: ' + locale);
             this.setLanguage(locale);
             this.$i18n.locale = locale;
         },
         ...mapActions('i18n', [
             'setLanguage'
+        ]),
+        ...mapActions('account', [
+            'logout'
         ])
     },
     computed: mapState({
-        locale : state => state.i18n.locale
+        locale : state => state.i18n.locale,
+        isAuthenticated : state => state.account.authenticated,
+        account : state => state.account.current,
     }),
+
+    watch: {
+        isAuthenticated (authication) {
+            if(!authication){
+                this.$router.push('/login')
+            }
+        },
+
+    }
 }
 </script>
 

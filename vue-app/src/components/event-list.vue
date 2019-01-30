@@ -1,7 +1,7 @@
 
 <template>
         <div>
-                <h2>{{ $t('title-all-events') }}</h2>
+                <h2>{{ $t('title-my-events') }}</h2>
                 <table class="table">
                         <thead>
                         <tr>
@@ -17,12 +17,21 @@
                         <tbody>
                                 <tr v-for="event in events" :key="event._id" >
                                         <td>{{event.title}}</td>
+                                        <td>{{event.description}}</td>
+                                        <td>{{event.location}}</td>
+                                        <td>{{ new Date(event.start) | moment("DD-MM-YYYY") }}</td>
+                                        <td>{{ new Date(event.end) | moment("DD-MM-YYYY") }}</td>
+                                        <td>
+                                                <router-link :to="{ name: 'event_edit', params: { id: event._id }}" class="btn btn-warning">{{ $t('button-edit') }}</router-link>
+                                        </td>
+                                        <td>
+                                                <button type="submit" class="btn btn-danger" v-on:click="deleteEvent(event)">
+                                                        {{ $t('button-delete') }}
+                                                </button>
+                                        </td>
                                 </tr>
                         </tbody>
                 </table>
-                <!--<div v-if="debug" style="border:1px dotted red">
-                        {{events}}
-                </div>-->
         </div>
 </template>
 
@@ -31,17 +40,9 @@
     export default {
         name: "eventList",
         methods: {
-            editEvent(event) {
-                this.updateEvent(event);
-            },
-
-            removeEvent(event) {
-                this.deleteEvent(event)
-            },
             ...mapActions('events', [
                 'getAllEventsByUserId',
-                'deleteEvent',
-                'updateEvent'
+                'deleteEvent'
                 ])
         },
 

@@ -6,7 +6,6 @@ import eventList from "./components/event-list";
 import addEvent from "./components/add-event";
 import editEvent from "./components/edit-event";
 import login from "./components/login";
-import logout from "./components/logout";
 import register from "./components/register";
 import account from "./components/account";
 import axios from 'axios'
@@ -17,16 +16,19 @@ import i18n from './lang/lang';
 
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false
 
 const routes = [
     { path: '/', component: home },
     { path: '/events', component: eventList },
-    { path: '/event/add', component: addEvent },
-    { path: '/event/:id', component: editEvent },
+    { path: '/event/add',component: addEvent },
+    { path: '/event/:id', name: 'event_edit', component: editEvent,
+        props(route) {
+            return  route.params || {}
+        } },
     { path: '/login', component: login },
-    { path: '/logout', component: logout },
     { path: '/register', component: register },
     { path: '/account', component: account }
 ]
