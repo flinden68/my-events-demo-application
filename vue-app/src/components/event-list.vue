@@ -56,9 +56,10 @@
 
 
         created (){
-            this.getAllEventsByUserId('5be564d50f085f2cc19e3fef');
             if(!this.isAuthenticated){
                 this.$router.push('/login')
+            }else{
+                this.getAllEventsByUserId(this.account._id);
             }
         }
 

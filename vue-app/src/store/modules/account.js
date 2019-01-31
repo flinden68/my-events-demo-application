@@ -73,10 +73,12 @@ const actions = {
 const mutations = {
     create(state, action){
         state.current = action;
+        state.authenticated = true
     },
 
     update(state, action){
         state.current = action;
+        state.authenticated = true
     },
 
     delete(state){
