@@ -123,7 +123,9 @@
         },
         created() {
             this.eventId = this.$route.params.id;
-
+            if(!this.isAuthenticated){
+                this.$router.push('/login')
+            }
         },
         computed: {
             ...mapGetters('events', ['getEventById']),
@@ -147,6 +149,8 @@
                 }
             },
             ...mapState({
+                isAuthenticated : state => state.account.authenticated,
+                account : state => state.account.current,
                 locale : state => state.i18n.locale
             }),
         }
@@ -154,7 +158,5 @@
 </script>
 
 <style scoped>
-    .form-group > label, .col-6 > label{
-        font-weight: 600;
-    }
+
 </style>

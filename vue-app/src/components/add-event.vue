@@ -64,7 +64,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters, mapState} from "vuex";
+    import {mapActions, mapState} from "vuex";
     import DatePicker from 'vue2-datepicker'
     export default {
         name: "addEvent",
@@ -130,14 +130,16 @@
             }
         },
         created() {
-            this.eventId = this.$route.params.id;
-
+            if(!this.isAuthenticated){
+                this.$router.push('/login')
+            }
         },
         computed: {
-            ...mapGetters('events', ['getEventById']),
-            /*event: function () {
-                return this.getEventById(this.$route.params.id);
-            },*/
+            ...mapState({
+                isAuthenticated : state => state.account.authenticated,
+                account : state => state.account.current,
+                locale : state => state.i18n.locale
+            }),
             startDate:{
                 get: function () {
                     return new Date()
@@ -153,16 +155,10 @@
                 set: function (newValue){
                     this.event.end = new Date(newValue).getTime()
                 }
-            },
-            ...mapState({
-                locale : state => state.i18n.locale
-            }),
+            }
         }
     }
 </script>
 
-<style scoped>
-    .form-group > label, .col-6 > label{
-        font-weight: 600;
-    }
+<style>
 </style>

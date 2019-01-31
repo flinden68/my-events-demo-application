@@ -55,6 +55,9 @@
             ...mapActions('account', [
                 'fetchAccount'
             ]),
+            ...mapActions('i18n', [
+                'setLanguage'
+            ]),
             validate : function(){
                 this.validEmail = this.validateEmail(this.email);
                 this.validAccessCode = this.validField(this.accessCode);
@@ -91,13 +94,11 @@
         }),
         watch: {
             account (current){
-                //console.log("current Account: "+current)
                 if(current){
-                    //console.log("authenicated")
-                    this.showRegister = false
+                    this.showRegister = false;
+                    this.setLanguage(current.language)
                     this.$router.push('/events')
                 }else{
-                    console.log("not authenicated")
                     this.showRegister = true
                 }
             }
@@ -107,11 +108,5 @@
 </script>
 
 <style scoped>
-    .no-account-text{
-        margin-right: 10px;
-    }
 
-    .form-group > label, .col-6 > label{
-        font-weight: 600;
-    }
 </style>

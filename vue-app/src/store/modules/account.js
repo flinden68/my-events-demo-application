@@ -19,19 +19,19 @@ const getters = {
 
 // actions
 const actions = {
-    create(commit, account){
+    create({commit}, account){
         accountApi.createAccount(account)
             .then( response => {
                 commit('create', response.data)
             })
     },
-    update(commit, account){
+    update({commit}, account){
         accountApi.updateAccount(account._id, account)
             .then( response => {
                 commit('update', response.data)
             })
     },
-    delete(commit, account){
+    delete({commit}, account){
         accountApi.deleteAccount(account)
             .then( response => {
                 commit('delete', response.data)

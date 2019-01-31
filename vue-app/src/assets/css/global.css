@@ -1,0 +1,44 @@
+button{
+    cursor:pointer;
+}
+
+.no-account-text{
+    margin-right: 10px;
+}
+
+.form-group > label, .col-6 > label{
+    font-weight: 600;
+}
+
+.language-bar{
+    text-align: right;
+    height: 20px;
+}
+
+ul.language-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.language-list > li {
+    display: inline;
+    cursor: pointer;
+}
+
+ul.language-list > li:first-child:before {
+    content: '';
+}
+
+ul.language-list > li:before {
+    content: ' | ';
+}
+
+ul.language-list > li > a.active {
+    font-weight: 900;
+    cursor: default;
+}
+
+.no-border{
+    border:0px !important;
+}

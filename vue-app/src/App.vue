@@ -1,14 +1,14 @@
 <template>
   <div id="app" class="col-12">
     <div id="language-bar" class="language-bar">
-      <ul class="language-list">
+      <!--<ul class="language-list">
         <li>
           <a href="#" v-on:click="switchLanguage('en')" v-link="{locale : 'en', activeClass: 'active', exact: true}">EN</a>
         </li>
         <li>
           <a href="#" v-on:click="switchLanguage('nl')" v-link="{locale : 'nl', activeClass: 'active', exact: true}">NL</a>
         </li>
-      </ul>
+      </ul>-->
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="">{{ $t('nav-home') }}</a>
@@ -27,7 +27,7 @@
           <li class="nav-link nav-item" v-if="isAuthenticated">{{account.name}}</li>
           <li v-bind:active-class="$route.path!== '/account' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/account" class="nav-link">{{ $t('nav-account') }}</router-link></li>
           <li v-bind:active-class="$route.path!== '/login' ? 'active' : ''" v-if="!isAuthenticated"><router-link to="/login" class="nav-link">{{ $t('nav-login') }}</router-link></li>
-          <li v-bind:active-class="$route.path!== '/logout' ? 'active' : ''" v-if="isAuthenticated"><a href="#" class="nav-link" v-on:click="logout">{{ $t('nav-logout') }}</a></li>
+          <li v-if="isAuthenticated"><a href="#" class="nav-link" v-on:click="logout">{{ $t('nav-logout') }}</a></li>
         </ul>
       </div>
     </nav>
@@ -61,41 +61,16 @@ export default {
     watch: {
         isAuthenticated (authication) {
             if(!authication){
-                this.$router.push('/login')
+                this.setLanguage('en');
             }
         },
-
+        locale (newLanguage){
+            this.$i18n.locale = newLanguage;
+        }
     }
 }
 </script>
 
 <style>
-  .language-bar{
-    text-align: right;
-    height: 20px;
-  }
 
-  ul.language-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul.language-list > li {
-    display: inline;
-    cursor: pointer;
-  }
-
-  ul.language-list > li:first-child:before {
-    content: '';
-  }
-
-  ul.language-list > li:before {
-    content: ' | ';
-  }
-
-  ul.language-list > li > a.active {
-    font-weight: 900;
-    cursor: default;
-  }
 </style>

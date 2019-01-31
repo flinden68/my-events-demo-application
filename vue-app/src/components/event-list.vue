@@ -46,12 +46,20 @@
                 ])
         },
 
-        computed: mapState({
-            events : state => state.events.all
-        }),
+        computed: {
+            ...mapState({
+                events : state => state.events.all,
+                isAuthenticated : state => state.account.authenticated,
+                account : state => state.account.current
+            }),
+        },
+
 
         created (){
             this.getAllEventsByUserId('5be564d50f085f2cc19e3fef');
+            if(!this.isAuthenticated){
+                this.$router.push('/login')
+            }
         }
 
     }
