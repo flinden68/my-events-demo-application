@@ -11,7 +11,7 @@
       </ul>-->
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="">{{ $t('nav-home') }}</a>
+      <a class="navbar-brand" href="/">{{ $t('nav-home') }}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse"
               data-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +62,7 @@ export default {
         isAuthenticated (authication) {
             if(!authication){
                 this.setLanguage('en');
+                this.$router.push('/login');
             }
         },
         locale (newLanguage){

@@ -31,6 +31,7 @@
   "column-start-date": "Start datum",
   "column-end-date": "End datum",
   "button-save": "Opslaan",
+  "button-add-event":"Evenement toevoegen",
   "button-edit": "Bewerken",
   "button-delete": "Verwijder",
   "button-register": "Registeren",

@@ -31,6 +31,7 @@
   "column-start-date": "Start date",
   "column-end-date": "End date",
   "button-save": "Save",
+  "button-add-event":"Add event",
   "button-edit": "Edit",
   "button-delete": "Delete",
   "button-register": "Register",

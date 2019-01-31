@@ -2,6 +2,13 @@
 <template>
         <div>
                 <h2>{{ $t('title-my-events') }}</h2>
+            <div v-if="showNoEvents">
+                <p>
+                    <span class="no-account-text">{{ $t('message-no-events') }}</span>
+                    <router-link to="//event/add" class="btn btn-primary">{{ $t('button-add-event') }}</router-link>
+                </p>
+            </div>
+            <div v-if="!showNoEvents">
                 <table class="table">
                         <thead>
                         <tr>
@@ -32,6 +39,7 @@
                                 </tr>
                         </tbody>
                 </table>
+            </div>
         </div>
 </template>
 
@@ -39,6 +47,11 @@
     import {mapActions, mapState} from 'vuex'
     export default {
         name: "eventList",
+        data () {
+            return {
+                showNoEvents : false,
+            }
+        },
         methods: {
             ...mapActions('events', [
                 'getAllEventsByUserId',
@@ -61,6 +74,8 @@
             }else{
                 this.getAllEventsByUserId(this.account._id);
             }
+
+            this.showNoEvents = this.events.length;
         }
 
     }
