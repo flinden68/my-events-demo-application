@@ -19,6 +19,7 @@ public class Event {
 
   private String title;
   private String description;
+  private String location;
 
   @JsonProperty("start")
   private long startDate;
