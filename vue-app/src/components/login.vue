@@ -46,8 +46,8 @@
                 valid : false,
                 validEmail : true,
                 validAccessCode : true,
-                email : "flinden68@elstarit.nl",
-                accessCode : "5be564d50f085f2cc19e3fef",
+                email : "",
+                accessCode : "",
                 showRegister : false
             }
         },
