@@ -9,6 +9,11 @@
                 </p>
             </div>
             <div v-if="!showNoEvents">
+                <div id="export-events" class="button-row1">
+                    <button type="submit" class="btn btn-success float-right" v-on:click="exportEvents">
+                        {{ $t('button-export') }}
+                    </button>
+                </div>
                 <table class="table">
                         <thead>
                         <tr>
@@ -45,6 +50,8 @@
 
 <script>
     import {mapActions, mapState} from 'vuex'
+    import {createIcal} from "../service/calendar";
+    import FileSaver from 'file-saver';
     export default {
         name: "eventList",
         data () {
@@ -56,7 +63,33 @@
             ...mapActions('events', [
                 'getAllEventsByUserId',
                 'deleteEvent'
-                ])
+                ]),
+            getDomain(){
+                let domain = this.account.email.substring(this.account.email.indexOf("@") + 1, this.account.email.length);
+                return domain;
+            },
+
+            getTimezone(){
+                let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                return timezone;
+            },
+            exportEvents(){
+                let payload = {
+                    organizer: this.account.name + " <" + this.account.email + ">",
+                    domain : this.getDomain(),
+                    timezone : this.getTimezone(),
+                    events: this.events
+                }
+
+                console.log("Export payload = " + JSON.stringify(payload));
+                createIcal(payload).then(response => {
+                    let blob = new Blob([response.data], {type: "text/calendar;charset=utf-8"});
+                    FileSaver.saveAs(blob, "calendar.ics");
+                })
+                    .catch(error => {
+                        throw(error);
+                    });
+            }
         },
 
         computed: {
