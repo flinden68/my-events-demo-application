@@ -17,7 +17,7 @@ export class AccountComponent implements OnInit {
   submitted = false;
   accountForm: FormGroup;
   accessCode: string;
-  debug: boolean = true;
+  debug: boolean = false;
 
   constructor(private accountService: AccountService,
               private router: Router,

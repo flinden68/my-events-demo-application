@@ -42,7 +42,8 @@ export function setupTranslateService(service: TranslateService) {
     FileSaverModule,
     TranslateModule.forRoot({
       disableCache: true,
-      debugMode: false
+      debugMode: false,
+      activeLang: 'en'
     })
   ],
   providers: [HttpClientModule, {

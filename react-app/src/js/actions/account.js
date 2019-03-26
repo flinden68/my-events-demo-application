@@ -141,7 +141,9 @@ export const fetchAccount = account => {
                         history.push('/login')
                     }else {
                         dispatch(fetchAccountSuccess(response.data))
+
                         dispatch(setActiveLanguage(response.data.language))
+
                         history.push('/events')
                     }
                 }

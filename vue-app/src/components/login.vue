@@ -10,7 +10,9 @@
         </div>
             <div>
                 <div class="form-group">
+
                     <label>{{ $t('field-email') }}</label>
+
                     <input
                             v-model="email"
                             v-bind:class="{'form-control':true, 'is-invalid' : !validEmail}">

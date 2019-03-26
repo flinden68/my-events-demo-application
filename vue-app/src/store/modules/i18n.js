@@ -1,4 +1,5 @@
 
+//store//modules/i18n.js
 // state
 const state = {
     locales: ['en', 'nl'],

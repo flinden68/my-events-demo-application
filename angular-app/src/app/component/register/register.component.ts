@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   registerForm: FormGroup;
   account : Account;
-  debug: boolean = true;
+  debug: boolean = false;
 
   constructor(private accountService: AccountService,
               private router: Router,

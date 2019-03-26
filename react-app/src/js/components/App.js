@@ -8,7 +8,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 class App extends React.Component {
     constructor(props){
         super(props);
-        //console.log('app account: ' + JSON.stringify(this.props.account));
+
         this.props.initialize({
             languages: [
               { name: 'English', code: 'en' }, 

@@ -4,6 +4,7 @@ import '../presentation/form.css';
 import {fetchAccount} from "../../actions/account";
 import {FormErrors} from "../presentation/FormErrors";
 import {Link} from "react-router-dom";
+
 import { Translate } from "react-localize-redux";
 
 const mapStateToProps = state => {
@@ -109,7 +110,9 @@ class Login extends Component {
                         </p>
                     </div>
                     <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+
                         <label><Translate id="field-email"></Translate></label>
+
                         <input
                             className="form-control"
                             type="text"
