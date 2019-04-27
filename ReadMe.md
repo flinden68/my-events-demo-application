@@ -2,6 +2,10 @@
 
 This repository shows the use of several front end frameworks and micro services which connect with a MongoDb datastore.
 
+## Datastore
+I have used MongoDb as Datastore. It can be installed locally.
+For more infomation, [see](https://www.mongodb.com/download-center/community)
+
 ## Microservices
 
 ### Spring Boot
