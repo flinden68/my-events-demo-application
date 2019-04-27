@@ -1,4 +1,4 @@
-# ICal Generator API
+# NodeJS ICal Generator API
 
 The API is a NodeJS app with Typescript. 
 
@@ -6,7 +6,27 @@ To generate the ICal file ical generator NPM project is used, https://www.npmjs.
 
 https://github.com/sebbo2002/ical-generator
 
-### Test data
+## Project setup
+```
+npm install
+```
+
+### Compiles and for development
+```
+npm run start
+```
+
+### Compiles and hot-reloads for development
+```
+npm run dev
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+## Test data
 ```
 [
    {

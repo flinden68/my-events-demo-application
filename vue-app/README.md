@@ -1,4 +1,4 @@
-# vue-app
+# My Events VueJS app
 
 ## Project setup
 ```
