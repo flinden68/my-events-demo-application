@@ -39,6 +39,10 @@ export class EventlistComponent implements OnInit {
     }
   }
 
+  reloadEvents(){
+    this.loadEvents();
+  }
+
   notAuthenticated(){
     this.router.navigate(['/']);
   }

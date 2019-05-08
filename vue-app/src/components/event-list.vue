@@ -10,6 +10,9 @@
             </div>
             <div v-if="!showNoEvents">
                 <div id="export-events" class="button-row1">
+                    <button class="btn btn-primary float-left" v-on:click="reloadEvents">
+                        {{ $t('button-refresh') }}
+                    </button>
                     <button type="submit" class="btn btn-success float-right" v-on:click="exportEvents">
                         {{ $t('button-export') }}
                     </button>
@@ -72,6 +75,9 @@
             getTimezone(){
                 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 return timezone;
+            },
+            reloadEvents(){
+                this.getAllEventsByUserId(this.account._id);
             },
             exportEvents(){
                 let payload = {

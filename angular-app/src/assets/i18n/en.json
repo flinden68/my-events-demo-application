@@ -39,6 +39,7 @@
   "button-update": "Update",
   "button-back": "Back",
   "button-export": "Add to calendar",
+  "button-refresh": "Refresh",
   "message-info-register": "If you don't have an account, register for a new account.",
   "message-no-events": "No events yet",
   "language-en": "English",

@@ -8,6 +8,9 @@
 </div>
 <div *ngIf="events?.length > 0">
 <div id="export-events" class="button-row1">
+  <button class="btn btn-primary float-left" (click)="reloadEvents()">
+    {{ 'button-refresh' | translate }}
+  </button>
   <button type="submit" class="btn btn-success float-right" (click)="exportEvents()">
     {{ 'button-export' | translate }}
   </button>

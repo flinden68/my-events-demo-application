@@ -52,6 +52,10 @@ class EventList extends Component {
         return timezone;
     }
 
+    reloadEvents(){
+        this.props.fetchEventsById(this.props.account._id);
+    }
+
     exportEvents(e){
         e.preventDefault();
 
@@ -81,6 +85,9 @@ class EventList extends Component {
                     <Translate id="message-no-eventsr"></Translate>
                 </div>
                 <div id="export-events" className="button-row1" style={{display: (this.props.events.length > 0) ? 'block' : 'none' }}>
+                    <button className="btn btn-primary float-left" onClick={(e) => this.reloadEvents()}>
+                        <Translate id="button-refresh"></Translate>
+                    </button>
                     <button type="submit" className="btn btn-success float-right" onClick={(e) => this.exportEvents(e)}>
                         <Translate id="button-export"></Translate>
                     </button>

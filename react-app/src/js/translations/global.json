@@ -147,6 +147,10 @@
         "Add to calendar",
         "Aan agenda toevoegen"
       ],
+      "button-refresh": [
+        "Refresh",
+        "Herladen"
+      ],
       "message-info-register": [
         "If you don't have an account, register for a new account.",
         "Als je nog geen profiel hebt, kan je je hier registreren"
