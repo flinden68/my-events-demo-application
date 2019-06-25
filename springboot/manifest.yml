@@ -1,0 +1,7 @@
+applications:
+  - name: event-api
+    instances: 1
+    memory: 768M
+    disk_quota: 512M
+    path: target/event-api.jar
+    host: event-api
