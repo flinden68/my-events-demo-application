@@ -11,4 +11,5 @@ public interface EventRepository extends MongoRepository<Event, String> {
   Optional<List<Event>> findByUserId(String userId);
 
   Optional<Event> findByTitle(String title);
+
 }

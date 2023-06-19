@@ -5,11 +5,12 @@ server:
   servlet:
     context-path: /api
 
-springfox:
-  documentation:
-    swagger:
-      v2:
-        path: "/v2/api-docs"
+springdoc:
+  paths-to-match: /**
+  api-docs:
+    path: /swagger-ui/v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 logging:
   level:
@@ -23,11 +24,19 @@ info:
     name: Event Service API
     version: 1.0.0-SNAPSHOT
     description: Event Service API
+
 management:
+  endpoint:
+    metrics.enabled: true
+    prometheus.enabled: true
+    health.enabled: true
+    health:
+      show-details: always
   endpoints:
+    enabled-by-default: false
     web:
       exposure:
-        include: "*"
+        include: metrics,info,health,prometheus
 
 spring:
   application:
@@ -38,7 +47,9 @@ spring:
 
 ---
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: local
   data:
     mongodb:
       uri: mongodb://localhost:27017/events-store
@@ -52,7 +63,9 @@ swagger:
 
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   data:
     mongodb:
       uri: mongodb://localhost:27017/events-store
@@ -65,7 +78,9 @@ swagger:
 
 ---
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   data:
     mongodb:
       uri: mongodb://localhost:27017/events-store

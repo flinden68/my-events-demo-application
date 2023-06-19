@@ -4,17 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.elstarit.event.service.model.Event;
 import nl.elstarit.event.service.repository.EventRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -23,14 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EventControllerTest {
@@ -43,7 +41,7 @@ public class EventControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Before
+  @BeforeEach
   public void setUp() {
 
     eventRepository.deleteAll();
@@ -85,18 +83,18 @@ public class EventControllerTest {
         .andExpect(status().is2xxSuccessful())
         .andReturn();
 
-    Assert.assertNotNull(mvcResult);
-    Assert.assertNotNull(mvcResult.getResponse());
+    assertNotNull(mvcResult);
+    assertNotNull(mvcResult.getResponse());
 
     String json = mvcResult.getResponse().getContentAsString();
     Event event =
       new ObjectMapper().readValue(json, new TypeReference<Event>() {});
 
-    Assert.assertEquals("111111", event.getId());
+    assertEquals("111111", event.getId());
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void shouldCreateEvent() throws Exception{
     Event mockEvent = new Event();
     mockEvent.setId("111111");
@@ -113,13 +111,13 @@ public class EventControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
 
-    Assert.assertNotNull(mvcResult);
-    Assert.assertNotNull(mvcResult.getResponse());
+    assertNotNull(mvcResult);
+    assertNotNull(mvcResult.getResponse());
 
     String json = mvcResult.getResponse().getContentAsString();
     Event event = new ObjectMapper().readValue(json, new TypeReference<Event>() {});
 
-    Assert.assertEquals(mockEvent, event);
+    assertEquals(mockEvent, event);
   }
 
 }

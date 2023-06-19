@@ -4,31 +4,26 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.elstarit.event.service.model.Event;
 import nl.elstarit.event.service.repository.EventRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EventsControllerTest {
@@ -41,7 +36,7 @@ public class EventsControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
 
     eventRepository.deleteAll();
@@ -78,14 +73,14 @@ public class EventsControllerTest {
         .andExpect(status().isOk())
         .andReturn();
 
-    Assert.assertNotNull(mvcResult);
-    Assert.assertNotNull(mvcResult.getResponse());
+    assertNotNull(mvcResult);
+    assertNotNull(mvcResult.getResponse());
 
     String json = mvcResult.getResponse().getContentAsString();
     List<Event> events =
       new ObjectMapper().readValue(json, new TypeReference<List<Event>>() {});
 
-    Assert.assertEquals(2, events.size());
+    assertEquals(2, events.size());
   }
 
 }

@@ -1,27 +1,25 @@
 package nl.elstarit.event.service.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.elstarit.event.service.model.Account;
-import nl.elstarit.event.service.model.Event;
 import nl.elstarit.event.service.repository.AccountRepository;
-import nl.elstarit.event.service.repository.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
+import jakarta.validation.Valid;
 
 @Slf4j
 @Controller
 @RequestMapping("/account")
+@RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
-    private AccountRepository repository;
+    private final AccountRepository repository;
 
     @GetMapping(value="/id/{id}", produces = "application/json")
     public ResponseEntity<Account> findById(@PathVariable("id") String id) {

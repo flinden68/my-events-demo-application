@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Optional;
 
 @Slf4j
@@ -24,11 +24,7 @@ public class EventController {
   public ResponseEntity<Event> getEventById(@PathVariable("eventId") String eventId) {
     Optional<Event> event = eventRepository.findById(eventId);
 
-    if(event.isPresent()){
-      return new ResponseEntity<>(event.get(), HttpStatus.OK);
-    }else{
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    return event.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
   }
 
   @PostMapping(value = "/create", produces = "application/json", consumes = "application/json")
