@@ -11,7 +11,7 @@ import { AccountComponent } from './component/account/account.component';
 import { RegisterComponent } from './component/register/register.component';
 import { HomeComponent } from './component/home/home.component';
 import { HttpClientModule} from '@angular/common/http';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { LogoutComponent } from './component/logout/logout.component';
 import { FileSaverModule } from 'ngx-filesaver';
 import { TranslateModule, TranslateService } from '@ngstack/translate';
@@ -51,7 +51,8 @@ export function setupTranslateService(service: TranslateService) {
     useFactory: setupTranslateService,
     deps: [TranslateService],
     multi: true
-  }],
+  },
+    BsDatepickerConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

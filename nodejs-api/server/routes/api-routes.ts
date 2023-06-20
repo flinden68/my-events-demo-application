@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+ import { Router, Request, Response } from 'express';
 import {EventController} from "../controller/event.controller";
 import {AccountController} from "../controller/account.controller";
 

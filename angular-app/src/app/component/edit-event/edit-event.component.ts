@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {EventService} from "../../service/event.service";
 import {Event} from "../../model/event";
-import {BsDatepickerConfig} from "ngx-bootstrap";
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AccountService} from "../../service/account.service";
@@ -24,7 +23,6 @@ export class EditEventComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private eventService : EventService,
-              private _bsDatepickerConfig: BsDatepickerConfig,
               private router: Router,
               private formBuilder: FormBuilder,
               private accountService : AccountService,
@@ -41,8 +39,6 @@ export class EditEventComponent implements OnInit {
       this.notAuthenticated();
     }
 
-    this._bsDatepickerConfig.dateInputFormat = 'DD-MM-YYYY';
-    this._bsDatepickerConfig.containerClass = 'theme-blue';
   }
 
   loadEvent(){

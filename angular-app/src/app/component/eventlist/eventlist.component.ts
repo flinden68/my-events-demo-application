@@ -6,7 +6,6 @@ import {Router} from '@angular/router';
 import {Payload} from "../../model/payload";
 import {CalendarService} from "../../service/calendar.service";
 import {FileSaverService} from "ngx-filesaver";
-//import saveAs from 'file-saver';
 
 @Component({
   selector: 'app-eventlist',
@@ -16,7 +15,7 @@ import {FileSaverService} from "ngx-filesaver";
 })
 export class EventlistComponent implements OnInit {
 
-  private events : Event[];
+  events : Event[];
 
   constructor(private eventService : EventService,
               private router: Router,

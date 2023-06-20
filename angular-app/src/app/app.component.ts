@@ -11,7 +11,7 @@ import {TranslateService} from '@ngstack/translate';
 export class AppComponent {
   title = 'angular-app';
 
-  constructor(private accountService: AccountService, private translate: TranslateService) {
+  constructor(public accountService: AccountService, private translate: TranslateService) {
     //this.check();
     //this.checkChangeAccount();
 
