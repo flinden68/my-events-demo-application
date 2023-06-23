@@ -11,6 +11,7 @@ fs.readdirSync('node_modules')
     });
 
 module.exports = {
+    mode: 'development',
     entry: './server/server.ts',
     output: {
         path: __dirname + '/dist',
@@ -45,15 +46,18 @@ module.exports = {
             },
             {
                 test: /\.html?$/,
-                loader: "file-loader?name=[name].[ext]"
+                loader: "file-loader",
+                options: {
+                    name: '[name].[ext]'
+                }
             }]
     },
     plugins: [
-        new CopyWebpackPlugin([
-                {
-                    from: './server/index.html',
-                    to: __dirname + '/dist'
-                }]
+        new CopyWebpackPlugin({
+            patterns : [
+                    { from: './server/index.html', to: __dirname + '/dist' }
+                    ],
+            }
         )
     ],
     target: 'node',

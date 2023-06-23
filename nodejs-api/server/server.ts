@@ -8,6 +8,7 @@ const cors = require('cors')
 dotenv.config();
 
 const app = express();
+const mongoose = require("mongoose");
 
 const whitelist = ['http://localhost:8080','http://localhost:8081','http://localhost:4200'];
 
@@ -28,6 +29,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
 
 app.use('/api', ApiRoutes);
+
+const mongoUrl = 'mongodb://localhost:27017/events-store';
+mongoose.connect(mongoUrl,
+    {
+        useNewUrlParser: true
+    }
+);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+    console.log("Connected to Mongodb (" + mongoUrl + ") was successfully");
+});
 
 app.listen(app.get('port'), () => {
     console.log(('App is running at http://localhost:%d in %s mode'),

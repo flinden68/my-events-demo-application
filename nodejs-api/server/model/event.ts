@@ -1,35 +1,33 @@
-export class Event {
-    private _id: string;
-    private id: string;
-    private title: string;
-    private description: string;
-    private start: number;
-    private end: number;
-    private created: Date;
-    private modified: Date;
-    private userId: string;
-    private location: string;
-    private _class: string;
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
 
-    constructor(id: string, title: string, description: string, start: number, end: number, userId: string, location: string) {
-        if(id  != null) {
-            this._id = id;
-            this.id = id;
-        }
-        this.title = title;
-        this.description = description;
-        this.start = start;
-        this.end = end;
-        this.userId = userId;
-        this.location = location;
-        this._class = "nl.elstarit.event.service.model.Event";
+const EventSchema = new Schema({
+    title: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    userId: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    start: {
+        type: Number,
+    },
+    end: {
+        type: Number,
+    },
+    created: {
+        type: Date,
+    },
+    modified: {
+        type: Date,
     }
+});
 
-    public setCreated(date: Date){
-        this.created = date;
-    }
+const Event = model("Event", EventSchema);
 
-    public updateModified(){
-        this.modified = new Date();
-    }
-}
+export default Event;

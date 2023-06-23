@@ -1,27 +1,24 @@
-export class Account {
-    private _id: string;
-    private email: string;
-    private name:string;
-    private language: string;
-    private created: Date;
-    private modified: Date;
-    private _class: string;
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
 
-    constructor(id: string, email: string, language: string, name : string) {
-        if(id  != null) {
-            this._id = id;
-        }
-        this.email = email;
-        this.language = language;
-        this.name = name;
-        this._class = "nl.elstarit.event.service.model.Account";
+const schema = new Schema({
+    email: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+    language: {
+        type: String,
+    },
+    created: {
+        type: Date,
+    },
+    modified: {
+        type: Date,
     }
+});
 
-    public setCreated(date: Date){
-        this.created = date;
-    }
+const Account = model("Account", schema);
 
-    public updateModified(){
-        this.modified = new Date();
-    }
-}
+export default Account;

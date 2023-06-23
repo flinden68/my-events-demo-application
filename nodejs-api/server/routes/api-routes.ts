@@ -37,7 +37,7 @@ router.delete('/event/delete/:eventId', (req: Request, res: Response) => {
 router.get('/event/:eventId', (req: Request, res: Response) => {
     const eventId = req.params.eventId;
     if (eventId.trim()) {
-        eventController.findOne(eventId).then(function(result) {
+        eventController.find({id: eventId}).then(function(result) {
             res.send(result);
         });
     } else {
@@ -46,7 +46,7 @@ router.get('/event/:eventId', (req: Request, res: Response) => {
 });
 
 router.get('/events', (req: Request, res: Response) => {
-    eventController.find().then(function(result) {
+    eventController.find({}).then(function(result) {
         res.send(result);
     });
 
@@ -55,7 +55,7 @@ router.get('/events', (req: Request, res: Response) => {
 router.get('/events/:userId', (req: Request, res: Response) => {
     const userId = req.params.userId;
     if (userId.trim()) {
-        eventController.findByUserId(userId).then(function(result) {
+        eventController.find({userId: userId}).then(function(result) {
             res.send(result);
         });
     } else {
@@ -91,7 +91,7 @@ router.delete('/account/delete/:id', (req: Request, res: Response) => {
 router.get('/account/email/:email', (req: Request, res: Response) => {
     const email = req.params.email;
     if (email.trim()) {
-        accountController.findByEMail(email).then(function(result) {
+        accountController.find({email: email}).then(function(result) {
             if(result == null){
                 res.status(204).send(result);
             }else {
@@ -106,7 +106,7 @@ router.get('/account/email/:email', (req: Request, res: Response) => {
 router.get('/account/id/:id', (req: Request, res: Response) => {
     const id = req.params.id;
     if (id.trim()) {
-        accountController.findOne(id).then(function(result) {
+        accountController.find({id: id}).then(function(result) {
             if(result == null){
                 res.status(204).send(result);
             }else {
@@ -119,7 +119,7 @@ router.get('/account/id/:id', (req: Request, res: Response) => {
 });
 
 router.get('/accounts', (req: Request, res: Response) => {
-    accountController.find().then(function(result) {
+    accountController.find({}).then(function(result) {
         res.send(result);
     });
 
