@@ -132,11 +132,11 @@ export const fetchAccount = account => {
     return (dispatch) => {
         return axios.get(`${apiUrl}/account/id/${account._id}`)
             .then(response => {
-                if(response.status == 204){
+                if(response.status === 204){
                     dispatch(fetchAccountSuccess(null))
                     history.push('/login')
                 }else{
-                    if(response.data.email != account.email){
+                    if(response.data.email !== account.email){
                         dispatch(fetchAccountSuccess(account))
                         history.push('/login')
                     }else {

@@ -82,7 +82,7 @@ class EventList extends Component {
             <div>
                 <h2><Translate id="title-my-events"></Translate></h2>
                 <div id="no-events" style={{display: (this.props.events.length > 0) ? 'none' : 'block' }}  className='alert alert-info'>
-                    <Translate id="message-no-eventsr"></Translate>
+                    <Translate id="message-no-events"></Translate>
                 </div>
                 <div id="export-events" className="button-row1" style={{display: (this.props.events.length > 0) ? 'block' : 'none' }}>
                     <button className="btn btn-primary float-left" onClick={(e) => this.reloadEvents()}>

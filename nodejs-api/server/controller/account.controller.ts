@@ -24,12 +24,16 @@ export class AccountController {
         });
     }
 
-    async delete(id: string) {
-        Account.deleteOne({id: id});
+    async delete(id: any) {
+        Account.findByIdAndDelete(id);
     }
 
     async find(filter: any):Promise<Document[]> {
         return Account.find(filter);
+    }
+
+    async findById(id: any):Promise<Document[]> {
+        return Account.findById(id);
     }
 }
 

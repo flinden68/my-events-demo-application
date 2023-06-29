@@ -1,7 +1,6 @@
 import React from 'react';
 import connect from "react-redux/es/connect/connect";
 import DatePicker from "react-datepicker";
-import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from 'react-router-dom';
 import '../presentation/form.css';
@@ -24,8 +23,8 @@ class EventForm extends React.Component {
         this.state = {
             title: props.event ? props.event.title : "",
             description: props.event ? props.event.description : "",
-            startInput: props.event ? moment(props.event.start) : moment(),
-            endInput: props.event ? moment(props.event.end) : moment(),
+            startInput: props.event ? new Date(props.event.start) : new Date(),
+            endInput: props.event ? new Date(props.event.end) : new Date(),
             userId: props.event ? props.event.userId : props.account._id,
             location: props.event ? props.event.location : "",
             created: props.event ? props.event.created : new Date(),
@@ -130,8 +129,7 @@ class EventForm extends React.Component {
                 location: this.state.location,
                 userId: this.state.userId,
                 created: this.state.created,
-                modified: this.state.modified,
-                _class: "nl.elstarit.event.service.model.Event"
+                modified: this.state.modified
             }
 
             this.props.onSubmitEvent(event);
@@ -185,7 +183,7 @@ class EventForm extends React.Component {
                                 className="form-control"
                                 selected={this.state.startInput}
                                 onChange={this.handleChangeStartDate}
-                                dateFormat="DD-MM-YYYY"
+                                dateFormat="dd-MM-yyyy"
                             />
                         </div>
                         <div className="col-6">
@@ -197,7 +195,7 @@ class EventForm extends React.Component {
                                 className="form-control"
                                 selected={this.state.endInput}
                                 onChange={this.handleChangeEndDate}
-                                dateFormat="DD-MM-YYYY"
+                                dateFormat="dd-MM-yyyy"
                             />
                         </div>
                     </div>

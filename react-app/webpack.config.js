@@ -1,6 +1,4 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-//const ExtractTextPlugin = require("extract-text-webpack-plugin");
-//const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -36,7 +34,6 @@ module.exports = {
         ]
     },
     plugins: [
-        //new CleanWebpackPlugin('dist', {} ),
         new HtmlWebPackPlugin({
             template: "./src/index.html",
             filename: "./index.html",

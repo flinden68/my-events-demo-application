@@ -37,7 +37,7 @@ router.delete('/event/delete/:eventId', (req: Request, res: Response) => {
 router.get('/event/:eventId', (req: Request, res: Response) => {
     const eventId = req.params.eventId;
     if (eventId.trim()) {
-        eventController.find({id: eventId}).then(function(result) {
+        eventController.findById(eventId).then(function(result) {
             res.send(result);
         });
     } else {
@@ -106,8 +106,9 @@ router.get('/account/email/:email', (req: Request, res: Response) => {
 router.get('/account/id/:id', (req: Request, res: Response) => {
     const id = req.params.id;
     if (id.trim()) {
-        accountController.find({id: id}).then(function(result) {
+        accountController.findById(id).then(function(result) {
             if(result == null){
+
                 res.status(204).send(result);
             }else {
                 res.status(200).send(result);

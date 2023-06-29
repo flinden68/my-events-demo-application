@@ -32,11 +32,15 @@ export class EventController {
     }
 
     async delete(eventId: string) {
-        Event.deleteOne({id: eventId});
+        Event.findByIdAndDelete(eventId);
     }
 
     async find(filter: any):Promise<Document[]> {
         return Event.find(filter);
+    }
+
+    async findById(id: any):Promise<Document[]> {
+        return Event.findById(id);
     }
 }
 
