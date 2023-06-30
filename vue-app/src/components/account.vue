@@ -72,7 +72,7 @@
     import {mapActions, mapState} from "vuex";
 
     export default {
-        name: "account",
+        name: "accountPage",
         data () {
             return {
                 debug : true,

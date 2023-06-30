@@ -41,7 +41,7 @@
     import {mapActions, mapState} from "vuex";
 
     export default {
-        name: "login",
+        name: "loginPage",
         data () {
             return {
                 debug : true,

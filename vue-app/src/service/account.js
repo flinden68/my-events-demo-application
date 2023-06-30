@@ -1,4 +1,4 @@
-import {apiUrl} from "../constants/application";
+import {apiUrl} from "@/constants/application";
 import axios from 'axios';
 //import history from "../history";
 //import { setActiveLanguage } from "react-localize-redux";

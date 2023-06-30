@@ -34,8 +34,8 @@
                                         <td>{{event.title}}</td>
                                         <td>{{event.description}}</td>
                                         <td>{{event.location}}</td>
-                                        <td>{{ new Date(event.start) | moment("DD-MM-YYYY") }}</td>
-                                        <td>{{ new Date(event.end) | moment("DD-MM-YYYY") }}</td>
+                                        <td>{{ format(new Date(event.start), 'dd-MM-yyyy') }}</td>
+                                        <td>{{ format(new Date(event.end), 'dd-MM-yyyy') }}</td>
                                         <td>
                                                 <router-link :to="{ name: 'event_edit', params: { id: event._id }}" class="btn btn-warning">{{ $t('button-edit') }}</router-link>
                                         </td>
@@ -53,8 +53,9 @@
 
 <script>
     import {mapActions, mapState} from 'vuex'
-    import {createIcal} from "../service/calendar";
+    import {createIcal} from "@/service/calendar";
     import FileSaver from 'file-saver';
+    import {format} from "date-fns";
     export default {
         name: "eventList",
         data () {
@@ -63,6 +64,7 @@
             }
         },
         methods: {
+          format,
             ...mapActions('events', [
                 'getAllEventsByUserId',
                 'deleteEvent'
@@ -113,10 +115,8 @@
             }else{
                 this.getAllEventsByUserId(this.account._id);
             }
-
             this.showNoEvents = this.events.length;
         }
-
     }
 </script>
 

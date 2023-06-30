@@ -1,5 +1,5 @@
 import axios from "axios";
-import {apiIcalUrl} from "../constants/application";
+import {apiIcalUrl} from "@/constants/application";
 //const apiUrl = 'http://localhost:4040/api';
 
 

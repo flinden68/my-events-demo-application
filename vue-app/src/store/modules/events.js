@@ -44,7 +44,7 @@ const actions = {
     },
 
     getAllEventsByUserId({commit}, userId) {
-        eventsApi.fetchaAllEventsByUserId(userId)
+        eventsApi.fetchAllEventsByUserId(userId)
             .then(response => {
                     commit('getAllEventsByUserId', response.data)
                 }

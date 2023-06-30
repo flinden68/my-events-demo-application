@@ -1,4 +1,4 @@
-import {apiUrl} from "../constants/application"
+import {apiUrl} from "@/constants/application"
 import axios from 'axios';
 //import history from '../history';
 
@@ -47,7 +47,7 @@ export default {
             });
     },
 
-    fetchaAllEventsByUserId(userid) {
+    fetchAllEventsByUserId(userid) {
         return axios.get(`${apiUrl}/events/${userid}`)
             .then(response => {
                 return response;

@@ -31,22 +31,22 @@
                     <div class="row">
                         <div class="col-6">
                             <label style="margin-right: 10px">{{ $t('field-start-date') }}</label>
-                            <date-picker
+                            <VueDatePicker
                                     v-model="startDate"
                                     lang="en"
                                     type="date"
-                                    format="DD-MM-YYYY">
-                            </date-picker>
+                                    format="dd-MM-yyyy">
+                            </VueDatePicker>
                             <div class="invalid-feedback">{{ $t('field-start-date') }}{{ $t('error-required') }}</div>
                         </div>
                         <div class="col-6">
                             <label style="margin-right: 10px">{{ $t('field-end-date') }}</label>
-                            <date-picker
+                            <VueDatePicker
                                     v-model="endDate"
                                     lang="en"
                                     type="date"
-                                    format="DD-MM-YYYY">
-                            </date-picker>
+                                    format="dd-MM-yyyy">
+                            </VueDatePicker>
                             <div class="invalid-feedback">{{ $t('field-end-date') }}{{ $t('error-required') }}</div>
                         </div>
                     </div>
@@ -65,10 +65,11 @@
 
 <script>
     import {mapActions, mapState} from "vuex";
-    import DatePicker from 'vue2-datepicker'
+    import VueDatePicker from '@vuepic/vue-datepicker';
+    import '@vuepic/vue-datepicker/dist/main.css';
     export default {
         name: "addEvent",
-        components: { DatePicker },
+        components: { VueDatePicker },
         data () {
             return {
                 debug : true,
@@ -159,6 +160,3 @@
         }
     }
 </script>
-
-<style>
-</style>

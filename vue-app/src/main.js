@@ -1,22 +1,23 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
-import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'es6-promise/auto';
 import store from './store';
-import i18n from './lang/lang';
+import i18n from './i18n'
 import './assets/css/global.css';
-import router from './router/router'
+import router from './router/router';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import axios from "axios";
 
-Vue.use(VueAxios, axios)
-Vue.use(require('vue-moment'));
+const app = createApp(App);
+app.component('VueDatePicker', VueDatePicker);
+app.use(VueAxios, axios)
+app.use(store);
+app.use(router);
+app.use(i18n);
+app.provide('axios', app.config.globalProperties.axios)  // provide 'axios'
 
-Vue.config.productionTip = false
+app.mount('#app');
 
-new Vue({
-    store,
-    router,
-    i18n,
-  render: h => h(App)
-}).$mount('#app')
 

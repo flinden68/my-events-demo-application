@@ -1,11 +1,8 @@
-import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
 import en from './locale/en.json'
 import nl from './locale/nl.json'
 import store from '../store';
-
-Vue.use(VueI18n)
 
 const locale = store.state.i18n.locale;
 

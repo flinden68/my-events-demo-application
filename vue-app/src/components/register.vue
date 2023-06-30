@@ -65,7 +65,7 @@
     import {mapActions, mapState} from "vuex";
 
     export default {
-        name: "register",
+        name: "registerPage",
         data () {
             return {
                 debug : true,

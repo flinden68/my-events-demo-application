@@ -1,19 +1,16 @@
-import VueRouter from "vue-router";
-import home from "../components/home";
+import {createRouter, createWebHashHistory} from "vue-router";
+import homePage from "../components/home";
 import eventList from "../components/event-list";
 import addEvent from "../components/add-event";
 import editEvent from "../components/edit-event";
-import login from "../components/login";
-import register from "../components/register";
-import account from "../components/account";
-import Vue from "vue";
-
-Vue.use(VueRouter)
+import loginPage from "../components/login";
+import registerPage from "../components/register";
+import accountPage from "../components/account";
 
 const routes = [
     {
         path: '/',
-        component: home
+        component: homePage
     },
     {
         path: '/events',
@@ -36,45 +33,23 @@ const routes = [
     },
     {
         path: '/login',
-        component: login
+        component: loginPage
     },
     {
         path: '/register',
-        component: register
+        component: registerPage
     },
     {
         path: '/account',
         secure: true,
-        component: account
+        component: accountPage
     }
 ]
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes // short for `routes: routes`
+const router = createRouter({
+    // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+    history: createWebHashHistory(),
+    routes, // short for `routes: routes`
 })
-
-/*router.beforeEach((to, from, next) => {
-    // Look at all routes
-    router.options.routes.forEach((route) => {
-        // If this is the current route and it's secure
-        if (to.matched[0].path === route.path && route.secure) {
-            // Verify that the user isn't logged in
-            console.log("It is a secure route: " + store.state.authenticated);
-
-            if(!store.state.isAuthenticated){
-                return next('/login');
-            }
-            /!*router.app.$http.post('/auth/loggedin').catch((response) => {
-                // Kill the session
-                router.app.$session.destroy();
-                // Route back to the landing
-                return next('/');
-            });*!/
-        }
-    });
-    // Proceed as normal
-    next();
-});*/
 
 export default router
