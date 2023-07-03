@@ -18,11 +18,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ml-auto">
           <li v-bind:active-class="$route.path!== '/events' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/events" class="nav-link">{{ $t('nav-all-events') }}</router-link></li>
           <li v-bind:active-class="$route.path!== '/event/add' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/event/add" class="nav-link">{{ $t('nav-add-event') }}</router-link></li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+      </div>
+      <div class=" d-flex justify-content-end" id="navbarNavAltMarkup1">
+        <ul class="navbar-nav">
           <li class="nav-link nav-item" v-if="!isAuthenticated">Anonymous</li>
           <li class="nav-link nav-item" v-if="isAuthenticated">{{account.name}}</li>
           <li v-bind:active-class="$route.path!== '/account' ? 'active' : ''" v-if="isAuthenticated"><router-link to="/account" class="nav-link">{{ $t('nav-account') }}</router-link></li>
