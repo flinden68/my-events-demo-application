@@ -30,7 +30,7 @@ router.delete('/event/delete/:eventId', (req: Request, res: Response) => {
             res.send(result);
         });
     } else {
-        res.send('UserId could not be found');
+        res.send('Event could not be found');
     }
 });
 
@@ -41,7 +41,7 @@ router.get('/event/:eventId', (req: Request, res: Response) => {
             res.send(result);
         });
     } else {
-        res.send('UserId could not be found');
+        res.send('Event could not be found');
     }
 });
 
@@ -59,7 +59,7 @@ router.get('/events/:userId', (req: Request, res: Response) => {
             res.send(result);
         });
     } else {
-        res.send('UserId could not be found');
+        res.send('Event could not be found');
     }
 });
 

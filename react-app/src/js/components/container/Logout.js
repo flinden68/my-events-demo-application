@@ -1,29 +1,17 @@
-import React, {Component} from 'react'
-import connect from "react-redux/es/connect/connect";
-import '../presentation/form.css';
+import {useEffect} from 'react'
+import {useDispatch} from "react-redux";
 import {logout} from "../../actions/account";
+import {useNavigate} from "react-router";
 
-const mapStateToProps = state => {
-    return { account: state.account };
-};
+const Logout = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    useEffect(() => {
+        dispatch(logout())
+            .then(() => navigate('/login'))
+            .catch(error => console.log(error));
+    }, []);
 
-const mapDispatchToProps = dispatch => {
-    return {
-        logout: () => dispatch(logout())
-    };
-};
-
-class Logout extends Component {
-    constructor(props){
-        super(props);
-    }
-
-    componentWillMount() {
-        this.props.logout()
-    }
-
-    render(){
-        return null;
-    }
+    return null
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Logout)
+export default (Logout)

@@ -1,81 +1,71 @@
-import React from 'react';
-import connect from "react-redux/es/connect/connect";
+import React, {useEffect, useState} from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import '../presentation/form.css';
 import {FormErrors} from "../presentation/FormErrors";
-import { Translate } from "react-localize-redux";
+import {Translate} from "react-localize-redux";
+import useAuth from "../../hooks/useAuth";
 
 const labelStyle = {
     marginRight: '10px'
 };
 
-const mapStateToProps = state => {
-    return {
-        account: state.account
-    };
-};
+const EventForm = (props) => {
+    const {account} = useAuth()
+    const [formErrors, setFormErrors] = useState({title: '', description: '', location: ''})
+    const [titleValid, setTitleValid] = useState(true)
+    const [descriptionValid, setDescriptionValid] = useState(true)
+    const [locationValid, setLocationValid] = useState(true)
+    const [formValid, setFormValid] = useState(true)
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [startInput, setStartInput] = useState(new Date())
+    const [endInput, setEndInput] = useState(new Date())
+    const [userId, setUserId] = useState(account._id)
+    const [location, setLocation] = useState("")
+    const [created, setCreated] = useState(new Date())
+    const [modified, setModified] = useState(new Date())
 
-class EventForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: props.event ? props.event.title : "",
-            description: props.event ? props.event.description : "",
-            startInput: props.event ? new Date(props.event.start) : new Date(),
-            endInput: props.event ? new Date(props.event.end) : new Date(),
-            userId: props.event ? props.event.userId : props.account._id,
-            location: props.event ? props.event.location : "",
-            created: props.event ? props.event.created : new Date(),
-            modified: props.event ? props.event.modified : new Date(),
+    useEffect(() => {
+        const {event} = props;
 
-            formErrors: {title: '', description: '', location: ''},
-            titleValid: true,
-            descriptionValid: true,
-            locationValid:true,
-            formValid: true
+        if(event != null) {
+            setTitle(event.title)
+            setDescription(event.description)
+            setStartInput(new Date(event.start))
+            setEndInput(new Date(event.end))
+            setLocation(event.location)
+            setCreated(event.created)
+            setModified(event.modified)
+        }
+    }, [props.event]);
 
-        };
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
-        this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
-        this.handleChangeDescription = this.handleChangeDescription.bind(this);
-        this.handleChangeTitle = this.handleChangeTitle.bind(this);
-        this.handleChangeLocation = this.handleChangeLocation.bind(this);
+    const handleChangeTitle = (e) => {
+        setTitle(e.target.value);
     }
 
-    handleChangeTitle(e) {
-        const value = e.target.value;
-        //console.log('title-' + value);
-        this.setState({ title: value });
+    const handleChangeDescription = (e) => {
+        setDescription(e.target.value)
     }
 
-    handleChangeDescription(e) {
-        const value = e.target.value;
-        //console.log('description-' + value);
-        this.setState({ description: value });
+    const handleChangeStartDate = (date) => {
+        setStartInput(date)
     }
 
-    handleChangeStartDate(date) {
-        this.setState({ startInput: date });
+    const handleChangeEndDate = (date) => {
+       setEndInput(date)
     }
 
-    handleChangeEndDate(date) {
-        this.setState({ endInput: date });
+    const handleChangeLocation = (e) => {
+        setLocation(e.target.value)
     }
 
-    handleChangeLocation(e) {
-        const value = e.target.value;
-        this.setState({ location: value });
-    }
-
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let titleValid = this.state.titleValid;
-        let descriptionValid = this.state.descriptionValid;
-        let locationValid = this.state.locationValid;
+    const validateField = (fieldName, value) => {
+        let fieldValidationErrors = formErrors;
+        let titleValid = titleValid;
+        let descriptionValid = descriptionValid;
+        let locationValid = locationValid;
 
         switch(fieldName) {
             case 'title':
@@ -87,89 +77,93 @@ class EventForm extends React.Component {
                 fieldValidationErrors.description = descriptionValid ? '': 'error-required';
                 break;
             case 'location':
-                descriptionValid = value.length > 0;
+                locationValid = value.length > 0;
                 fieldValidationErrors.location = locationValid ? '': 'error-required';
                 break;
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
-            titleValid: titleValid,
-            descriptionValid: descriptionValid,
-            locationValid: locationValid
-        }, this.validateForm);
+
+        setFormErrors(fieldValidationErrors);
+        setTitleValid(titleValid);
+        setDescriptionValid(descriptionValid);
+        setLocationValid(locationValid);
+        validateForm();
     }
 
-    validateForm() {
-        this.setState({formValid: this.state.titleValid && this.state.descriptionValid && this.state.locationValid});
+    const validateForm = () =>{
+        setFormValid(titleValid && descriptionValid && locationValid);
     }
 
-    errorClass(error) {
+    const errorClass = (error) =>{
         return(error.length === 0 ? '' : 'has-error');
     }
 
-    isFormValid(){
-        return JSON.stringify(this.state.formErrors ).indexOf('error-required') < 0
+    const isFormValid = () =>{
+        return JSON.stringify(formErrors ).indexOf('error-required') < 0
     }
 
-    onSubmit(e){
+    const onSubmit = (e) =>{
 
         e.preventDefault();
 
-        this.validateField('title', this.state.title);
-        this.validateField('description', this.state.description);
-        this.validateField('location', this.state.location);
-        if(this.isFormValid()){
+        validateField('title', title);
+        validateField('description', description);
+        validateField('location', location);
+        if(isFormValid()){
 
-            let event = {
-                title: this.state.title,
-                description: this.state.description,
-                start: new Date(this.state.startInput).getTime(),
-                end: new Date(this.state.endInput).getTime(),
-                location: this.state.location,
-                userId: this.state.userId,
-                created: this.state.created,
-                modified: this.state.modified
+            let eventUpdate = {
+                title: title,
+                description: description,
+                start: new Date(startInput).getTime(),
+                end: new Date(endInput).getTime(),
+                location: location,
+                userId: userId,
+                created: created,
+                modified: modified
             }
 
-            this.props.onSubmitEvent(event);
+            const {onSubmitEvent} = props;
+
+            if (onSubmitEvent && typeof onSubmitEvent === 'function') {
+                onSubmitEvent(eventUpdate);
+            }
         }
 
     }
 
-    render() {
-        return (
+    return (
             <div>
-            <form onSubmit={this.onSubmit}>
-                { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                <div className={`form-group ${this.errorClass(this.state.formErrors.title)}`}>
+            <form onSubmit={onSubmit}>
+                { !formValid ? <FormErrors formErrors={formErrors} /> : "" }
+                <div className={`form-group ${errorClass(formErrors.title)}`}>
                     <label htmlFor="title"><Translate id="field-title"></Translate></label>
                     <input
                         className="form-control"
                         type="text"
                         id="title"
-                        value={this.state.title}
-                        onChange={this.handleChangeTitle}
+                        value={title}
+                        onChange={handleChangeTitle}
                     />
                 </div>
-                <div className={`form-group ${this.errorClass(this.state.formErrors.description)}`}>
+                <div className={`form-group ${errorClass(formErrors.description)}`}>
                     <label htmlFor="description"><Translate id="field-description"></Translate></label>
                     <input
                         className="form-control"
                         type="textarea"
                         id="description"
-                        value={this.state.description}
-                        onChange={this.handleChangeDescription}
+                        value={description}
+                        onChange={handleChangeDescription}
                     />
                 </div>
-                <div className={`form-group ${this.errorClass(this.state.formErrors.location)}`}>
+                <div className={`form-group ${errorClass(formErrors.location)}`}>
                     <label htmlFor="location"><Translate id="field-location"></Translate></label>
                     <input
                         className="form-control"
                         type="text"
                         id="location"
-                        value={this.state.location}
-                        onChange={this.handleChangeLocation}
+                        value={location}
+                        onChange={handleChangeLocation}
                     />
                 </div>
                 <div className="form-group">
@@ -181,8 +175,8 @@ class EventForm extends React.Component {
                             <DatePicker
                                 id="start_date"
                                 className="form-control"
-                                selected={this.state.startInput}
-                                onChange={this.handleChangeStartDate}
+                                selected={startInput}
+                                onChange={handleChangeStartDate}
                                 dateFormat="dd-MM-yyyy"
                             />
                         </div>
@@ -193,8 +187,8 @@ class EventForm extends React.Component {
                             <DatePicker
                                 id="end_date"
                                 className="form-control"
-                                selected={this.state.endInput}
-                                onChange={this.handleChangeEndDate}
+                                selected={endInput}
+                                onChange={handleChangeEndDate}
                                 dateFormat="dd-MM-yyyy"
                             />
                         </div>
@@ -208,8 +202,7 @@ class EventForm extends React.Component {
                 </button>
             </form>
             </div>
-        );
-    }
+    )
 }
 
-export default connect(mapStateToProps)(EventForm);
+export default (EventForm);

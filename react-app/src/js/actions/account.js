@@ -1,14 +1,7 @@
-import {
-    ADD_ACCOUNT,
-    DELETE_ACCOUNT,
-    GET_ACCOUNT,
-    UPDATE_ACCOUNT,
-    LOGOUT
-} from "../constants/action-types";
+import {ADD_ACCOUNT, DELETE_ACCOUNT, GET_ACCOUNT, LOGOUT, UPDATE_ACCOUNT} from "../constants/action-types";
 import {apiUrl} from "../constants/application";
 import axios from 'axios';
-import history from "../history";
-import { setActiveLanguage } from "react-localize-redux";
+import {setActiveLanguage} from "react-localize-redux";
 
 //const apiUrl = 'http://localhost:3535/api';
 
@@ -17,11 +10,11 @@ import { setActiveLanguage } from "react-localize-redux";
 
 //export const getEvents = events => ({ type: GET_EVENTS, payload: events });
 
-export const logout = () =>{
-    return (dispatch) => {
+export const logout = () => dispatch =>{
+    return new Promise(async (resolve, reject) => {
         dispatch(logoutSuccess(null))
-        history.push('/login')
-    }
+        resolve()
+    })
 }
 
 export const logoutSuccess = (languageCode) =>{
@@ -31,17 +24,19 @@ export const logoutSuccess = (languageCode) =>{
     }
 }
 
-export const createAccount = (account) => {
-    return (dispatch) => {
-        return axios.post(`${apiUrl}/account/create`, event)
+export const createAccount = (account) => dispatch => {
+    return new Promise(async (resolve, reject) => {
+        return axios.post(`${apiUrl}/account/create`, account)
             .then(response => {
                 dispatch(createAccountSuccess(response.data))
                 dispatch(setActiveLanguage(response.data.language))
+                resolve();
             })
             .catch(error => {
-                throw(error);
+                console.error(error)
+                reject()
             });
-    };
+    });
 };
 
 export const createAccountSuccess =  (data) => {
@@ -51,17 +46,21 @@ export const createAccountSuccess =  (data) => {
     }
 };
 
-export const updateAccount = (id, account) => {
-    return (dispatch) => {
+export const updateAccount = (id, account) => dispatch => {
+
+    return new Promise(async (resolve, reject) => {
+        console.log(account)
         return axios.put(`${apiUrl}/account/update/${id}`, account)
             .then(response => {
+                console.log(response.data)
                 dispatch(updateAccountSuccess(response.data))
                 dispatch(setActiveLanguage(response.data.language))
+                resolve()
             })
             .catch(error => {
                 throw(error);
             });
-    };
+    });
 };
 
 export const updateAccountSuccess =  (data) => {
@@ -109,47 +108,26 @@ export const fetchAccountByEmail = email => {
     };
 };
 
-
-export const fetchAccountById = id => {
-    return (dispatch) => {
-        return axios.get(`${apiUrl}/account/id/${id}`)
-            .then(response => {
-                if(response.status == 204){
-                    dispatch(fetchAccountSuccess(null))
-                    history.push('/login')
-                }else{
-                    dispatch(fetchAccountSuccess(response.data))
-                    history.push('/events')
-                }
-            })
-            .catch(error => {
-                throw(error);
-            });
-    };
-};
-
-export const fetchAccount = account => {
-    return (dispatch) => {
+export const fetchAccount = account => dispatch => {
+    return new Promise(async (resolve, reject) => {
         return axios.get(`${apiUrl}/account/id/${account._id}`)
             .then(response => {
                 if(response.status === 204){
                     dispatch(fetchAccountSuccess(null))
-                    history.push('/login')
+                    reject()
                 }else{
                     if(response.data.email !== account.email){
                         dispatch(fetchAccountSuccess(account))
-                        history.push('/login')
+                        reject();
                     }else {
                         dispatch(fetchAccountSuccess(response.data))
-
                         dispatch(setActiveLanguage(response.data.language))
-
-                        history.push('/events')
+                        resolve();
                     }
                 }
             })
             .catch(error => {
                 throw(error);
             });
-    };
+    });
 };

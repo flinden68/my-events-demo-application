@@ -1,51 +1,34 @@
-import React, {Component} from 'react'
-import connect from "react-redux/es/connect/connect";
+import React, {useState} from 'react'
 import {createAccount} from "../../actions/account";
 import {FormErrors} from "../presentation/FormErrors";
-import { Translate, getActiveLanguage } from "react-localize-redux";
+import {Translate} from "react-localize-redux";
+import {useDispatch} from "react-redux";
+import useAuth from "../../hooks/useAuth";
+import useLocalize from "../../hooks/useLocalize";
+import {useNavigate} from "react-router";
 
-const mapStateToProps = state => {
-    return { 
-        account: state.account,
-        currentLanguage: getActiveLanguage(state.localize).code
-    };
-};
+const Register = () => {
+    const navigate = useNavigate();
+    const account = useAuth();
+    const {code} = useLocalize();
+    const dispatch = useDispatch()
+    const [formErrors, setFormErrors] = useState({email: ""})
+    const [emailValid, setEmailValid] = useState(true)
+    const [formValid, setFormValid] = useState(true)
+    const [email, setEmail] = useState("")
+    const [language, setLanguage] = useState(code)
 
-const mapDispatchToProps = dispatch => {
-    return {
-        createAccount: (account) => dispatch(createAccount(account))
-    };
-};
-
-class Register extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            email: "",//props.account ? props.account.email : "",
-            language: props.currentLanguage,
-            formErrors: {email: ''},
-            emailValid: true,
-            formValid: true,
-        }
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.handleEmailInput = this.handleEmailInput.bind(this);
-        this.handleLanguageInput = this.handleLanguageInput.bind(this);
+    const handleEmailInput = (e) => {
+        setEmail(e.target.value)
     }
 
-    handleEmailInput(e){
-        const value = e.target.value;
-        this.setState({email: value});
+    const handleLanguageInput = (e) => {
+        setLanguage(e.target.value)
     }
 
-    handleLanguageInput(e){
-        const value = e.target.value;
-        this.setState({language: value});
-    }
-
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let emailValid = this.state.emailValid;
+    const validateField = (fieldName, value) => {
+        let fieldValidationErrors = formErrors;
+        let emailValid = emailValid;
 
         switch(fieldName) {
             case 'email':
@@ -55,62 +38,63 @@ class Register extends Component {
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
-            emailValid: emailValid
-        }, this.validateForm);
+        setFormErrors(fieldValidationErrors)
+        setEmailValid(emailValid)
+        validateForm()
     }
 
-    validateForm() {
-        this.setState({formValid: this.state.emailValid });
+    const validateForm = () => {
+        setFormValid(emailValid)
     }
 
-    errorClass(error) {
+    const errorClass = (error) => {
         return(error.length === 0 ? '' : 'has-error');
     }
 
-    isFormValid(){
-        return JSON.stringify(this.state.formErrors).indexOf('error-required') < 0
+    const isFormValid = () => {
+        return JSON.stringify(formErrors).indexOf('error-required') < 0
     }
 
-    onSubmit(e){
+    const onSubmit = (e) => {
 
         e.preventDefault();
-        this.validateField('email', this.state.email);
-        
-        if(this.isFormValid()){
-            let account = {
-                email : this.state.email,
-                language : this.state.language,
+        validateField('email', email);
+
+        if(isFormValid()) {
+            let accountNew = {
+                email : email,
+                language : language,
                 _class: "nl.elstarit.event.service.model.Account"
             }
 
-            console.log("account: " + JSON.stringify(account))
+            console.log("account: " + JSON.stringify(accountNew))
             //this.props.createAccount(account);
+            dispatch(createAccount(accountNew))
+                .then(() => navigate('/account'))
+                .catch(error => console.log(error));
         }
-
     }
 
-    render(){
-        return (
+    return (
             <div>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={onSubmit}>
                     <h2><Translate id="title-register"></Translate></h2>
-                    { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                    { !formValid ? <FormErrors formErrors={formErrors} /> : "" }
+                    <div className={`form-group ${errorClass(formErrors.email)}`}>
                         <label><Translate id="field-email"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="email"
                             placeholder=""
-                            value={this.state.email}
-                            onChange={this.handleEmailInput}
+                            value={email}
+                            onChange={handleEmailInput}
                         />
                     </div>
                     <div className={`form-group`}>
                         <label><Translate id="field-language"></Translate></label>
                         <br />
-                        <div className="form-check-inline">                   
+                        <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input
                                     className="form-check-input"
@@ -118,14 +102,14 @@ class Register extends Component {
                                     id="language"
                                     placeholder=""
                                     value="en"
-                                    onChange={this.handleLanguageInput}
-                                    checked={this.state.language == 'en'}
+                                    onChange={handleLanguageInput}
+                                    checked={language === 'en'}
                                 />
                                 <Translate id='language-en'></Translate>
                             </label>
                         </div>
-                        
-                        <div className="form-check-inline"> 
+
+                        <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input
                                     className="form-check-input"
@@ -133,8 +117,8 @@ class Register extends Component {
                                     id="language"
                                     placeholder=""
                                     value="nl"
-                                    onChange={this.handleLanguageInput}
-                                    checked={this.state.language == 'nl'}
+                                    onChange={handleLanguageInput}
+                                    checked={language === 'nl'}
                                 />
                                 <Translate id='language-nl'></Translate>
                             </label>
@@ -146,7 +130,6 @@ class Register extends Component {
                 </form>
             </div>
         )
-    }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Register)
+export default (Register)

@@ -1,66 +1,58 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import {deleteEvent, fetchaAllEventsByUserId, fetchAllEvents} from "../../actions/events";
-import { Link } from 'react-router-dom'
-import { Translate } from "react-localize-redux";
+import React, {useEffect, useState} from "react";
+import {Link} from 'react-router-dom'
+import {Translate} from "react-localize-redux";
 import {createIcal} from "../../service/calendar";
 import saveAs from 'file-saver';
+import useAuth from "../../hooks/useAuth";
+import {deleteEvent, fetchAllEventsByUserId} from "../../service/events";
 
-const mapStateToProps = state => {
-    return {
-        events: state.events,
-        account: state.account
-    };
-};
+const EventList = () => {
+    const { account } = useAuth();
+    const [events, setEvents] = useState([])
+    const name = "";
+    const email = "";
 
-const mapDispatchToProps = dispatch => {
-    return {
-        deleteEvent: event => dispatch(deleteEvent(event)),
-        fetchEventsById: (id) => dispatch(fetchaAllEventsByUserId(id)),
-    };
-};
-class EventList extends Component {
+    useEffect(() => {
+        reloadEvents()
+    },[]);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            name: props.account ? props.account.name : "",
-            email: props.account ? props.account.email : "",
-        }
-        this.deleteEvent = this.deleteEvent.bind(this);
-        this.exportEvents = this.exportEvents.bind(this);
-        //this.props.fetchAllEvents();
-    }
-
-    componentWillMount(){
-        //console.log('account:' + JSON.stringify(this.props.account))
-        this.props.fetchEventsById(this.props.account._id);
-    }
-
-    deleteEvent(e, event){
+    const dEvent = (e, eventId) =>{
         e.preventDefault();
-        this.props.deleteEvent(event);
+        console.log("Delete event with Id: " + eventId)
+        deleteEvent(eventId)
+            .then((response) => {
+                console.log("Delete successful");
+                reloadEvents()
+            }
+         )
+            .catch((e) => {
+                console.log("Delete unsuccessful", e);
+            })
     }
 
-    getDomain(){
-        let domain = this.state.email.substring(this.state.email.indexOf("@") + 1, this.state.email.length);
-        return domain;
+    const getDomain = () =>{
+        return this.email.substring(email.indexOf("@") + 1, email.length);
     }
 
-    getTimezone(){
-        let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        return timezone;
+    const getTimezone = () =>{
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
 
-    reloadEvents(){
-        this.props.fetchEventsById(this.props.account._id);
+    const reloadEvents = () => {
+        fetchAllEventsByUserId(account._id)
+            .then((response) => {
+                setEvents(response)
+            })
+            .catch((e) => {
+                console.log(e);
+            });
     }
 
-    exportEvents(e){
+    const exportEvents = (e) =>{
         e.preventDefault();
 
         let payload = {
-            organizer: this.state.name + " <" + this.state.email + ">",
+            organizer: name + " <" + email + ">",
             domain : this.getDomain(),
             timezone : this.getTimezone(),
             events: this.props.events
@@ -74,21 +66,19 @@ class EventList extends Component {
             .catch(error => {
                 throw(error);
             });
-
     }
 
-    render() {
-        return (
+    return (
             <div>
                 <h2><Translate id="title-my-events"></Translate></h2>
-                <div id="no-events" style={{display: (this.props.events.length > 0) ? 'none' : 'block' }}  className='alert alert-info'>
+                <div id="no-events" style={{display: (events.length > 0) ? 'none' : 'block' }}  className='alert alert-info'>
                     <Translate id="message-no-events"></Translate>
                 </div>
-                <div id="export-events" className="button-row1" style={{display: (this.props.events.length > 0) ? 'block' : 'none' }}>
-                    <button className="btn btn-primary float-left" onClick={(e) => this.reloadEvents()}>
+                <div id="export-events" className="button-row1" style={{display: (events.length > 0) ? 'block' : 'none' }}>
+                    <button className="btn btn-primary float-left" onClick={(e) => reloadEvents()}>
                         <Translate id="button-refresh"></Translate>
                     </button>
-                    <button type="submit" className="btn btn-success float-right" onClick={(e) => this.exportEvents(e)}>
+                    <button type="submit" className="btn btn-success float-right" onClick={(e) => exportEvents(e)}>
                         <Translate id="button-export"></Translate>
                     </button>
                 </div>
@@ -106,7 +96,7 @@ class EventList extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.props.events.map(event => (
+                    {events && events.map(event => (
                         <tr scope="row" key={event._id}>
                             <td>{event.title}</td>
                             <td>{event.description}</td>
@@ -119,7 +109,7 @@ class EventList extends Component {
                                 </Link>
                             </td>
                             <td>
-                                <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteEvent(e, event)}>
+                                <button type="submit" className="btn btn-danger" onClick={(e) => dEvent(e, event._id)}>
                                     <Translate id="button-delete"></Translate>
                                 </button>
 
@@ -131,6 +121,5 @@ class EventList extends Component {
 
             </div>
         )
-    }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(EventList);
+export default EventList;

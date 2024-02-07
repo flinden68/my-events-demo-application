@@ -1,19 +1,43 @@
 import {ADD_ACCOUNT, DELETE_ACCOUNT, GET_ACCOUNT, UPDATE_ACCOUNT, LOGOUT} from "../constants/action-types";
 
-const account = (state = null, action) => {
+const initialState = {
+    isLoggedIn: false,
+    account: {}
+};
+const reducerAuth = (state = initialState, action) => {
     switch (action.type) {
         case ADD_ACCOUNT:
-            return action.payload;
+            return {
+                ...state,
+                account: action.payload,
+                isLoggedIn: true
+            };
         case UPDATE_ACCOUNT:
-            return action.payload;
+            return {
+                ...state,
+                account: action.payload,
+                isLoggedIn: true
+            };
         case DELETE_ACCOUNT:
-            return null;
+            return {
+                ...state,
+                account: null,
+                isLoggedIn: false
+            };
         case GET_ACCOUNT:
-            return action.payload;
+            return {
+                ...state,
+                account: action.payload,
+                isLoggedIn: true
+            };
         case LOGOUT:
-            return null;
+            return {
+                ...state,
+                account: null,
+                isLoggedIn: false
+            };
         default:
-            return state;
+            return {...state};
     }
 };
-export default account;
+export default reducerAuth;

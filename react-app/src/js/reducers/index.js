@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import events from "./events";
-import account from "./account";
 import { localizeReducer } from 'react-localize-redux';
+import reducerAuth from "./account";
 
 export default combineReducers({
     localize: localizeReducer,
     events,
-    account
+    auth: reducerAuth
 })

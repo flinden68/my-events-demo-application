@@ -1,53 +1,28 @@
-import React, {Component} from 'react'
-import connect from "react-redux/es/connect/connect";
+import React, {useState} from 'react'
+import {useDispatch} from "react-redux";
 import '../presentation/form.css';
 import {fetchAccount} from "../../actions/account";
 import {FormErrors} from "../presentation/FormErrors";
 import {Link} from "react-router-dom";
 
-import { Translate } from "react-localize-redux";
+import {Translate} from "react-localize-redux";
+import {useNavigate} from "react-router";
 
-const mapStateToProps = state => {
-    return { account: state.account };
-};
+const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [account, setAccount] = useState(null);
+    const [formErrors, setFormErrors] = useState({accessCode: "", email: ""})
+    const [accessCodeValid, setAccessCodeValid] = useState(true)
+    const [emailValid, setEmailValid] = useState(true)
+    const [formValid, setFormValid] = useState(true)
+    const [email, setEmail] = useState("")
+    const [accessCode, setAccessCode] = useState("")
 
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchAccount: (account) => dispatch(fetchAccount(account))
-    };
-};
-
-class Login extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            accessCode: "",//props.account ? props.account.accessCode : "",
-            email: "",//props.account ? props.account.email : "",
-            formErrors: {accessCode: '', email: ''},
-            accessCodeValid: true,
-            emailValid: true,
-            formValid: true
-        }
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.handleAccessCodeInput = this.handleAccessCodeInput.bind(this);
-        this.handleEmailInput = this.handleEmailInput.bind(this);
-    }
-
-    handleAccessCodeInput(e){
-        const value = e.target.value;
-        this.setState({accessCode: value});
-    }
-
-    handleEmailInput(e){
-        const value = e.target.value;
-        this.setState({email: value});
-    }
-
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let emailValid = this.state.emailValid;
-        let accessCodeValid = this.state.accessCodeValid;
+    const validateField=(fieldName, value)=> {
+        let fieldValidationErrors = formErrors;
+        let emailValid = emailValid;
+        let accessCodeValid = accessCodeValid;
 
         switch(fieldName) {
             case 'email':
@@ -61,55 +36,54 @@ class Login extends Component {
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
-            accessCodeValid: accessCodeValid,
-            emailValid: emailValid
-        }, this.validateForm);
+        setFormErrors(fieldValidationErrors)
+        setAccessCodeValid(accessCodeValid)
+        setEmailValid(emailValid)
+
+        validateForm()
     }
 
-    validateForm() {
-        this.setState({formValid: this.state.accessCodeValid && this.state.emailValid });
+    const validateForm=()=> {
+        setFormValid(accessCodeValid && emailValid)
     }
 
-    errorClass(error) {
+    const errorClass=(error) =>{
         return(error.length === 0 ? '' : 'has-error');
-    } 
-
-    isFormValid(){
-        return JSON.stringify(this.state.formErrors).indexOf('error-required') < 0
     }
 
-    onSubmit(e){
+    const isFormValid=()=>{
+        return JSON.stringify(formErrors).indexOf('error-required') < 0
+    }
+
+    const onSubmit = (e)=>{
         e.preventDefault();
+        validateField('email', email);
+        validateField('accessCode', accessCode);
 
-        this.validateField('email', this.state.email);
-        this.validateField('accessCode', this.state.accessCode);
-
-        if(this.isFormValid()){
-            let account = {
-                _id: this.state.accessCode,
-                email : this.state.email,
+        if(isFormValid()){
+            dispatch(fetchAccount({
+                _id: accessCode,
+                email : email,
                 _class: "nl.elstarit.event.service.model.Account"
-            }
-            this.props.fetchAccount(account);
+            }))
+                .then(() => navigate('/events'))
+                .catch(error => console.log(error));
         }
 
     }
 
-    render(){
-        
-        return (
+    return (
             <div>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={onSubmit}>
                     <h2><Translate id="title-login"></Translate></h2>
-                    { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                    <div id="no_account" style={{display: (this.props.account != null) ? 'block' : 'none' }}>
+                    { !formValid ? <FormErrors formErrors={formErrors} /> : "" }
+                    <div id="no_account" style={{display: (account != null) ? 'block' : 'none' }}>
                         <p>
                             <span className="no-account-text"><Translate id="message-info-register"></Translate></span>
                             <Link to='/events' className='btn btn-primary'><Translate id="button-register"></Translate></Link>
                         </p>
                     </div>
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                    <div className={`form-group ${errorClass(formErrors.email)}`}>
 
                         <label><Translate id="field-email"></Translate></label>
 
@@ -118,19 +92,21 @@ class Login extends Component {
                             type="text"
                             id="email"
                             placeholder=""
-                            value={this.state.email}
-                            onChange={this.handleEmailInput}
+                            name = "email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.accessCode)}`}>
+                    <div className={`form-group ${errorClass(formErrors.accessCode)}`}>
                         <label><Translate id="field-accessCode"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="accessCode"
                             placeholder=""
-                            value={this.state.accessCode}
-                            onChange={this.handleAccessCodeInput}
+                            name = "accessCode"
+                            value={accessCode}
+                            onChange={(e) => setAccessCode(e.target.value)}
                         />
                     </div>
                     <button type="submit" className="btn btn-success float-right">
@@ -140,7 +116,6 @@ class Login extends Component {
 
             </div>
         )
-    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default Login

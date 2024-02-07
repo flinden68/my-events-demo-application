@@ -1,6 +1,5 @@
 import React from 'react';
-import { withLocalize, Translate } from 'react-localize-redux';
-import { Link} from "react-router-dom";
+import {Translate, withLocalize} from 'react-localize-redux';
 import './language.css';
 
 const LanguageToggle = ({languages, activeLanguage, setActiveLanguage}) => {
@@ -10,15 +9,15 @@ const LanguageToggle = ({languages, activeLanguage, setActiveLanguage}) => {
 
   return (
     <div id="language-bar" className="language-bar">
-      {/*<ul className="language-list">
-        {languages.map(lang => 
+      <ul className="language-list">
+        {languages.map(lang =>
           <li key={ lang.code }>
             <a className={getClass(lang.code)} onClick={() => setActiveLanguage(lang.code)}>
                   <Translate id={'language-'+lang.code}></Translate>
-              </a>       
+              </a>
           </li>
         )}
-        </ul>*/}
+        </ul>
     </div>
   );
 };

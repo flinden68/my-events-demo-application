@@ -1,68 +1,55 @@
-import React, {Component, bindActionCreators} from 'react'
-import connect from "react-redux/es/connect/connect";
-import { updateAccount } from '../../actions/account';
+import React, {useEffect, useState} from 'react'
+import {useDispatch} from "react-redux";
+import {updateAccount} from '../../actions/account';
 import {FormErrors} from "../presentation/FormErrors";
-import { Translate, getActiveLanguage, setActiveLanguage } from "react-localize-redux";
+import {setActiveLanguage, Translate} from "react-localize-redux";
 import '../presentation/form.css';
+import useLocalize from "../../hooks/useLocalize";
+import useAuth from "../../hooks/useAuth";
 
-const mapStateToProps = state => {
-    return { 
-        account: state.account,
-        currentLanguage: getActiveLanguage(state.localize).code
-     };
-};
+const Account = () => {
+    const dispatch = useDispatch();
+    const {account} = useAuth();
+    const {code} = useLocalize();
+    const [formErrors, setFormErrors] = useState({name: "", email: ""})
+    const [nameValid, setNameValid] = useState(true)
+    const [emailValid, setEmailValid] = useState(true)
+    const [formValid, setFormValid] = useState(true)
+    const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [accessCode, setAccessCode] = useState("")
+    const [language, setLanguage] = useState(code)
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateAccount: (id, account) => dispatch(updateAccount(id, account)),
-        setActiveLanguage: (code) => dispatch(setActiveLanguage(code))
-    };
-};
-
-class Account extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            accessCode: props.account ? props.account._id : "",
-            name: props.account ? props.account.name : "",
-            email: props.account ? props.account.email : "",
-            language: props.account ? props.account.language : props.currentLanguage,
-            formErrors: {email: '',name: ''},
-            emailValid: true,
-            nameValid: true,
-            formValid: true
+    useEffect(() => {
+        if(account != null) {
+            setName(account.name);
+            setEmail(account.email);
+            setLanguage(account.language);
+            setAccessCode(account._id)
         }
-
-        this.onSubmit = this.onSubmit.bind(this);
-        this.handleEmailInput = this.handleEmailInput.bind(this);
-        this.handleNameInput = this.handleNameInput.bind(this);
-        this.handleLanguageInput = this.handleLanguageInput.bind(this);
-    }
-
-    handleEmailInput(e){
+    }, []);
+    const handleEmailInput = (e) => {
         const value = e.target.value;
-        this.setState({email: value});
+        setEmail(e.target.value)
     }
 
-    handleNameInput(e){
-        const value = e.target.value;
-        this.setState({name: value});
+    const handleNameInput = (e) => {
+        setName(e.target.value)
     }
 
-    handleLanguageInput(e){
-        const value = e.target.value;
-        this.setState({language: value},
-            this.changeLanguage(value));
+    const handleLanguageInput = (e) => {
+        setLanguage(e.target.value)
+        changeLanguage(e.target.value);
     }
 
-    changeLanguage(languageCode){
-        this.props.setActiveLanguage(languageCode);
+    const changeLanguage = (languageCode) =>{
+        setActiveLanguage(languageCode);
     }
 
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let emailValid = this.state.emailValid;
-        let nameValid = this.state.nameValid;
+    const validateField = (fieldName, value) => {
+        let fieldValidationErrors = formErrors;
+        let emailValid = emailValid;
+        let nameValid = nameValid;
 
         switch(fieldName) {
             case 'email':
@@ -76,82 +63,81 @@ class Account extends Component {
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
-            emailValid: emailValid,
-            nameValid: nameValid
-        }, this.validateForm);
+        setFormErrors(fieldValidationErrors);
+        setEmailValid(emailValid);
+        setName(nameValid);
+        validateForm()
     }
 
-    validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.nameValid });
+    const validateForm = () => {
+        setFormValid(emailValid && nameValid);
     }
 
-    errorClass(error) {
+    const errorClass = (error) => {
         return(error.length === 0 ? '' : 'has-error');
     }
 
-    isFormValid(){
-        return JSON.stringify(this.state.formErrors).indexOf('error-required') < 0
+    const isFormValid = () =>{
+        return JSON.stringify(formErrors).indexOf('error-required') < 0
     }
 
-    onSubmit(e){
+    const onSubmit = (e) =>{
         e.preventDefault();
 
-        this.validateField('email', this.state.email);
-        this.validateField('name', this.state.name);
+        validateField('email', email);
+        validateField('name', name);
 
-        if(this.isFormValid()){
+        if(isFormValid()){
             let accountUpdate = {
-                _id: this.props.account._id,
-                email : this.state.email,
-                name : this.state.name,
-                language : this.state.language,
+                _id: account._id,
+                email : email,
+                name : name,
+                language : language,
                 _class: "nl.elstarit.event.service.model.Account"
             }
 
-            this.props.updateAccount(accountUpdate.id, accountUpdate);
+            dispatch(updateAccount(accountUpdate._id, accountUpdate));
         }
 
     }
 
-    render(){
-        return (
+    return (
             <div>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={onSubmit}>
                     <h2>Account</h2>
-                    { !this.state.formValid ? <FormErrors formErrors={this.state.formErrors} /> : "" }
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.name)}`}>
+                    { !formValid ? <FormErrors formErrors={formErrors} /> : "" }
+                    <div className={`form-group ${errorClass(formErrors.name)}`}>
                         <label><Translate id="field-name"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="name"
                             placeholder="Name"
-                            value={this.state.name}
-                            onChange={this.handleNameInput}
+                            value={name}
+                            onChange={handleNameInput}
                         />
                     </div>
-                    <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                    <div className={`form-group ${errorClass(formErrors.email)}`}>
                         <label><Translate id="field-email"></Translate></label>
                         <input
                             className="form-control"
                             type="text"
                             id="email"
                             placeholder="Email address"
-                            value={this.state.email}
-                            onChange={this.handleEmailInput}
+                            value={email}
+                            onChange={handleEmailInput}
                         />
                     </div>
                     <div className="form-group">
                         <label><Translate id="field-accessCode"></Translate></label>
                         <div className="form-control no-border">
-                            <span>{this.state.accessCode}</span>
+                            <span>{accessCode}</span>
                         </div>
                     </div>
                     <div className={`form-group`}>
                         <label><Translate id="field-language"></Translate></label>
                         <br />
-                        <div className="form-check-inline">                   
+                        <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input
                                     className="form-check-input"
@@ -159,14 +145,14 @@ class Account extends Component {
                                     id="language"
                                     placeholder=""
                                     value="en"
-                                    onChange={this.handleLanguageInput}
-                                    checked={this.state.language == 'en'}
+                                    onChange={handleLanguageInput}
+                                    checked={language === 'en'}
                                 />
                                 <Translate id='language-en'></Translate>
                             </label>
                         </div>
-                        
-                        <div className="form-check-inline"> 
+
+                        <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input
                                     className="form-check-input"
@@ -174,8 +160,8 @@ class Account extends Component {
                                     id="language"
                                     placeholder=""
                                     value="nl"
-                                    onChange={this.handleLanguageInput}
-                                    checked={this.state.language == 'nl'}
+                                    onChange={handleLanguageInput}
+                                    checked={language === 'nl'}
                                 />
                                 <Translate id='language-nl'></Translate>
                             </label>
@@ -187,7 +173,6 @@ class Account extends Component {
                 </form>
             </div>
         )
-    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account)
+export default (Account)

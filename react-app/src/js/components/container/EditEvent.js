@@ -1,44 +1,50 @@
-import React from 'react';
-import connect from "react-redux/es/connect/connect";
-import {updateEvent} from "../../actions/events";
+import React, {useEffect, useState} from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import EventForm from "./EventForm";
-import { Translate } from "react-localize-redux";
+import {Translate} from "react-localize-redux";
+import {useNavigate, useParams} from "react-router";
+import {fetchEvent, updateEvent} from "../../service/events";
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateEvent: (id, event) => dispatch(updateEvent(id, event)),
-    };
-};
-
-const mapStateToProps = (state, props) => {
-    return {
-        account: state.account,
-        event: state.events.find((event) =>
-            event._id === props.match.params.id)
-    };
-};
-
-class EditEvent extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.id = props.match.params.id;
+const EditEvent  = () => {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [event, setEvent] = useState(null);
+    const update = (eventUpdate) => {
+        console.log("UPDATE =>", eventUpdate)
+        updateEvent(id, eventUpdate)
+            .then(() => {
+                navigate('/events');
+            })
+            .catch((e) => {
+                console.log('event not Saved: ' + e);
+            });
     }
 
-    render() {
-        return (
+    const fetch = () => {
+        fetchEvent(id, event)
+            .then((response) => {
+                setEvent(response)
+            })
+            .catch((e) => {
+                console.log('event not fetched: ' + e);
+            });
+    }
+
+    useEffect(() => {
+        fetch()
+    }, []);
+
+    return (
             <div>
                 <h2><Translate id="title-edit-event"></Translate></h2>
-                <EventForm
-                    event = {this.props.event}
-                    onSubmitEvent={(event) => {
-                        this.props.updateEvent(this.id, event);
+                {event && <EventForm
+                    event = {event}
+                    onSubmitEvent={(eventUpdate) => {
+                        update(eventUpdate);
                     }}
-                />
+                />}
             </div>
         );
-    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);
+export default EditEvent;

@@ -20,19 +20,28 @@ export class EventController {
     }
 
     async update(req: Request, res: Response, eventId: string):Promise<Document> {
-        return Event.findByIdAndUpdate(eventId, {
-            title: req.body.title,
-            description: req.body.description,
-            start: req.body.start,
-            end: req.body.end,
-            userId: req.body.userId,
-            location: req.body.location,
-            modified: new Date()
-        });
+        try {
+            return Event.findByIdAndUpdate(eventId, {
+                title: req.body.title,
+                description: req.body.description,
+                start: req.body.start,
+                end: req.body.end,
+                userId: req.body.userId,
+                location: req.body.location,
+                modified: new Date()
+            });
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     async delete(eventId: string) {
-        Event.findByIdAndDelete(eventId);
+        try {
+            const result = await Event.findByIdAndDelete(eventId)
+            console.log("Deleted event: ", result);
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     async find(filter: any):Promise<Document[]> {

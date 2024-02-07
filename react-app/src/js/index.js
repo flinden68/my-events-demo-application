@@ -1,19 +1,16 @@
 import React from "react";
-import { render } from "react-dom";
-import { Provider } from "react-redux";
-import { Router } from 'react-router-dom'
+import {createRoot} from "react-dom/client";
+import {Provider} from "react-redux";
 import store from "./store/store";
 import App from "./components/App";
-import history from './history'
-import { LocalizeProvider} from 'react-localize-redux';
+import {LocalizeProvider} from 'react-localize-redux';
 
-render(
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(
     <Provider store={store}>
         <LocalizeProvider store={store}>
-            <Router history={history}>
-                <App />
-            </Router>
+            <App />
         </LocalizeProvider>
-    </Provider>,
-    document.getElementById("app")
+    </Provider>
 );

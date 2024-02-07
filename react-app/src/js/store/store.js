@@ -1,9 +1,7 @@
-import {createStore, applyMiddleware} from 'redux';
 import reducer from "../reducers/index";
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import {createAccountSuccess} from "../actions/account";
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+import {configureStore} from "@reduxjs/toolkit";
+
+const store = configureStore({ reducer: reducer});
 
 export default store;
 let account = {
