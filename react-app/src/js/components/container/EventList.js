@@ -9,8 +9,6 @@ import {deleteEvent, fetchAllEventsByUserId} from "../../service/events";
 const EventList = () => {
     const { account } = useAuth();
     const [events, setEvents] = useState([])
-    const name = "";
-    const email = "";
 
     useEffect(() => {
         reloadEvents()
@@ -18,10 +16,8 @@ const EventList = () => {
 
     const dEvent = (e, eventId) =>{
         e.preventDefault();
-        console.log("Delete event with Id: " + eventId)
         deleteEvent(eventId)
             .then((response) => {
-                console.log("Delete successful");
                 reloadEvents()
             }
          )
@@ -31,7 +27,7 @@ const EventList = () => {
     }
 
     const getDomain = () =>{
-        return this.email.substring(email.indexOf("@") + 1, email.length);
+        return account.email.substring(account.email.indexOf("@") + 1, account.email.length);
     }
 
     const getTimezone = () =>{
@@ -52,13 +48,12 @@ const EventList = () => {
         e.preventDefault();
 
         let payload = {
-            organizer: name + " <" + email + ">",
-            domain : this.getDomain(),
-            timezone : this.getTimezone(),
-            events: this.props.events
+            organizer: account.name + " <" + account.email + ">",
+            domain : getDomain(),
+            timezone : getTimezone(),
+            events: events
         }
 
-        //console.log("Export payload = " + JSON.stringify(payload));
         createIcal(payload).then(response => {
             let blob = new Blob([response.data], {type: "text/calendar;charset=utf-8"});
             saveAs(blob, "calendar.ics");

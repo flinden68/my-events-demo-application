@@ -15,8 +15,8 @@ import globalTranslations from '../translations/global.json';
 import {Routes} from "react-router";
 import ProtectedRoute from "../routes/ProtectedRoute";
 
-const App = (props) => {
-    useEffect(() => {
+const App = () => {
+    /*useEffect(() => {
         props.initialize({
             languages: [
                 { name: 'English', code: 'en' },
@@ -29,7 +29,7 @@ const App = (props) => {
                 defaultLanguage: "en"
             }
         });
-    }, []);
+    }, []);*/
 
     return (<div>
             <BrowserRouter>

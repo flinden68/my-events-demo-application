@@ -67,8 +67,6 @@ const Register = () => {
                 _class: "nl.elstarit.event.service.model.Account"
             }
 
-            console.log("account: " + JSON.stringify(accountNew))
-            //this.props.createAccount(account);
             dispatch(createAccount(accountNew))
                 .then(() => navigate('/account'))
                 .catch(error => console.log(error));

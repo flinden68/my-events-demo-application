@@ -10,7 +10,6 @@ const EditEvent  = () => {
     const { id } = useParams();
     const [event, setEvent] = useState(null);
     const update = (eventUpdate) => {
-        console.log("UPDATE =>", eventUpdate)
         updateEvent(id, eventUpdate)
             .then(() => {
                 navigate('/events');

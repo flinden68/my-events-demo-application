@@ -3,13 +3,6 @@ import {apiUrl} from "../constants/application";
 import axios from 'axios';
 import {setActiveLanguage} from "react-localize-redux";
 
-//const apiUrl = 'http://localhost:3535/api';
-
-//export const addEvent = event => ({ type: ADD_EVENT, payload: event });
-//export const deleteEvent = event => ({ type: DELETE_EVENT, payload: event });
-
-//export const getEvents = events => ({ type: GET_EVENTS, payload: events });
-
 export const logout = () => dispatch =>{
     return new Promise(async (resolve, reject) => {
         dispatch(logoutSuccess(null))
@@ -49,10 +42,8 @@ export const createAccountSuccess =  (data) => {
 export const updateAccount = (id, account) => dispatch => {
 
     return new Promise(async (resolve, reject) => {
-        console.log(account)
         return axios.put(`${apiUrl}/account/update/${id}`, account)
             .then(response => {
-                console.log(response.data)
                 dispatch(updateAccountSuccess(response.data))
                 dispatch(setActiveLanguage(response.data.language))
                 resolve()

@@ -5,11 +5,10 @@ import { Translate } from "react-localize-redux";
 const centerTextStyle = {
     centerTextStyle: 'center'
 };
-
 const Home = () => (
         <div className="row">
             <div className="col-2">
-            
+
             </div>
             <div className="col-8 text-center"  style={centerTextStyle}>
                 <h1><Translate id='title-home'></Translate></h1>

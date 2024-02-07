@@ -1,19 +1,11 @@
 import { Request, Response } from 'express';
 import {Payload} from "../model/payload";
 import {Event} from "../model/event"
-import moment = require("moment");
-const ical = require('ical-generator');
-
+import ical from "ical-generator";
 
 export class GeneratorController {
 
-    constructor() {
-        this.init();
-    }
-
-    init(){
-
-    }
+    constructor() {}
 
     generateIcal(req: Request, res: Response): any{
         const payload = new Payload( req.body.organizer, req.body.domain, req.body.timezone);
@@ -23,18 +15,15 @@ export class GeneratorController {
         }
 
         const cal = ical({
-            domain: payload.getDomain(),
             prodId: {company: payload.getDomain(), product: 'ical-generator'},
             timezone: payload.getTimezone()
         });
-
-        cal.domain(payload.getDomain());
 
         for (var event of payload.getEvents()) {
             cal.createEvent({
                 start: event.getStart(),
                 end: event.getEnd(),
-                timestamp: moment(),
+                //timestamp: moment(),
                 summary: event.getTitle(),
                 description: event.getDescription(),
                 location: event.getLocation(),
