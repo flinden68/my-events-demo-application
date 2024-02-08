@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import NavBar from "./NavBar";
 import {withLocalize} from 'react-localize-redux';
 import {BrowserRouter, Route} from "react-router-dom";
@@ -10,27 +10,10 @@ import Login from "./container/Login";
 import Logout from "./container/Logout";
 import Register from "./container/Register";
 import Account from "./container/Account";
-import {renderToStaticMarkup} from "react-dom/server";
-import globalTranslations from '../translations/global.json';
 import {Routes} from "react-router";
 import ProtectedRoute from "../routes/ProtectedRoute";
 
 const App = () => {
-    /*useEffect(() => {
-        props.initialize({
-            languages: [
-                { name: 'English', code: 'en' },
-                { name: 'Dutch', code: 'nl' }
-            ],
-            translation: globalTranslations,
-            options: {
-                renderToStaticMarkup,
-                renderInnerHtml: true,
-                defaultLanguage: "en"
-            }
-        });
-    }, []);*/
-
     return (<div>
             <BrowserRouter>
                 <NavBar/>

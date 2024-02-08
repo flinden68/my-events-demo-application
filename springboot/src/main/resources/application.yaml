@@ -15,15 +15,12 @@ springdoc:
 logging:
   level:
     root: INFO
-  nl:
-    elstarit:
-      reactive: DEBUG
+    org.springframework.security: TRACE
 
 info:
   app:
     name: Event Service API
     version: 1.0.0-SNAPSHOT
-    description: Event Service API
 
 management:
   endpoint:
@@ -41,7 +38,6 @@ management:
 spring:
   application:
     name: Event Service API
-    stub: false
   profiles:
     active: local #@activeProfile@
 
@@ -56,10 +52,9 @@ spring:
 
 service:
   cors:
-    origins: http://localhost:8080 #list of domains seperated by a comma
-    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
-swagger:
-  enabled: true
+    allowed-origins: http://localhost:8080 #list of domains seperated by a comma
+    allowed-methods: POST, OPTIONS, GET, PATCH, DELETE
+    allowed-headers: Authorization, Cache-Control, Content-Type
 
 ---
 spring:
@@ -71,10 +66,9 @@ spring:
       uri: mongodb://localhost:27017/events-store
 service:
   cors:
-    origins: http://localhost:8080, http://localhost:8000, http://localhost:4200 #list of domains seperated by a comma
-    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
-swagger:
-  enabled: true
+    allowed-methods: POST, OPTIONS, GET, PATCH, DELETE
+    allowed-headers: Authorization, Cache-Control, Content-Type
+    allowed-origins: http://localhost:8080, http://localhost:8000, http://localhost:4200
 
 ---
 spring:
@@ -86,9 +80,7 @@ spring:
       uri: mongodb://localhost:27017/events-store
 service:
   cors:
-    origins: http://localhost:8080, http://localhost:8000, http://localhost:4200 #list of domains seperated by a comma
-    allowedMethods: POST, OPTIONS, GET, PATCH, DELETE
-
-swagger:
-  enabled: false
+    allowed-origins: http://localhost:8080, http://localhost:8000, http://localhost:4200 #list of domains seperated by a comma
+    allowed-methods: POST, OPTIONS, GET, PATCH, DELETE
+    allowed-headers: Authorization, Cache-Control, Content-Type
 ---

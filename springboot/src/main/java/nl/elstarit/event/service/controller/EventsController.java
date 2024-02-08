@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 public class EventsController {
 
   @Autowired private EventRepository eventRepository;
