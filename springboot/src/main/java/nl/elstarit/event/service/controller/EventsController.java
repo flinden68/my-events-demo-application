@@ -16,15 +16,21 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/events")
+@RequestMapping("/events")
 public class EventsController {
 
-  @Autowired private EventRepository eventRepository;
+  private final EventRepository eventRepository;
+
+  public EventsController(
+          EventRepository eventRepository
+  ) {
+    this.eventRepository = eventRepository;
+  }
 
   @GetMapping(value = "", produces = "application/json")
   public ResponseEntity<List<Event>> getEvents() {
     List<Event> events = eventRepository.findAll();
-    if (events == null || events.isEmpty()) {
+    if (events.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     return new ResponseEntity<>(events, HttpStatus.OK);
@@ -33,10 +39,7 @@ public class EventsController {
   @GetMapping(value = "/{userId}", produces = "application/json")
   public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable("userId") String userId) {
     Optional<List<Event>> events = eventRepository.findByUserId(userId);
-    if (events.isPresent()) {
-      return new ResponseEntity<>(events.get(), HttpStatus.OK);
-    }
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	  return events.map(eventList -> new ResponseEntity<>(eventList, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
   }
 
 }

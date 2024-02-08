@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EventsControllerTest {
+class EventsControllerTest {
 
   private static final int QTY = 20;
 
@@ -54,7 +54,7 @@ public class EventsControllerTest {
   }
 
   @Test
-  public void getEvents() throws Exception{
+  void getEvents() throws Exception{
     List<Event> mockEvents = new ArrayList<>();
 
     Event event1 = new Event();

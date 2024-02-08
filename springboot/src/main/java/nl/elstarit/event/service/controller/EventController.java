@@ -18,7 +18,13 @@ import java.util.Optional;
 @RequestMapping("/event")
 public class EventController {
 
-  @Autowired private EventRepository eventRepository;
+  private final EventRepository eventRepository;
+
+  public EventController(
+      EventRepository eventRepository
+  ){
+      this.eventRepository = eventRepository;
+  }
 
   @GetMapping(value = "/{eventId}", produces = "application/json")
   public ResponseEntity<Event> getEventById(@PathVariable("eventId") String eventId) {

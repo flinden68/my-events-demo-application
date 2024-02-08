@@ -19,7 +19,9 @@ public class WebSecurityConfiguration {
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http.cors(AbstractHttpConfigurer::disable)
       .csrf(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests( c -> c.requestMatchers("/**").permitAll());
+      .authorizeHttpRequests(
+              c -> c.anyRequest().permitAll()
+      );
     return http.build();
   }
 
